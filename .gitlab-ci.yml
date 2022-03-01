@@ -1,0 +1,36 @@
+image: node:16
+
+stages:
+  - test
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+test project:
+  stage: test
+  script:
+    - npm install
+    - npm test
+
+build project:
+  stage: build
+  script:
+    - npm install
+    - npm build
+    - echo "Build successful"
+  artifacts:
+    paths:
+      - build/
+
+deploy project: # here we need exact server
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+    - node --version
+    - echo "Using credential - $USERNAME, $PASSWORD"
+    - echo "Application deployed successfully"
+  only:
+    - trunk
