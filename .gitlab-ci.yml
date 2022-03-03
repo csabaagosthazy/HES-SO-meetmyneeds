@@ -1,4 +1,4 @@
-image: node:16 #define image for docker
+image: node:16.14 #define image for docker
 
 stages:
   - test
