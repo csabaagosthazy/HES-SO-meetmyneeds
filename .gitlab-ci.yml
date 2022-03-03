@@ -19,7 +19,7 @@ build project:
   stage: build
   script:
     - npm install
-    - npm run build
+    - CI=false npm run build #if CI=true(default) warning are treated as errors
     - echo "Build successful"
   artifacts:
     paths:
