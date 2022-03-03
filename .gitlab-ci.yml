@@ -19,7 +19,7 @@ build project:
   stage: build
   script:
     - npm install
-    - npm build
+    - npm run build
     - echo "Build successful"
   artifacts:
     paths:
