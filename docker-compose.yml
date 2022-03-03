@@ -4,3 +4,15 @@ services:
   react:
     build:
       .
+
+  database:
+    image: postgres:13.6-bullseye
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=meetmyneeds
+    volumes:
+      - pgsql_data:/var/lib/postgres
+
+volumes:
+  pgsql_data: {}
