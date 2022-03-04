@@ -1,0 +1,26 @@
+# Override file for the production environment
+version: "3.7"
+
+services:
+  react:
+    labels:
+      - "traefik.backend=${TRAEFIK_BACKEND}"
+      - "traefik.docker.network=prod"
+      - "traefik.frontend.rule=Host:${TRAEFIK_URL}"
+      - "traefik.enable=true"
+    networks:
+      - default
+      - prod
+
+  database:
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=meetmyneeds
+    networks:
+      - default
+
+networks:
+  prod:
+    external: true
+    name: ${TRAEFIK_NETWORK}
