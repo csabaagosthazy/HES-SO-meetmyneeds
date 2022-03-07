@@ -30,9 +30,16 @@ build:project:
     paths:
       - build/
 
+  # Dirty hack until I figure out why the artifacts are not passed
+  cache:
+    paths:
+      - build/
+
 # TODO: Set the only rule back to trunk. This has been disabled for testing within the features/ci-auto-deployment
 build:docker-image:
   image: docker:20.10.12
+  dependencies:
+    - build:project
   services:
     - name: docker:20.10.12-dind
       alias: docker
