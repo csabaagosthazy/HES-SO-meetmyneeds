@@ -32,8 +32,6 @@ build:project:
 
 # TODO: Set the only rule back to trunk. This has been disabled for testing within the features/ci-auto-deployment
 build:docker-image:
-  dependencies:
-    - build:project
   image: docker:20.10.12
   services:
     - name: docker:20.10.12-dind
@@ -44,6 +42,7 @@ build:docker-image:
 
   stage: build
   script:
+    - ls -lA
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     # Project needs to be in a group to be able to access the dependency proxy, it seems
     #- docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
@@ -56,8 +55,6 @@ build:docker-image:
 
 deploy docker image:
   stage: deploy
-  dependencies:
-    - build:docker-image
   image: alpine:3.15.0
   before_script:
     - apk add openssh-client
