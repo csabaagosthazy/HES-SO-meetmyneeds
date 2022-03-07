@@ -69,7 +69,7 @@ deploy docker image:
   script:
     - echo Deploying $CI_COMMIT_SHA to $SSH_CONNECTION_STRING at [$SSH_TARGET_DIRECTORY]
     # Splitting over multiple lines, certainly makes things more readable
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git pull && git checkout $CI_COMMIT_SHA"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git checkout ${CI_COMMIT_BRANCH:-trunk} && git pull && git checkout $CI_COMMIT_SHA"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
 #  only:
