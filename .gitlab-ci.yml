@@ -39,9 +39,10 @@ build docker image:
 
   stage: build
   script:
+    - echo $CI_REGISTRY_IMAGE
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY/l4p1n/646-meet-my-needs:latest .
-    - docker push $CI_REGISTRY/l4p1n/646-meet-my-needs:latest
+    - docker build -t $CI_REGISTRY/l4p1n/646-meet-my-needs/react:latest .
+    - docker push $CI_REGISTRY/l4p1n/646-meet-my-needs/react:latest
 
 #deploy docker image:
 #  image: debian:bullseye
