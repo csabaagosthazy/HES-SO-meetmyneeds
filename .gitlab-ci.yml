@@ -24,6 +24,7 @@ build:project:
   stage: build
   script:
     - npm install
+    - rm build -Rf
     - CI=false npm run build #if CI=true(default) warning are treated as errors
     - echo "Build successful"
   artifacts:
@@ -49,7 +50,6 @@ build:docker-image:
 
   stage: build
   script:
-    - ls -lA
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     # Project needs to be in a group to be able to access the dependency proxy, it seems
     #- docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
@@ -69,8 +69,8 @@ deploy docker image:
   script:
     - echo Deploying $CI_COMMIT_SHA to $SSH_CONNECTION_STRING at [$SSH_TARGET_DIRECTORY]
     # Splitting over multiple lines, certainly makes things more readable
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY -v "$SSH_CONNECTION_STRING" 'cd $SSH_TARGET_DIRECTORY && git pull && git checkout $CI_COMMIT_SHA'
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" 'cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull'
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" 'cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d'
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git pull && git checkout $CI_COMMIT_SHA"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
 #  only:
 #    - trunk
