@@ -3,6 +3,7 @@ version: "3.7"
 
 services:
   react:
+    image: registry.gitlab.l4p1n.ch/l4p1n/646-meet-my-needs/react:latest
     labels:
       - "traefik.backend=${TRAEFIK_BACKEND}"
       - "traefik.docker.network=prod"
