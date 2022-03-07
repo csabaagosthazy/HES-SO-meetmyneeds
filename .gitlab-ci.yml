@@ -44,7 +44,9 @@ build docker image:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     # Project needs to be in a group to be able to access the dependency proxy, it seems
     #- docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
-    - docker build -t $CI_REGISTRY_IMAGE/react:latest .
+    # Use some caching with the local registry
+    - docker pull $CI_REGISTRY_IMAGE/react:latest || true
+    - docker build -t $CI_REGISTRY_IMAGE/react:latest -t $CI_REGISTRY_IMAGE/react:$CI_COMMIT_REF_SLUG .
     - docker push $CI_REGISTRY_IMAGE/react:latest
 
 #deploy docker image:
