@@ -1,7 +1,7 @@
 image: node:16.14 #define image for docker
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: "/certs"
 
 stages:
   - test
@@ -32,16 +32,13 @@ build project:
 build docker image:
   dependencies:
     - build project
-  image: docker:19.03.12
+  image: docker:20.10.12
   services:
-    - name: docker:19.03.12-dind
+    - name: docker:20.10.12-dind
       alias: docker
 
-  #variables:
-  #  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   stage: build
   script:
-    - echo $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY/l4p1n/646-meet-my-needs:latest .
     - docker push $CI_REGISTRY/l4p1n/646-meet-my-needs:latest
