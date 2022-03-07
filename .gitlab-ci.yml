@@ -57,8 +57,8 @@ build:docker-image:
     - docker pull $CI_REGISTRY_IMAGE/react:latest || true
     - docker build --cache-from=$CI_REGISTRY_IMAGE/react:latest -t $CI_REGISTRY_IMAGE/react:latest -t $CI_REGISTRY_IMAGE/react:$DOCKER_IMAGE_TAG .
     - docker push $CI_REGISTRY_IMAGE/react:$DOCKER_IMAGE_TAG
-  only:
-    - trunk
+#  only:
+#    - trunk
 
 deploy docker image:
   stage: deploy
@@ -72,5 +72,5 @@ deploy docker image:
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git checkout ${CI_COMMIT_BRANCH:-trunk} && git pull && git checkout $CI_COMMIT_SHA"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
-  only:
-    - trunk
+#  only:
+#    - trunk
