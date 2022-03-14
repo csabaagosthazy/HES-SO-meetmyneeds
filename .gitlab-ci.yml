@@ -4,6 +4,8 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
   SSH_CONNECTION_STRING: mathiasb@vlhprj645docker.hevs.ch
   SSH_TARGET_DIRECTORY: /home/mathiasb/646-meet-my-needs
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
 
 stages:
   - test
@@ -15,7 +17,21 @@ cache:
     - node_modules/
 
 test:project:
+  services:
+    - name: postgres:13.6-bullseye
+      alias: database
+  cache:
+    paths:
+      - dbmate-$DBMATE_VERSION
   stage: test
+  variables:
+    DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
+    DBMATE_VERSION: v1.14.0
+  before_script:
+    - "[[ -e dbmate-$DBMATE_VERSION ]] || curl -LO https://github.com/amacneil/dbmate/releases/download/$DBMATE_VERSION/dbmate-linux-amd64"
+    - mv dbmate-linux-amd64 dbmate-$DBMATE_VERSION || true
+    - chmod +x dbmate-$DBMATE_VERSION
+    - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
   script:
     - npm install
     - npm test
@@ -69,8 +85,9 @@ deploy docker image:
   script:
     - echo Deploying $CI_COMMIT_SHA to $SSH_CONNECTION_STRING at [$SSH_TARGET_DIRECTORY]
     # Splitting over multiple lines, certainly makes things more readable
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git checkout ${CI_COMMIT_BRANCH:-trunk} && git pull && git checkout $CI_COMMIT_SHA"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git fetch && git checkout ${CI_COMMIT_BRANCH:-trunk} && git pull && git checkout $CI_COMMIT_SHA"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml run --rm dbmate up"
   only:
     - trunk

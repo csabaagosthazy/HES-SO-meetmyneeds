@@ -11,7 +11,7 @@ services:
       - pgsql_data:/var/lib/postgresql/data
 
   dbmate:
-    image: amacneil/dbmate
+    image: amacneil/dbmate:1.14.0
     command: ["-v"]
     environment:
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
