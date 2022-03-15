@@ -2,6 +2,11 @@ const express = require("express");
 const routes = require("./routes/routes");
 const cors = require("cors");
 
+function handle_termination(){
+  console.log("SIGTERM or SIGINT caught. Exiting");
+  process.exit();
+}
+
 //init app
 const app = express();
 
@@ -14,3 +19,7 @@ app.use("/api", routes);
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}.`);
 });
+
+// Termination handlers
+process.on("SIGTERM", handle_termination);
+process.on("SIGINT", handle_termination)
