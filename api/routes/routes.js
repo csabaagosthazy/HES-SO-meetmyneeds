@@ -6,6 +6,7 @@ router.get("/", async (req, res) => {
   const message = "Hello from node";
   res.status(200).send(message);
 });
+
 router.get("/users", db.getUsers);
 router.get("/users/:id", db.getUserById);
 router.post("/users", db.createUser);
