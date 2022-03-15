@@ -18,11 +18,11 @@ module.exports = {
         return DATABASE_POOL;
     },
 
-    closePool: () => {
+    closePool: (callback) => {
         if(DATABASE_POOL === undefined){
             return;
         }
 
-        DATABASE_POOL.end();
+        DATABASE_POOL.end(callback);
     }
 }
