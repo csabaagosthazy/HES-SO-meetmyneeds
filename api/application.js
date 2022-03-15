@@ -1,9 +1,10 @@
 // Load environment file before everything else, so the database pool knows where to connect
-const dotenv = require('dotenv');
-dotenv.config({ path: "../.env" });
 const cors = require("cors");
 const express = require('express');
 const routes = require("./routes/routes");
+const dotenv = require('dotenv');
+
+dotenv.config({ path: "../.env" });
 
 const app = express();
 
