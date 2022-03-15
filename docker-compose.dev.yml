@@ -2,10 +2,6 @@
 version: '3.7'
 
 services:
-  react:
-    ports:
-      - 8000:80
-
   database:
     ports:
-      - 5432:5432
+      - "5432:5432"
