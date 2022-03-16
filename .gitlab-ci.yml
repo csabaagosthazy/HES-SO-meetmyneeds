@@ -89,7 +89,7 @@ package:http-server:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $REGISTRY_BASE_IMAGE:latest || true
     - docker build --cache-from=$REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG .
-    - docker push --all-tags $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG
+    - docker push --all-tags $REGISTRY_BASE_IMAGE
 #  only:
 #    - trunk
 
@@ -106,7 +106,7 @@ package:api-server:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $REGISTRY_BASE_IMAGE:latest || true
     - docker build --cache-from=$REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG .
-    - docker push --all-tags $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG
+    - docker push --all-tags $REGISTRY_BASE_IMAGE
 #  only:
 #    - trunk
 
