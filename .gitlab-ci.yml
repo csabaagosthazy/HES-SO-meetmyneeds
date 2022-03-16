@@ -3,8 +3,8 @@ image: node:16.14 #define image for docker
 .dbmate-setup: &dbmate-setup
   - echo $SHELL
   - ls -l
-  - "[ -e dbmate-$DBMATE_VERSION ] || curl -LO https://github.com/amacneil/dbmate/releases/download/$DBMATE_VERSION/dbmate-linux-amd64"
-  - mv dbmate-linux-amd64 dbmate-$DBMATE_VERSION || true
+  - "[ -e dbmate-$DBMATE_VERSION ] || curl -s -LO https://github.com/amacneil/dbmate/releases/download/$DBMATE_VERSION/dbmate-linux-amd64"
+  - mv dbmate-linux-amd64 dbmate-$DBMATE_VERSION > /dev/null 2>&1 || true
   - chmod +x dbmate-$DBMATE_VERSION
   - ls -l
 
