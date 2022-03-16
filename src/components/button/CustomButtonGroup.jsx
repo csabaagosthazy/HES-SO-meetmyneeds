@@ -11,13 +11,13 @@ import { COLORS } from "../../global/colors";
  * @returns Button group component
  */
 const CustomButtonGroup = ({ variant, textObj }) => {
-  const colorSet = Object.values(COLORS[variant]);
+  const colorSet = variant ? Object.values(COLORS[variant]) : COLORS.blueSet;
   const [selected, setSelected] = React.useState(-1);
   const handleSelect = (e) => {
     setSelected(e.target.name);
   };
   return (
-    <Container>
+    <Container data-testid="buttonGroup">
       <Row className="justify-content-center" xs={5}>
         {Object.entries(textObj).map(([key, value], i) => {
           return (

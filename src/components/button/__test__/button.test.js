@@ -2,8 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react";
 import CustomButton from "../CustomButton";
 import "@testing-library/jest-dom/extend-expect";
-import { Button } from "react-bootstrap";
-import { AiOutlinePhone } from "react-icons/ai";
 
 //want a CustomButton on the screen
 //want a CustomButton with the given color
@@ -29,7 +27,20 @@ test("CustomButton renders with correct size and padding", () => {
   );
   const CustomButtonComp = getByTestId("button");
 
-  expect(CustomButtonComp).toHaveStyle(`min-height: 30px`);
-  expect(CustomButtonComp).toHaveStyle(`min-width: 45px`);
-  expect(CustomButtonComp).toHaveStyle(`padding: 2px`);
+  expect(CustomButtonComp).toHaveStyle(`min-height: 150px`);
+  expect(CustomButtonComp).toHaveStyle(`min-width: 175px`);
+  expect(CustomButtonComp).toHaveStyle(`padding: 10px`);
+});
+
+test("CustomButton changing outline if selected", () => {
+  const { getByTestId, rerender } = render(
+    <CustomButton bgColor={"pink"} variant={"x"} focusColor={"white"} />
+  );
+  const CustomButtonComp = getByTestId("button");
+
+  expect(CustomButtonComp).toHaveStyle(`outline: none`);
+
+  rerender(<CustomButton bgColor={"pink"} variant={"x"} focusColor={"white"} selected />);
+
+  expect(CustomButtonComp).toHaveStyle(`outline: white solid 3px`);
 });

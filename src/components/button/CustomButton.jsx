@@ -1,5 +1,14 @@
 import React from "react";
 
+/**
+ *
+ * @param {String} variant Available size "x", "m", "s"
+ * @param {string} bgColor Background color
+ * @param {string} textColor Color of text
+ * @param {string} focusColor Outline color if selected
+ * @param {boolean} selected True/false
+ * @returns
+ */
 export const CustomButton = ({
   children,
   variant,
@@ -43,10 +52,11 @@ export const CustomButton = ({
   });
 
   React.useEffect(() => {
-    setStyle({
-      ...style,
-      outline: selected ? `${focusColor} solid 3px` : "none",
-    });
+    if (focusColor)
+      setStyle({
+        ...style,
+        outline: selected ? `${focusColor} solid 3px` : "none",
+      });
   }, [selected]);
   const handleMouse = (e) => {
     if (e.type === "mousedown") {
