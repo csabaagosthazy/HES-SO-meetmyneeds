@@ -2,65 +2,115 @@ image: node:16.14 #define image for docker
 
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+
   SSH_CONNECTION_STRING: mathiasb@vlhprj645docker.hevs.ch
   SSH_TARGET_DIRECTORY: /home/mathiasb/646-meet-my-needs
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
 
 stages:
   - test
   - build
+  - package
   - deploy
 
 cache:
   paths:
-    - node_modules/
+    - client/node_modules/
+    - api/node_modules/
 
-test:project:
+test:client:
   stage: test
+  services:
+    - name: postgres:13.6-bullseye
+      alias: database
+  cache:
+    paths:
+      - dbmate-$DBMATE_VERSION
+  variables:
+    DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
+    DBMATE_VERSION: v1.14.0
   script:
+    - "[[ -e dbmate-$DBMATE_VERSION ]] || curl -LO https://github.com/amacneil/dbmate/releases/download/$DBMATE_VERSION/dbmate-linux-amd64"
+    - mv dbmate-linux-amd64 dbmate-$DBMATE_VERSION || true
+    - chmod +x dbmate-$DBMATE_VERSION
+    - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
+
+    - cd client
     - npm install
     - npm test
 
-build:project:
+test:server:
+  stage: test
+  services:
+    - name: postgres:13.6-bullseye
+      alias: database
+  cache:
+    paths:
+      - dbmate-$DBMATE_VERSION
+  variables:
+    DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
+    DBMATE_VERSION: v1.14.0
+  script:
+    - "[[ -e dbmate-$DBMATE_VERSION ]] || curl -LO https://github.com/amacneil/dbmate/releases/download/$DBMATE_VERSION/dbmate-linux-amd64"
+    - mv dbmate-linux-amd64 dbmate-$DBMATE_VERSION || true
+    - chmod +x dbmate-$DBMATE_VERSION
+    - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
+
+    - cd api
+    - npm install
+    - npm test
+
+build:client:
   stage: build
   script:
+    - cd client
     - npm install
     - rm build -Rf
     - CI=false npm run build #if CI=true(default) warning are treated as errors
     - echo "Build successful"
   artifacts:
     paths:
-      - build/
+      - client/build/
 
-  # Dirty hack until I figure out why the artifacts are not passed
-  cache:
-    paths:
-      - build/
-
-# TODO: Set the only rule back to trunk. This has been disabled for testing within the features/ci-auto-deployment
-build:docker-image:
+package:http-server:
   image: docker:20.10.12
   dependencies:
-    - build:project
+    - build:client
   services:
     - name: docker:20.10.12-dind
       alias: docker
-
+  stage: package
   variables:
-    DOCKER_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-
-  stage: build
+    REGISTRY_BASE_IMAGE: $CI_REGISTRY_IMAGE/react
   script:
+    - cd client
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    # Project needs to be in a group to be able to access the dependency proxy, it seems
-    #- docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
-    # Use some caching with the local registry
-    - docker pull $CI_REGISTRY_IMAGE/react:latest || true
-    - docker build --cache-from=$CI_REGISTRY_IMAGE/react:latest -t $CI_REGISTRY_IMAGE/react:latest -t $CI_REGISTRY_IMAGE/react:$DOCKER_IMAGE_TAG .
-    - docker push $CI_REGISTRY_IMAGE/react:$DOCKER_IMAGE_TAG
+    - docker pull $REGISTRY_BASE_IMAGE:latest || true
+    - docker build --cache-from=$REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG .
+    - docker push $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG
   only:
     - trunk
 
-deploy docker image:
+package:api-server:
+  image: docker:20.10.12
+  services:
+    - name: docker:20.10.12-dind
+      alias: docker
+  stage: package
+  variables:
+    REGISTRY_BASE_IMAGE: $CI_REGISTRY_IMAGE/api
+  script:
+    - cd api
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker pull $REGISTRY_BASE_IMAGE:latest || true
+    - docker build --cache-from=$REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG .
+    - docker push $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG
+  only:
+    - trunk
+
+deploy-application:
   stage: deploy
   image: alpine:3.15.0
   before_script:
@@ -69,8 +119,9 @@ deploy docker image:
   script:
     - echo Deploying $CI_COMMIT_SHA to $SSH_CONNECTION_STRING at [$SSH_TARGET_DIRECTORY]
     # Splitting over multiple lines, certainly makes things more readable
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git checkout ${CI_COMMIT_BRANCH:-trunk} && git pull && git checkout $CI_COMMIT_SHA"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && git fetch && git checkout ${CI_COMMIT_BRANCH:-trunk} && git pull && git checkout $CI_COMMIT_SHA"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull"
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY "$SSH_CONNECTION_STRING" "cd $SSH_TARGET_DIRECTORY && docker-compose -f docker-compose.yml run --rm dbmate up"
   only:
     - trunk

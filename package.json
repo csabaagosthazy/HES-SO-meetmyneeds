@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "meetmyneeds",
+  "scripts": {
+    "docker-dbmate": "docker-compose -f docker-compose.yml run --rm dbmate",
+    "docker-dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
+    "docker-prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up"
+  }
+}
