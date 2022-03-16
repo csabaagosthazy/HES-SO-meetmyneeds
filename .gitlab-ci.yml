@@ -1,25 +1,42 @@
 image: node:16.14 #define image for docker
 
+# The following blocks are YAML anchors. Those allow some deduplication of the YAML CI file. They will be inserted whenever
+# they are referenced further. See test:server and package:http-server
 .dbmate-setup: &dbmate-setup
-  - echo $SHELL
-  - ls -l
   - "[ -e dbmate-$DBMATE_VERSION ] || curl -s -LO https://github.com/amacneil/dbmate/releases/download/$DBMATE_VERSION/dbmate-linux-amd64"
   - mv dbmate-linux-amd64 dbmate-$DBMATE_VERSION > /dev/null 2>&1 || true
   - chmod +x dbmate-$DBMATE_VERSION
-  - ls -l
+  - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
 
 .docker-image-build: &docker-image-build
+  # Debug information
+  - "echo Current branch: [$CI_COMMIT_BRANCH]. Default branch [$CI_DEFAULT_BRANCH]"
+
+  # Login and pull the docker image tagged with latest to act as a cache
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   - docker pull $REGISTRY_BASE_IMAGE:latest || true
-  - docker build --cache-from=$REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG .
+
+  # Build the container with the designated tag.
+  - echo Building container $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG
+  - docker build --cache-from=$REGISTRY_BASE_IMAGE:latest -t $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG .
+  # Uncomment this line whenever we want to push every container build of other branches to the registry
+  # The condition prevents the tag latest to be applied to commits on other branches than the default one, i.e. trunk
+  #- "[[ $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH ]] && { echo 'Tagging container to latest'; docker tag $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG $REGISTRY_BASE_IMAGE:latest; }"
+  - docker tag $REGISTRY_BASE_IMAGE:$DOCKER_IMAGE_TAG $REGISTRY_BASE_IMAGE:latest
+
   - docker push --all-tags $REGISTRY_BASE_IMAGE
 
 variables:
+  # Docker related variables. One is for the certificates, the other is the docker
+  # image tag that will be published on the registry
   DOCKER_TLS_CERTDIR: "/certs"
   DOCKER_IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
 
+  # Deployment variables
   SSH_CONNECTION_STRING: mathiasb@vlhprj645docker.hevs.ch
   SSH_TARGET_DIRECTORY: /home/mathiasb/646-meet-my-needs
+
+  # Database related variables
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   DBMATE_VERSION: v1.14.0
@@ -50,7 +67,6 @@ test:client:
     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
   script:
     - *dbmate-setup
-    - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
     - cd client
     - npm --cache ../.npm --prefer-offline install
     - npm test
@@ -64,7 +80,6 @@ test:server:
     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
   script:
     - *dbmate-setup
-    - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
     - cd api
     - npm --cache ../.npm --prefer-offline install
     - npm test
@@ -94,8 +109,8 @@ package:http-server:
   script:
     - cd client
     - *docker-image-build
-#  only:
-#    - trunk
+  only:
+    - trunk
 
 package:api-server:
   image: docker:20.10.12
@@ -108,8 +123,8 @@ package:api-server:
   script:
     - cd api
     - *docker-image-build
-#  only:
-#    - trunk
+  only:
+    - trunk
 
 deploy-application:
   stage: deploy
