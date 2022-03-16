@@ -19,6 +19,7 @@ cache:
   paths:
     - client/node_modules/
     - api/node_modules/
+    - .npm
 
 test:client:
   stage: test
@@ -38,7 +39,7 @@ test:client:
     - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
 
     - cd client
-    - npm install
+    - npm --cache .npm --prefer-offline install
     - npm test
 
 test:server:
@@ -59,7 +60,7 @@ test:server:
     - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
 
     - cd api
-    - npm install
+    - npm --cache .npm --prefer-offline install
     - npm test
 
 build:client:
