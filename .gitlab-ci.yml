@@ -16,19 +16,23 @@ stages:
   - deploy
 
 cache:
-  paths:
-    - client/node_modules/
-    - api/node_modules/
-    - .npm
+  - key: nodejs-deps
+    paths:
+      - client/node_modules/
+      - api/node_modules/
+      - .npm
+
+  - key:
+      files:
+        dbmate-$DBMATE_VERSION
+    paths:
+      - dbmate-$DBMATE_VERSION
 
 test:client:
   stage: test
   services:
     - name: postgres:13.6-bullseye
       alias: database
-  cache:
-    paths:
-      - dbmate-$DBMATE_VERSION
   variables:
     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
     DBMATE_VERSION: v1.14.0
@@ -47,9 +51,6 @@ test:server:
   services:
     - name: postgres:13.6-bullseye
       alias: database
-  cache:
-    paths:
-      - dbmate-$DBMATE_VERSION
   variables:
     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
     DBMATE_VERSION: v1.14.0
