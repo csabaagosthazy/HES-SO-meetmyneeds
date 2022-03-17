@@ -1,13 +1,11 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Counter from "./components/counter/Counter";
+import Questionnaire from "./components/pages/Questionnaire";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Counter>My counter</Counter>
-      </header>
+      <header className="App-header">Header</header>
+      <Questionnaire id={1} lang={"en"} />
     </div>
   );
 }
