@@ -51,7 +51,6 @@ CREATE TABLE questions
     generation    int,
     parent_question_id bigint,
     category_id   bigint not null,
-    sub_category_id bigint,
     lang_id       bigint not null,
     PRIMARY KEY (question_id)
 );
@@ -131,7 +130,6 @@ CREATE TABLE pathology_question
 
 ALTER TABLE questions
     ADD FOREIGN KEY (category_id) REFERENCES question_category (category_id),
-    ADD FOREIGN KEY (sub_category_id) REFERENCES question_category (category_id),
     ADD FOREIGN KEY (lang_id) REFERENCES languages (lang_id),
     ADD FOREIGN KEY (parent_question_id) REFERENCES questions(question_id);
 
