@@ -1,5 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
+import Questionnaire from "./components/pages/Questionnaire";
 import Counter from "./components/counter/Counter";
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Counter>My counter</Counter>
+        <Questionnaire id={1} lang={"en"} />
       </header>
     </div>
   );
