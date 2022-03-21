@@ -1,6 +1,5 @@
 import "./App.css";
 import Questionnaire from "./components/pages/Questionnaire";
-import Counter from "./components/counter/Counter";
 
 function App() {
   return (
