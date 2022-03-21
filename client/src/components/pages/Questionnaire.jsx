@@ -51,6 +51,7 @@ const Questionnaire = ({ id, lang }) => {
     setCurrentPageNumber(number);
     setPagedata(data[number - 1]);
   };
+  console.log(currentPageNumber);
   console.log("data", pageData);
   console.log("error", error);
 
@@ -58,8 +59,8 @@ const Questionnaire = ({ id, lang }) => {
   //renders the questions
   return (
     <div>
-      {pageData.map((q) => (
-        <p>{q.question}</p>
+      {pageData.map((q, i) => (
+        <p key={i}>{q.question}</p>
       ))}
       <CustomPagination
         pageNo={numberOfPages}

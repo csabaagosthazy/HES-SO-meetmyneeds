@@ -18,11 +18,13 @@ const CustomPagination = ({ pageNo, currentPage, setCurrentPage, alwaysShown = t
   };
 
   const onPreviousPageClick = () => {
-    changePage((currentPage) => currentPage - 1);
+    console.log("current page", currentPage);
+    changePage(currentPage - 1);
   };
 
   const onNextPageClick = () => {
-    changePage((currentPage) => currentPage + 1);
+    console.log("current page", currentPage);
+    changePage(currentPage + 1);
   };
 
   const setLastPageAsCurrent = () => {
