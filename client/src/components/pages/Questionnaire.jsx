@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
+import Question from "../question/Question";
 
 //get questions by id and language
 //error handling
@@ -60,7 +61,7 @@ const Questionnaire = ({ id, lang }) => {
   return (
     <div>
       {pageData.map((q, i) => (
-        <p key={i}>{q.question}</p>
+        <Question key={i} name={q.question} subs={q.subquestions} id={q.question_id} />
       ))}
       <CustomPagination
         pageNo={numberOfPages}

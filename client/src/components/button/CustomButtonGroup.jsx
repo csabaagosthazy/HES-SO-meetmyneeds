@@ -10,11 +10,12 @@ import { COLORS } from "../../global/colors";
  * Button group renders 5 buttons with the given text and color
  * @returns Button group component
  */
-const CustomButtonGroup = ({ variant, textObj }) => {
+const CustomButtonGroup = ({ variant, textObj, onClick }) => {
   const colorSet = variant ? Object.values(COLORS[variant]) : COLORS.blueSet;
   const [selected, setSelected] = React.useState(-1);
   const handleSelect = (e) => {
     setSelected(e.target.name);
+    onClick(e.target.name);
   };
   return (
     <Container data-testid="buttonGroup">
@@ -26,7 +27,7 @@ const CustomButtonGroup = ({ variant, textObj }) => {
                 name={key}
                 bgColor={colorSet[i]}
                 variant={"m"}
-                focusColor={"white"}
+                focusColor={"black"}
                 selected={selected === key}
                 onClick={(e) => handleSelect(e)}
               >

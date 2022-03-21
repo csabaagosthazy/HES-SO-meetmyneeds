@@ -1,15 +1,15 @@
 import React from "react";
 
-const Subquestion = (props) => {
+const Subquestion = ({ subquestions }) => {
   return (
     <div>
       {/*it is hardcoded for now: if this sentence is taken from DB/passed via props, need to be changed*/}
-      <div>Plus précisement</div>
-      {props.subquestions.map((subquestion, index) => {
+      <div>More precisely</div>
+      {subquestions.map((subquestion, index) => {
         return (
-          <div>
+          <div key={index}>
             <input type="checkbox" id={index} />
-            <label key={index}>{subquestion}</label>
+            <label key={index}>{subquestion.question}</label>
           </div>
         );
       })}

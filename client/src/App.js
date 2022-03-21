@@ -6,7 +6,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Counter>My counter</Counter>
         <Questionnaire id={1} lang={"en"} />
       </header>
     </div>
