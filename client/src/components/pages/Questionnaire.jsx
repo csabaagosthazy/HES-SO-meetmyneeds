@@ -16,6 +16,7 @@ const Questionnaire = ({ id, lang }) => {
   const [numberOfPages, setNumberOfPages] = useState(1);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [pageData, setPagedata] = useState("");
+  const [open, setOpen] = useState({}); //based on the page array create a object key: true
 
   useEffect(() => {
     //call fetch
@@ -27,6 +28,7 @@ const Questionnaire = ({ id, lang }) => {
         })
         .catch((err) => setError(err));
     })();
+    console.log(data);
   }, []);
 
   /**
@@ -35,8 +37,14 @@ const Questionnaire = ({ id, lang }) => {
    */
   const paginate = (dataArr) => {
     //number of pages are dependent on how many subcategories we have
+    //sub category label is needed for the headers
     const pages = new Set();
-    dataArr.forEach((obj) => pages.add(obj.sub_category_id));
+    const openState = {};
+    dataArr.forEach((obj) => {
+      openState[obj.question_id] = true;
+      pages.add(obj.sub_category_id);
+    });
+    setOpen(openState);
     setNumberOfPages(pages.size);
     const pagesData = [];
     Array.from(pages).forEach((unique) =>

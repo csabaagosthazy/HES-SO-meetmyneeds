@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import * as commonmark from "commonmark";
 
-import { Accordion, AccordionContext, Button, Card } from "react-bootstrap";
-import { useAccordionButton } from "react-bootstrap/AccordionButton";
+import { Accordion, Card, Collapse } from "react-bootstrap";
 
 import Subquestion from "./SubQuestion";
 import CustomButtonGroup from "../button/CustomButtonGroup";
@@ -13,36 +12,36 @@ const Question = (props) => {
   const question_to_parse = reader.parse(props.name);
   const question_to_display = writer.render(question_to_parse);
 
+  const [open, setOpen] = useState(true);
+
   const obj = {
-    a: "important",
-    b: "essential",
-    c: "less important",
-    d: "not important",
-    e: "done",
-    f: "not may concern",
+    essential: "Essential",
+    important: "Important",
+    medium: "Somewhat important",
+    low: "Not important",
+    done: "Need already met",
+    none: "Not concerned",
   };
 
-  const CustomToggle = ({ children, eventKey }) => {
-    const decoratedOnClick = useAccordionButton(eventKey, () => console.log("eventKey", eventKey));
-    const handleClick = (event) => {
-      console.log(event);
-      decoratedOnClick();
-    };
-
-    return <CustomButtonGroup variant={"blueSet"} textObj={obj} onClick={handleClick} />;
+  const handleClick = (selected) => {
+    if (selected === "essential" || selected === "important" || selected === "medium")
+      setOpen(true);
+    else setOpen(false);
+    //call parent function to store answers
   };
+
   return (
     <Accordion alwaysOpen>
       <Card>
         <Card.Header>
           <h1 dangerouslySetInnerHTML={{ __html: question_to_display }} />
-          <CustomToggle eventKey={props.id} />
+          <CustomButtonGroup variant={"blueSet"} textObj={obj} onClick={handleClick} />
         </Card.Header>
-        <Accordion.Collapse eventKey={props.id}>
+        <Collapse in={open}>
           <Card.Body>
             <Subquestion subquestions={props.subs} />
           </Card.Body>
-        </Accordion.Collapse>
+        </Collapse>
       </Card>
     </Accordion>
   );
