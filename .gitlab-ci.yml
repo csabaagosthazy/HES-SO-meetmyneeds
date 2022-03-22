@@ -8,6 +8,12 @@ image: node:16.14 #define image for docker
   - chmod +x dbmate-$DBMATE_VERSION
   - DATABASE_URL="$DATABASE_URL" ./dbmate-$DBMATE_VERSION up
 
+.postgresql-prime-db: &postgresql-prime-db
+  - cd api
+  - npm --cache ../.npm --prefer-offline install
+  - cd ..
+  - node api/seed-database.js
+
 .docker-image-build: &docker-image-build
   # Debug information
   - "echo Current branch: [$CI_COMMIT_BRANCH]. Default branch [$CI_DEFAULT_BRANCH]"
@@ -67,6 +73,7 @@ test:client:
     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
   script:
     - *dbmate-setup
+    - *postgresql-prime-db
     - cd client
     - npm --cache ../.npm --prefer-offline install
     - npm test
@@ -80,7 +87,10 @@ test:server:
     DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/meetmyneeds?sslmode=disable
   script:
     - *dbmate-setup
+    - *postgresql-prime-db
     - cd api
+    # This command is already executed by the postgresql-prime-db anchor, but is kept
+    # for completeness
     - npm --cache ../.npm --prefer-offline install
     - npm test
 
