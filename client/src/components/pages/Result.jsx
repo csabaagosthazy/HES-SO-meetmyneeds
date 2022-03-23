@@ -8,7 +8,7 @@ const answers = [{
     question:"Actually I need info about diagnostics",
     answer_id: 3,
     label:"a bit important",
-    technicalKey: "medium"
+    technicalKey: "less_important"
 
 }, 
 
@@ -17,7 +17,6 @@ const answers = [{
     question:"Why?",
     answer_id : 1, 
     label : "essential", 
-    weight: 1, 
     technicalKey: "essential"
 }, 
 
@@ -35,34 +34,33 @@ const Result = (props) =>{
     const json_toStr = JSON.stringify(answers);
     const obj = JSON.parse(json_toStr);
 
-    console.log("Here",obj[0].label);
-
+    //sets to store questions grouped by importance of need 
     let essential = new Set(); 
     let important = new Set(); 
     let less_important = new Set();
+    let already_filled = new Set();
 
+    //grouping by importance of need 
     obj.forEach(element => {
         if(element.technicalKey === "essential"){
-            essential.add(element.question_id, element.question)
+            essential.add([element.question_id, element.question]);
+        }else if(element.technicalKey === "important"){
+            important.add([element.question_id, element.question])
+        }else if(element.technicalKey === "less_important"){
+            less_important.add([element.question_id, element.question])
+        }else if(element.technicalKey === "already_filled"){
+            already_filled.add([element.question_id, element.question])
         }
     });
 
-    console.log("Essentials", essential)
+    console.log("Essentials", essential);
+    console.log("Important", important);
+    console.log("Less important", less_important);
+    console.log("Already filled", already_filled);
 
     //create empty dict or set ???
     /*const labels = [...new Set(obj.map(item => item.label))];
     console.log("Groupped", labels)*/
-
-   /* labels.forEach(element => {
-        const  = newSet();
-    })
-
-    for (let i = 0; i < cars.length; i++) {
-        text += cars[i] + "<br>";
-      }*/
-    //if answer_id is not in the dict, add it as a key => or answer_label as a key? 
-    //if it exists, add question_id as a value
-    //return answer_id - a list of question_id's 
 
     return(
         <div>
