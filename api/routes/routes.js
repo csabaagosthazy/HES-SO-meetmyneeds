@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {getPool} = require('../database/pool');
+const {get_main_categories} = require("../database/repository/category");
 
 router.get("/", async (req, res) => {
   res.status(200)
@@ -18,16 +19,11 @@ router.get("/db-test", async (req, res) => {
 })
 
 router.get('/categories', async (req, res) => {
-    let pool = getPool();
-    let results = await pool.query(
-        `SELECT DISTINCT q.category_id, qc.label FROM question_category qc
-            INNER JOIN questions q on qc.category_id = q.category_id
-        WHERE q.sub_category_id IS NULL ORDER BY qc.label;`
-    );
+    let results = await get_main_categories();
 
     res.status(200)
         .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(results.rows))
+        .send(JSON.stringify(results))
 });
 
 module.exports = router;
