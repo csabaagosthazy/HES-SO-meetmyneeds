@@ -2,15 +2,18 @@ import { categories, questions } from "./urls";
 
 const dummyQuestionGenerator = (numberOfQuestions) => {
   let questions = [];
+
   for (let i = 1; i <= numberOfQuestions; i++) {
     let question =
       i % 2 === 0 ? "What is the **meaning of life?**" : "What **is the** meaning of life?";
     let subCategoryId = Math.floor(Math.random() * 4) + 1;
+    let subCategoryLabel = "Sub category title";
+
     let questionObj = {
       question_id: i,
       question,
       sub_category_id: subCategoryId,
-      sub_category_label: subCategoryId.toString(),
+      sub_category_label: subCategoryLabel,
       //....
       subquestions: [
         { question_id: i * 10 + 1, question: "Are you sure?" /*....*/ },
@@ -20,7 +23,34 @@ const dummyQuestionGenerator = (numberOfQuestions) => {
     };
     questions.push(questionObj);
   }
-  return questions;
+  let answers = {
+    1: {
+      technicalKey: "essential",
+      label: "Essential",
+    },
+    2: {
+      technicalKey: "important",
+      label: "Important",
+    },
+    3: {
+      technicalKey: "medium",
+      label: "Somewhat important",
+    },
+    4: {
+      technicalKey: "low",
+      label: "Not important",
+    },
+    5: {
+      technicalKey: "done",
+      label: "Need already met",
+    },
+    6: {
+      technicalKey: "none",
+      label: "Not concerned",
+    },
+  };
+  let colorSet = {};
+  return { questions, answers, colorSet };
 };
 
 const dummyQuestions = {
