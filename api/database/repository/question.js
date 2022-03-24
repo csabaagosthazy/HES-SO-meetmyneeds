@@ -4,7 +4,7 @@ module.exports = {
     get_main_questions_by_category: async (category_id) => {
         const pool = getPool();
         const result = await pool.query(
-            `SELECT question_id, question, question_set, sub_category_id
+            `SELECT question_id, question, question_set, sub_category_id, category_id
              FROM questions
              WHERE category_id = $1
                AND parent_question_id IS NULL
