@@ -208,12 +208,12 @@ INSERT INTO pathology (name) VALUES
 ('pathology2'),
 ('pathology3');
 
-INSERT INTO answers (label, lang_id) VALUES
-('essentiel', 1),
-('important', 1),
-('un peu important', 1),
-('pas du tout important', 1),
-('besoin déjà rempli', 1),
-('pas concercé.e', 1),
-('oui', 1),
-('non', 1);
+INSERT INTO answers (label, lang_id, technical_key) VALUES
+('essentiel', 1, 'essential'),
+('important', 1, 'important'),
+('un peu important', 1, 'less_important'),
+('pas du tout important', 1, 'not_important'),
+('besoin déjà rempli', 1, 'already_filled'),
+('pas concerné.e', 1, 'not_concerned'),
+('oui', 1, 'yes'),
+('non', 1, 'no');
