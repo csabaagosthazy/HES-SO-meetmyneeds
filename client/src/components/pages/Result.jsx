@@ -55,18 +55,26 @@ const Result = (props) => {
         }
     });
 
-    //create empty dict or set ???
+    //create a set of labels
     var labels = new Map();
     obj.map(item => labels.set(item.technicalKey, item.label));
 
+    let essential_content = [];
+    if(essential.size !== 0 ){
+        essential_content.push(<p key="label-essential">{labels.get("essential")}</p>);
+        console.log(essential);
+        const essential_render = [...essential].map((item) => {console.log(item); return(<p key={item[0]}>{item[1]}</p>)});
+        essential_content = essential_content.concat(essential_render);
+    }
     return (
         <div>
-            <p>
+            {essential_content}
+            {/*<p> 
                 {
                     essential.size !== 0 ? labels.get("essential") : ""
 
                 }
-            </p>
+            </p>*/}
             <p>
                 {
                     important.size !== 0 ? labels.get("important") : ""
