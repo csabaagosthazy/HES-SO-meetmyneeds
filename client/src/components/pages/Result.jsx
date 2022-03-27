@@ -61,42 +61,32 @@ const Result = (props) => {
 
     //function that displays questions in set under the certain label
     const displayQuestions = (questionSet, labelSet, label_tag) => {
-        let content_to_display = [];
-        content_to_display.push(<p key={label_tag}>{labelSet.get(label_tag)}</p>);
-        const questions_render = [...questionSet].map((item) => {return(<p key={item[0]}>{item[1]}</p>)});
-        content_to_display = content_to_display.concat(questions_render);
-        console.log(content_to_display);
-        return content_to_display;
+        let questions_render = [...questionSet].map((item) => {return(<p key={item[0]}>{item[1]}</p>)});
+        questions_render.unshift(<h3 key={label_tag}>{labelSet.get(label_tag)}</h3>); //prepending label 
+        return questions_render;
     }
 
     return (
-        <div>
-            {displayQuestions(essential, labels, "essential")}
+        <div> 
+            {
+                essential.size !== 0 ? displayQuestions(essential, labels, "essential") : ""
 
-            {/*<p> 
-                {
-                    essential.size !== 0 ? labels.get("essential") : ""
+            }
+                
+            {
+                important.size !== 0 ? displayQuestions(important, labels, "important") : ""
 
-                }
-            </p>*/}
-            <p>
-                {
-                    important.size !== 0 ? labels.get("important") : ""
+            }
 
-                }
-            </p>
-            <p>
-                {
-                    less_important.size !== 0 ? labels.get("less_important") : ""
+            {
+                less_important.size !== 0 ? displayQuestions(less_important, labels, "less_important") : ""
 
-                }
-            </p>
-            <p>
-                {
-                    already_filled.size !== 0 ? labels.get("already_filled") : ""
+            }
 
-                }
-            </p>
+            {
+                already_filled.size !== 0 ? displayQuestions(already_filled, labels, "already_filled") : ""
+
+            }
         </div>
     );
 };
