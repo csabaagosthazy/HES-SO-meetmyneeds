@@ -59,16 +59,20 @@ const Result = (props) => {
     var labels = new Map();
     obj.map(item => labels.set(item.technicalKey, item.label));
 
-    let essential_content = [];
-    if(essential.size !== 0 ){
-        essential_content.push(<p key="label-essential">{labels.get("essential")}</p>);
-        console.log(essential);
-        const essential_render = [...essential].map((item) => {console.log(item); return(<p key={item[0]}>{item[1]}</p>)});
-        essential_content = essential_content.concat(essential_render);
+    //function that displays questions in set under the certain label
+    const displayQuestions = (questionSet, labelSet, label_tag) => {
+        let content_to_display = [];
+        content_to_display.push(<p key={label_tag}>{labelSet.get(label_tag)}</p>);
+        const questions_render = [...questionSet].map((item) => {return(<p key={item[0]}>{item[1]}</p>)});
+        content_to_display = content_to_display.concat(questions_render);
+        console.log(content_to_display);
+        return content_to_display;
     }
+
     return (
         <div>
-            {essential_content}
+            {displayQuestions(essential, labels, "essential")}
+
             {/*<p> 
                 {
                     essential.size !== 0 ? labels.get("essential") : ""
