@@ -1,0 +1,41 @@
+openapi: 3.0.3
+info:
+  title: MeetMyNeeds API
+  description: MeetMyNeeds API
+  version: 1.0.0
+
+components:
+  schemas:
+    CategoryResponse:
+      type: object
+      description: Category
+      properties:
+        category_id:
+          type: string
+          description: Technical identifier for this category
+          example: "3"
+        label:
+          type: string
+          description: Category label to display
+          example: "Besoin de développer mes compétences"
+        color_set:
+          type: string
+          description: Color set identifier for this category
+          enum:
+            - red
+            - green
+            - yellow
+            - blue
+paths:
+  /api/categories:
+    get:
+      summary: Fetches the list of available question categories
+      responses:
+        "200":
+          description: The list of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
