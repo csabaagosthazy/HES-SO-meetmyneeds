@@ -32,6 +32,11 @@ describe('categories API', () => {
         expect(response.body[0].hasOwnProperty('label')).toBe(true);
     })
 
+    it('responds with a color set property', async () => {
+        const response = await request(app).get('/api/categories');
+        expect(response.body[0].hasOwnProperty('color_set')).toBe(true);
+    })
+
     it('doesn\'t return sub-categories', async () => {
         // Categories considered as sub-categories are in the questions table where the sub_category_id is not null
         let pool = getPool();
