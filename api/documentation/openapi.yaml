@@ -4,24 +4,12 @@ info:
   description: MeetMyNeeds API
   version: 1.0.0
 
+servers:
+  - description: Local server running with `node index.js` in the directory `api`
+    url: http://localhost:3000
+
 components:
   schemas:
-    ObjectIdentifier:
-      type: string
-      description: Technical identifier of the object
-
-    BaseQuestionProperties:
-      properties:
-        question_id:
-          allOf:
-            - $ref: '#/components/schemas/ObjectIdentifier'
-          example: "16"
-
-        question:
-          type: string
-          description: Label of the question written in Markdown
-          example: "Actuellement j’ai besoin d’**écoute, de compréhension et de conseils concernant les émotions difficiles que je ressens en lien avec les pertes dues à la maladie de ma|mon proche et le processus de deuil associé**"
-
     MainCategory:
       type: object
       description: Main category object
@@ -108,6 +96,22 @@ components:
           description: Translated label to display in the user interface
           type: string
           example: Essentiel
+
+    ObjectIdentifier:
+      type: string
+      description: Technical identifier of the object
+
+    BaseQuestionProperties:
+      properties:
+        question_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "16"
+
+        question:
+          type: string
+          description: Label of the question written in Markdown
+          example: "Actuellement j’ai besoin d’**écoute, de compréhension et de conseils concernant les émotions difficiles que je ressens en lien avec les pertes dues à la maladie de ma|mon proche et le processus de deuil associé**"
 
   parameters:
     language:
