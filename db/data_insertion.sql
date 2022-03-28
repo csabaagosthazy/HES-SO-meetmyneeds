@@ -85,7 +85,15 @@ INSERT INTO answers (label, lang_id) VALUES
 ('besoin déjà rempli', 1),
 ('pas concercé.e', 1),
 ('oui', 1),
-('non', 1);
+('non', 1),
+('essential', 3),
+('wichtig', 3),
+('ein wenig wichtig', 3),
+('überhaupt nicht wichtig', 3),
+('Bedürfnis bereits erfüllt', 3),
+('nicht betroffen', 3),
+('ja', 3),
+('nein', 3);
 
 INSERT INTO questions (question, question_set, generation, parent_question_id, category_id, sub_category_id, lang_id) VALUES
 ('Actuellement j’ai besoin d’informations sur **le diagnostic précis ou sur la maladie**', 1, NULL, NULL, 1, 5 , 1),
