@@ -34,13 +34,12 @@ router.get('/categories', async (req, res) => {
 
 router.get('/questions', async (req, res) => {
     const category_id = req.query.category;
-    const language = req.query.language;
-    if(category_id === undefined || category_id.length < 1 || language === undefined){
+    if(category_id === undefined || category_id.length < 1){
         // 400 Bad Request since we need that parameter
-        return res.status(400).end('GET parameter category and language is missing');
+        return res.status(400).end('GET parameter category is missing');
     }
 
-    const main_questions = await get_main_questions_by_category(category_id, language);
+    const main_questions = await get_main_questions_by_category(category_id);
     const child_questions = await get_child_questions_by_parents(main_questions.map(q => q.question_id))
     const subcategories = await get_subcategories_by_main_category(category_id);
     const answers = await get_answers();
