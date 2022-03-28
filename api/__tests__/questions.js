@@ -8,14 +8,14 @@ describe("questions API", () => {
     })
 
     it('sends the question, answers and subcategories objects', async () => {
-        const response = await request(app).get('/api/questions?category=1');
+        const response = await request(app).get('/api/questions?category=1&language=fr');
         expect(response.body).toHaveProperty('questions');
         expect(response.body).toHaveProperty('answers');
         expect(response.body).toHaveProperty('subcategories');
     })
 
     it('orders the questions correctly', async () => {
-        const response = await request(app).get('/api/questions?category=2');
+        const response = await request(app).get('/api/questions?category=2&language=fr');
         const question_placement = response.body.questions.map(q => q.order);
 
         let previous_question_order = 0;
@@ -26,7 +26,7 @@ describe("questions API", () => {
     })
 
     it('filters main questions by category', async () => {
-        const response = await request(app).get('/api/questions?category=3');
+        const response = await request(app).get('/api/questions?category=3&language=fr');
         const main_question_category_ids = response.body.questions.map(q => q.category_id);
 
         for(const category_id of main_question_category_ids){
@@ -35,7 +35,7 @@ describe("questions API", () => {
     })
 
     it('groups child questions correctly', async () => {
-        const response = await request(app).get('/api/questions?category=1');
+        const response = await request(app).get('/api/questions?category=1&language=fr');
 
         for(const question of response.body.questions){
             const question_id = question.question_id;
@@ -47,7 +47,7 @@ describe("questions API", () => {
     })
 
     it('returns the needed subcategories', async () => {
-        const response = await request(app).get('/api/questions?category=3');
+        const response = await request(app).get('/api/questions?category=3&language=fr');
         const returned_subcategories = new Set(response.body.subcategories.map(c => c.category_id));
         const needed_subcategories = new Set(response.body.questions.map(q => q.sub_category_id));
 

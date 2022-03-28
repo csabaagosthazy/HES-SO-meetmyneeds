@@ -1,15 +1,16 @@
 const {getPool} = require("../pool");
 
 module.exports = {
-    get_main_questions_by_category: async (category_id) => {
+    get_main_questions_by_category: async (category_id, language) => {
         const pool = getPool();
         const result = await pool.query(
             `SELECT question_id, question, question_set, sub_category_id, category_id
-             FROM questions
+             FROM questions q INNER JOIN languages l on q.lang_id = l.lang_id
              WHERE category_id = $1
+               AND l.name = $2
                AND parent_question_id IS NULL
              ORDER BY question_set`,
-            [category_id]
+            [category_id, language]
         );
 
         return result.rows;
