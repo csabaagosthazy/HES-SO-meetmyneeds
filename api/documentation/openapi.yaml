@@ -4,8 +4,6 @@ info:
   description: MeetMyNeeds API
   version: 1.0.0
 
-
-
 components:
   schemas:
     ObjectIdentifier:

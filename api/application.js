@@ -11,9 +11,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", routes);
-app.use("/openapi", express.static('documentation'));
 app.use('/openapi/swagger', express.static(require('swagger-ui-dist').absolutePath()));
+app.use("/openapi", express.static('documentation'));
+app.use("/api", routes);
 
 
 module.exports = app;
