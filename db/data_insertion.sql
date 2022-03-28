@@ -77,24 +77,6 @@ INSERT INTO pathology (name) VALUES
 ('pathology2'),
 ('pathology3');
 
-INSERT INTO answers (label, lang_id) VALUES
-('essentiel', 1),
-('important', 1),
-('un peu important', 1),
-('pas du tout important', 1),
-('besoin déjà rempli', 1),
-('pas concercé.e', 1),
-('oui', 1),
-('non', 1),
-('essential', 3),
-('wichtig', 3),
-('ein wenig wichtig', 3),
-('überhaupt nicht wichtig', 3),
-('Bedürfnis bereits erfüllt', 3),
-('nicht betroffen', 3),
-('ja', 3),
-('nein', 3);
-
 INSERT INTO questions (question, question_set, generation, parent_question_id, category_id, sub_category_id, lang_id) VALUES
 ('Actuellement j’ai besoin d’informations sur **le diagnostic précis ou sur la maladie**', 1, NULL, NULL, 1, 5 , 1),
 ('Actuellement j’ai besoin d’informations sur **les connaissances scientifiques actuelles qui concernent cette maladie**', 2, NULL, NULL , 1, 5 , 1),
@@ -387,3 +369,34 @@ INSERT INTO questions (question, question_set, generation, parent_question_id, c
 ('eine medizinische Behandlung und die notwendige Nachsorge erhalten', NULL, NULL, 32, 4, null , 3),
 ('Durchführung von notwendigen Evaluationen in Bezug auf meine psychischen Probleme, wie Depressionen, selbstverletzendes Verhalten, Erschöpfung, überwältigende Angstzustände oder extreme Reizbarkeit', NULL, NULL, 33, 4, null , 3),
 ('eine medizinische Behandlung und die notwendige Nachsorge erhalten', NULL, NULL, 33, 4, null , 3);
+
+
+INSERT INTO resources (name, url) VALUES
+('test1', 'https://www.postgresql.org/docs/14/dml-insert.html'),
+('test2', 'https://www.postgresql.org/docs/current/sql-altertable.html'),
+('test3', 'https://www.w3schools.com/sql/sql_ref_foreign_key.asp');
+
+
+INSERT INTO pathology (name) VALUES
+('demence'),
+('pathology2'),
+('pathology3');
+
+INSERT INTO answers (label, lang_id, technical_key) VALUES
+('essentiel', 1, 'essential'),
+('important', 1, 'important'),
+('un peu important', 1, 'less_important'),
+('pas du tout important', 1, 'not_important'),
+('besoin déjà rempli', 1, 'already_filled'),
+('pas concerné.e', 1, 'not_concerned'),
+('oui', 1, 'yes'),
+('non', 1, 'no'),
+('essential', 3, 'essential'),
+('wichtig', 3, 'important'),
+('ein wenig wichtig', 3, 'less_important'),
+('überhaupt nicht wichtig', 3, 'not_important'),
+('Bedürfnis bereits erfüllt', 3, 'already_filled'),
+('nicht betroffen', 3, 'not_concerned'),
+('ja', 3, 'yes'),
+('nein', 3, 'no');
+
