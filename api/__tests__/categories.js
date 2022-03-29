@@ -14,7 +14,7 @@ describe('categories API', () => {
     })
 
     it('returns a JSON payload', async () => {
-        const response = await request(app).get('/api/categories');
+        const response = await request(app).get('/api/categories?language=fr');
         expect(response.headers['content-type']).toMatch(/^application\/json/);
 
         try{
@@ -25,17 +25,17 @@ describe('categories API', () => {
     })
 
     it('responds with a category_id key', async () => {
-        const response = await request(app).get('/api/categories');
+        const response = await request(app).get('/api/categories?language=fr');
         expect(response.body[0].hasOwnProperty('category_id')).toBe(true);
     })
 
     it('responds with a label key', async () => {
-        const response = await request(app).get('/api/categories');
+        const response = await request(app).get('/api/categories?language=fr');
         expect(response.body[0].hasOwnProperty('label')).toBe(true);
     })
 
     it('responds with a color set property', async () => {
-        const response = await request(app).get('/api/categories');
+        const response = await request(app).get('/api/categories?language=fr');
         expect(response.body[0].hasOwnProperty('color_set')).toBe(true);
     })
 
@@ -45,7 +45,7 @@ describe('categories API', () => {
         let subcategory_ids_result = await pool.query("SELECT DISTINCT sub_category_id FROM questions WHERE sub_category_id IS NOT NULL");
         let subcategory_ids = subcategory_ids_result.rows.map(r => r.sub_category_id);
 
-        const response = await request(app).get('/api/categories');
+        const response = await request(app).get('/api/categories?language=fr');
         let returned_category_ids = response.body.map(c => c.category_id);
 
         for(category_id of returned_category_ids) {
