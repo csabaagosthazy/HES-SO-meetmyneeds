@@ -400,3 +400,7 @@ INSERT INTO answers (label, lang_id, technical_key) VALUES
 ('ja', 3, 'yes'),
 ('nein', 3, 'no');
 
+INSERT INTO resource_question (question_id, resource_id)
+    VALUES (1, 1),
+           (1, 2);
+
