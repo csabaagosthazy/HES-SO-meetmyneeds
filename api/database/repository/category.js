@@ -7,7 +7,7 @@ module.exports = {
      *
      * @returns {Promise<{category_id: string, label: string, color_set: string}>}
      */
-    get_main_categories: async () => {
+    get_main_categories: async (language) => {
         const pool = getPool();
 
         let results = await pool.query(
@@ -15,8 +15,11 @@ module.exports = {
                     qc.label,
                     qc.question_category_color_set AS color_set
              FROM question_category qc
+                INNER JOIN languages l on qc.lang_id = l.lang_id
              WHERE qc.question_category_color_set IS NOT NULL
-             ORDER BY qc.label`
+                AND l.name = $1
+             ORDER BY qc.label`,
+            [language]
         )
 
         return results.rows;
