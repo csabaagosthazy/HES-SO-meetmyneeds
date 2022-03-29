@@ -115,6 +115,13 @@ components:
 
   parameters:
     language:
+      schema:
+        type: string
+        enum:
+          - de
+          - fr
+          - it
+          - en
       name: language
       description: Language to return objects in
       in: query
@@ -125,6 +132,8 @@ paths:
   /api/categories:
     get:
       summary: Fetches the list of available question categories
+      parameters:
+        - $ref: '#/components/parameters/language'
       responses:
         "200":
           description: The list of categories
@@ -146,6 +155,8 @@ paths:
           example: "3"
           schema:
             type: integer
+
+        - $ref: '#/components/parameters/language'
 
       responses:
         "200":
