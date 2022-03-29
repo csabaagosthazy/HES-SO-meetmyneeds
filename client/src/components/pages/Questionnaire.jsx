@@ -28,7 +28,6 @@ const Questionnaire = ({ id, lang }) => {
         .then((response) => JSON.parse(response))
         .then((obj) => {
           if (isMounted) {
-            console.log(obj);
             paginate(obj.questions);
             createAnswers(obj.questions);
             setOrigin(obj);
