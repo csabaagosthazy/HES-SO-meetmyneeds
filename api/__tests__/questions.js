@@ -3,7 +3,12 @@ const app = require('../application');
 
 describe("questions API", () => {
     it('rejects missing category parameter', async () => {
-        const response = await request(app).get('/api/questions');
+        const response = await request(app).get('/api/questions?language=fr');
+        expect(response.status).toEqual(400);
+    })
+
+    it('rejects missing language parameter', async () => {
+        const response = await request(app).get('/api/questions?category=3');
         expect(response.status).toEqual(400);
     })
 
