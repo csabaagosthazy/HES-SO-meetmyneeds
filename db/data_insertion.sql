@@ -24,10 +24,10 @@ INSERT INTO services (name, description, organization_id, service_type_id) VALUE
 ('Aide personne xyz', 'Petite aide pour faire le ménage', 2, 4);
 
 INSERT INTO languages (name) VALUES
-('français'),
-('anglais'),
-('allemand'),
-('italiens');
+('fr'),
+('en'),
+('de'),
+('it');
 
 INSERT INTO question_category (label, lang_id, question_category_color_set) VALUES
 ('Besoin d’informations', 1, 'red'),
