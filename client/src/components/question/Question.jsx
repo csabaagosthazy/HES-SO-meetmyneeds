@@ -47,11 +47,12 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
             onClick={handleClick}
           />
         </Card.Header>
+        {!subs? "" : 
         <Collapse in={open}>
           <Card.Body>
             <Subquestion subquestions={subs} />
           </Card.Body>
-        </Collapse>
+        </Collapse>}
       </Card>
     </Accordion>
   );

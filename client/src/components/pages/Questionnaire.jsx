@@ -25,7 +25,7 @@ const Questionnaire = ({ id, lang }) => {
     let isMounted = true;
     (async () => {
       getQuestions(id, lang)
-        .then((response) => JSON.parse(response))
+        //.then((response) => JSON.parse(response))
         .then((obj) => {
           if (isMounted) {
             paginate(obj.questions);

@@ -96,11 +96,11 @@ const dummyQuestions = {
 };
 export const getQuestions = async (id, lang) => {
   const url = `${questions}/?category=${id}&language=${lang}`;
-  const result = JSON.stringify(dummyQuestionGenerator(10));
-  /* await fetch(url)
+  //const result = JSON.stringify(dummyQuestionGenerator(10));
+  const result = await fetch(url)
     .then((res) => res.json())
-    .catch((err) => console.log(err)); */
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+    .catch((err) => console.log(err));
+  //await new Promise((resolve) => setTimeout(resolve, 1000));
   return result;
 };
 
