@@ -25,7 +25,14 @@ router.get("/db-test", async (req, res) => {
 })
 
 router.get('/categories', async (req, res) => {
-    let results = await get_main_categories();
+    let language = req.query.language;
+
+    if(language === undefined || language.length === 0){
+        return res.status(400)
+            .send('Missing language GET parameter')
+    }
+
+    let results = await get_main_categories(language);
 
     res.status(200)
         .setHeader('Content-Type', 'application/json')
@@ -34,15 +41,16 @@ router.get('/categories', async (req, res) => {
 
 router.get('/questions', async (req, res) => {
     const category_id = req.query.category;
-    if(category_id === undefined || category_id.length < 1){
+    const language = req.query.language;
+    if(category_id === undefined || category_id.length < 1 || language === undefined){
         // 400 Bad Request since we need that parameter
-        return res.status(400).end('GET parameter category is missing');
+        return res.status(400).end('GET parameter category and language is missing');
     }
 
-    const main_questions = await get_main_questions_by_category(category_id);
+    const main_questions = await get_main_questions_by_category(category_id, language);
     const child_questions = await get_child_questions_by_parents(main_questions.map(q => q.question_id))
     const subcategories = await get_subcategories_by_main_category(category_id);
-    const answers = await get_answers();
+    const answers = await get_answers(language);
 
     let response_payload = {
         subcategories: subcategories,
