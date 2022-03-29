@@ -29,24 +29,24 @@ INSERT INTO languages (name) VALUES
 ('allemand'),
 ('italiens');
 
-INSERT INTO question_category (label, lang_id) VALUES
-('Besoin d’informations', 1),
-('Besoin de développer mes compétences', 1),
-('Besoin de soutien', 1),
-('Besoin de prendre soin de ma santé', 1),
-('Besoin d’informations sur la maladie de ma|mon proche', 1),
-('Besoin d’informations sur le traitement de ma|mon proche', 1),
-('Besoin d’informations sur les offres de soutien à disposition', 1),
-('Besoin de développer mes compétences pour mieux aider ma|mon proche malade', 1),
-('Besoin de développer mes compétences pour aider sans m’épuiser', 1),
-('Besoin de soutien émotionnel et psychologique pour mes émotions difficiles', 1),
-('Besoin de soutien émotionnel et psychologique pour mieux assumer le rôle d’aidant∙e', 1),
-('Besoin de soutien pour avoir plus d’aide ou de contact avec la famille et des ami∙e∙s', 1),
-('Besoin de répit, de temps pour soi-même ou d’être déchargé∙e d’une partie du soutien à ma|mon proche malade', 1),
-('Besoin de soutien pratique', 1),
-('Besoin de soutien pour des aspects financiers ou juridiques', 1),
-('Ma santé physique', 1),
-('Ma santé mentale', 1);
+INSERT INTO question_category (label, lang_id, question_category_color_set) VALUES
+('Besoin d’informations', 1, 'red'),
+('Besoin de développer mes compétences', 1, 'yellow'),
+('Besoin de soutien', 1, 'green'),
+('Besoin de prendre soin de ma santé', 1, 'blue'),
+('Besoin d’informations sur la maladie de ma|mon proche', 1, NULL),
+('Besoin d’informations sur le traitement de ma|mon proche', 1, NULL),
+('Besoin d’informations sur les offres de soutien à disposition', 1, NULL),
+('Besoin de développer mes compétences pour mieux aider ma|mon proche malade', 1, NULL),
+('Besoin de développer mes compétences pour aider sans m’épuiser', 1, NULL),
+('Besoin de soutien émotionnel et psychologique pour mes émotions difficiles', 1, NULL),
+('Besoin de soutien émotionnel et psychologique pour mieux assumer le rôle d’aidant∙e', 1, NULL),
+('Besoin de soutien pour avoir plus d’aide ou de contact avec la famille et des ami∙e∙s', 1, NULL),
+('Besoin de répit, de temps pour soi-même ou d’être déchargé∙e d’une partie du soutien à ma|mon proche malade', 1, NULL),
+('Besoin de soutien pratique', 1, NULL),
+('Besoin de soutien pour des aspects financiers ou juridiques', 1, NULL),
+('Ma santé physique', 1, NULL),
+('Ma santé mentale', 1, NULL);
 
 INSERT INTO questions (question, question_set, generation, parent_question_id, category_id, sub_category_id, lang_id) VALUES
 ('Actuellement j’ai besoin d’informations sur **le diagnostic précis ou sur la maladie**', 1, NULL, NULL, 1, 5 , 1),
@@ -208,12 +208,12 @@ INSERT INTO pathology (name) VALUES
 ('pathology2'),
 ('pathology3');
 
-INSERT INTO answers (label, lang_id) VALUES
-('essentiel', 1),
-('important', 1),
-('un peu important', 1),
-('pas du tout important', 1),
-('besoin déjà rempli', 1),
-('pas concercé.e', 1),
-('oui', 1),
-('non', 1);
+INSERT INTO answers (label, lang_id, technical_key) VALUES
+('essentiel', 1, 'essential'),
+('important', 1, 'important'),
+('un peu important', 1, 'less_important'),
+('pas du tout important', 1, 'not_important'),
+('besoin déjà rempli', 1, 'already_filled'),
+('pas concerné.e', 1, 'not_concerned'),
+('oui', 1, 'yes'),
+('non', 1, 'no');
