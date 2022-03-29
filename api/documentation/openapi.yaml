@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: MeetMyNeeds API
+  description: MeetMyNeeds API
+  version: 1.0.0
+
+servers:
+  - description: Local server running with `node index.js` in the directory `api`
+    url: http://localhost:3000
+
+components:
+  schemas:
+    MainCategory:
+      type: object
+      description: Main category object
+      properties:
+        category_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "3"
+        label:
+          type: string
+          description: Label of the category
+          example: "Besoin de développer mes compétences"
+        color_set:
+          type: string
+          description: Color set identifier for this category
+          enum:
+            - red
+            - green
+            - yellow
+            - blue
+
+    SubCategory:
+      type: object
+      description: Sub-category object
+      properties:
+        category_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "10"
+        label:
+          type: string
+          description: Label of the sub-category
+          example: "Besoin de soutien émotionnel et psychologique pour mes émotions difficiles"
+
+    MainQuestion:
+      properties:
+        question_set:
+          type: integer
+          description: Number of this question in the questionnaire. This number should only be used for display purposes, not as a technical identifier. This property also defines the ordering
+          example: 16
+
+        sub_category_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          description: Identifier of the sub-category this question is part of
+
+        category_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          description: Identifier of the main category this question is part of
+
+        order:
+          type: integer
+          description: Alias for `question_set`
+          example: 16
+
+        children:
+          type: array
+          description: List of child questions
+          items:
+            $ref: '#/components/schemas/SubQuestion'
+
+    SubQuestion:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestionProperties'
+
+    Answer:
+      description: Answer object with a technical key and a label
+      properties:
+        technicalKey:
+          type: string
+          description: Technical key to describe what the translated label is saying
+          enum:
+            - essential
+            - important
+            - less_important
+            - not_important
+            - already_filled
+            - not_concerned
+            - yes
+            - no
+          example: essential
+        label:
+          description: Translated label to display in the user interface
+          type: string
+          example: Essentiel
+
+    ObjectIdentifier:
+      type: string
+      description: Technical identifier of the object
+
+    BaseQuestionProperties:
+      properties:
+        question_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "16"
+
+        question:
+          type: string
+          description: Label of the question written in Markdown
+          example: "Actuellement j’ai besoin d’**écoute, de compréhension et de conseils concernant les émotions difficiles que je ressens en lien avec les pertes dues à la maladie de ma|mon proche et le processus de deuil associé**"
+
+  parameters:
+    language:
+      name: language
+      description: Language to return objects in
+      in: query
+      required: true
+      example: fr
+
+paths:
+  /api/categories:
+    get:
+      summary: Fetches the list of available question categories
+      responses:
+        "200":
+          description: The list of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MainCategory'
+
+  /api/questions:
+    get:
+      summary: Fetches the list of questions by the provided category
+      parameters:
+        - name: category
+          description: Category ID to fetch the questions from
+          required: true
+          in: query
+          example: "3"
+          schema:
+            type: integer
+
+      responses:
+        "200":
+          description: The list of sub-categories, questions, child questions and answers
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  subcategories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubCategory'
+
+                  questions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MainQuestion'
+
+                  answers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Answer'
+        "400":
+          description: Parameter `category` is missing in the query parameters
