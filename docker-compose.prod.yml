@@ -13,6 +13,9 @@ services:
       - default
       - prod
   api:
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
     image: ${API_IMAGE:-registry.gitlab.l4p1n.ch/l4p1n/646-meet-my-needs/api:latest}
     networks:
       - default
