@@ -12,7 +12,7 @@ import CustomButton from "../button/CustomButton";
 //create pagination based on pathology
 
 const Questionnaire = ({ id, lang }) => {
-  const [origin, setOrigin] = useState({});
+  const [origin, setOrigin] = useState("");
   const [data, setData] = useState("");
   const [error, setError] = useState("");
   const [numberOfPages, setNumberOfPages] = useState(1);
@@ -22,16 +22,23 @@ const Questionnaire = ({ id, lang }) => {
 
   useEffect(() => {
     //call fetch
+    let isMounted = true;
     (async () => {
       getQuestions(id, lang)
         .then((response) => JSON.parse(response))
         .then((obj) => {
-          paginate(obj.questions);
-          createAnswers(obj.questions);
-          setOrigin(obj);
+          if (isMounted) {
+            console.log(obj);
+            paginate(obj.questions);
+            createAnswers(obj.questions);
+            setOrigin(obj);
+          }
         })
         .catch((err) => setError(err));
     })();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   /**
@@ -94,16 +101,18 @@ const Questionnaire = ({ id, lang }) => {
    */
     const results = [];
     //{questionId : answer(string) }
-    Object.entries(givenAnswers).forEach(([key, value]) => {
-      let question = origin.questions.filter((q) => q.question_id === key);
-      const answer = Object.entries(origin.answers).find(([k, v]) => v.technicalKey === value);
 
+    Object.entries(givenAnswers).forEach(([key, value]) => {
+      let question = origin.questions.filter((q) => q.question_id === parseInt(key));
+      const answer = Object.entries(origin.answers).find(([k, v]) => v.technicalKey === value);
+      console.log(question);
+      console.log(answer);
       let obj = {
-        question_id: question.question_id,
-        question: question.question,
-        answer_id: answer[0],
-        label: answer[1].label,
-        technicalKey: answer[1].technicalKey,
+        question_id: question[0].question_id,
+        question: question[0].question,
+        answer_id: answer ? answer[0] : -1,
+        label: answer ? answer[1].label : "notAnwered",
+        technicalKey: answer ? answer[1].technicalKey : "notanwered",
       };
       results.push(obj);
     });
@@ -114,12 +123,12 @@ const Questionnaire = ({ id, lang }) => {
 
     console.log(jObj);
     //call session store
-    window.sessionStorage.setItem("answers", jObj);
+    sessionStorage.setItem("answers", jObj);
 
     //go to result page
   };
 
-  if (!pageData) return <Spinner animation="border" variant="primary" />;
+  if (!pageData || !origin) return <Spinner animation="border" variant="primary" />;
   //renders the questions
   return (
     <Card>
@@ -130,7 +139,7 @@ const Questionnaire = ({ id, lang }) => {
           name={q.question}
           subs={q.subquestions}
           id={q.question_id}
-          answers={q.answers}
+          answers={origin.answers}
           alreadySelected={givenAnswers[q.question_id]}
           handleSelect={handleAnswer}
         />
