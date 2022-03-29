@@ -60,4 +60,25 @@ describe("questions API", () => {
             expect(returned_subcategories.has(subcategory_id)).toBeTruthy();
         }
     })
+
+    it('sends answers in the requested language', async () => {
+        const german_labels = [
+            'essential',
+            'wichtig',
+            'ein wenig wichtig',
+            'überhaupt nicht wichtig',
+            'Bedürfnis bereits erfüllt',
+            'nicht betroffen',
+            'ja',
+            'nein',
+        ];
+
+        const response = await request(app).get('/api/questions?category=13&language=de');
+        const returned_answer_labels = Object.values(response.body.answers).map(a => a.label);
+
+        expect(returned_answer_labels.length).toBe(german_labels.length);
+        for(const returned_label of returned_answer_labels){
+            expect(german_labels.indexOf(returned_label)).not.toBe(-1);
+        }
+    })
 })
