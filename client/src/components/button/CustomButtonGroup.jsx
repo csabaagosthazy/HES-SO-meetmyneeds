@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,9 +10,13 @@ import { COLORS } from "../../global/colors";
  * Button group renders 5 buttons with the given text and color
  * @returns Button group component
  */
-const CustomButtonGroup = ({ variant, textObj, onClick }) => {
+const CustomButtonGroup = ({ variant, textObj, alreadySelected, onClick }) => {
   const colorSet = variant ? Object.values(COLORS[variant]) : COLORS.blueSet;
   const [selected, setSelected] = React.useState(-1);
+
+  useState(() => {
+    if (alreadySelected) setSelected(alreadySelected);
+  }, []);
   const handleSelect = (e) => {
     setSelected(e.target.name);
     onClick(e.target.name);
@@ -24,14 +28,14 @@ const CustomButtonGroup = ({ variant, textObj, onClick }) => {
           return (
             <Col md="auto" key={key}>
               <CustomButton
-                name={key}
+                name={value.technicalKey}
                 bgColor={colorSet[i]}
                 variant={"m"}
                 focusColor={"black"}
-                selected={selected === key}
+                selected={selected === value.technicalKey}
                 onClick={(e) => handleSelect(e)}
               >
-                {value}
+                {value.label}
               </CustomButton>
             </Col>
           );
