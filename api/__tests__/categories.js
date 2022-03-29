@@ -1,17 +1,19 @@
 const request = require('supertest');
-const { Response } = require('superagent');
 const app = require('../application');
 const {getPool} = require("../database/pool");
 
 describe('categories API', () => {
-    it('exists', async () => {
-        /** @var Response */
+    it('rejects missing language parameter', async () => {
         const response = await request(app).get('/api/categories');
+        expect(response.status).toEqual(400);
+    })
+
+    it('accepts correct request', async () => {
+        const response = await request(app).get('/api/categories?language=de');
         expect(response.status).toEqual(200);
     })
 
     it('returns a JSON payload', async () => {
-        /** @var Response */
         const response = await request(app).get('/api/categories');
         expect(response.headers['content-type']).toMatch(/^application\/json/);
 
@@ -48,6 +50,17 @@ describe('categories API', () => {
 
         for(category_id of returned_category_ids) {
             expect(subcategory_ids.indexOf(category_id)).toBe(-1)
+        }
+    })
+
+    it('returns categories in the requested language', async () => {
+        const german_category_ids = ["18", "19", "20", "21"];
+        const response = await request(app).get('/api/categories?language=de');
+        const returned_category_ids = response.body.map(c => c.category_id);
+
+        expect(returned_category_ids.length).toEqual(german_category_ids.length)
+        for(returned_category_id of returned_category_ids){
+            expect(german_category_ids.indexOf(returned_category_id)).not.toBe(-1);
         }
     })
 })
