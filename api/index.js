@@ -1,11 +1,19 @@
 const http = require('http');
 const {closePool} = require('./database/pool');
 
+let termination_count = 0;
+
 function handle_termination(){
   console.log("SIGTERM or SIGINT caught. Exiting gracefully");
 
   closePool(() => { console.log('Database pool closed'); });
   server.close(() => { console.log('API server closed'); });
+  termination_count++;
+
+  if(termination_count > 1){
+    console.warn("Forcibly exiting");
+    process.exit(1);
+  }
 }
 
 const PORT = process.env.PORT || 3000;
