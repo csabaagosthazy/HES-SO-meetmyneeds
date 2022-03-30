@@ -1,14 +1,8 @@
 import "./App.css";
-import Questionnaire from "./components/pages/Questionnaire";
+import MainRouter from "./router/Router";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Questionnaire id={1} lang={"en"} />
-      </header>
-    </div>
-  );
+  return <MainRouter />;
 }
 
 export default App;
