@@ -45,6 +45,9 @@ components:
           example: "Besoin de soutien émotionnel et psychologique pour mes émotions difficiles"
 
     MainQuestion:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestionProperties'
+
       properties:
         question_set:
           type: integer
@@ -56,6 +59,10 @@ components:
             - $ref: '#/components/schemas/ObjectIdentifier'
           description: Identifier of the sub-category this question is part of
 
+        sub_category_label:
+          type: string
+          description: Sub-category label this question is part of
+
         category_id:
           allOf:
             - $ref: '#/components/schemas/ObjectIdentifier'
@@ -66,7 +73,7 @@ components:
           description: Alias for `question_set`
           example: 16
 
-        children:
+        subquestions:
           type: array
           description: List of child questions
           items:
