@@ -16,7 +16,7 @@ function handle_termination(){
   }
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6969;
 const app = require('./application');
 
 // Termination handlers

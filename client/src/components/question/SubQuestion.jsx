@@ -1,19 +1,24 @@
 import React from "react";
+import { Form } from "react-bootstrap";
 
 const Subquestion = ({ subquestions }) => {
   return (
-    <div>
+    <Form>
       {/*it is hardcoded for now: if this sentence is taken from DB/passed via props, need to be changed*/}
-      <div>More precisely</div>
-      {subquestions.map((subquestion, index) => {
-        return (
-          <div key={index}>
-            <input type="checkbox" id={index} />
-            <label key={index}>{subquestion.question}</label>
-          </div>
-        );
+      <Form.Label>More precisely</Form.Label>
+      {subquestions.map(({ question_id, question }) => {
+        {
+          return (
+            <Form.Check
+              key={question_id}
+              type={"checkbox"}
+              id={`checkbox${question_id}`}
+              label={question}
+            />
+          );
+        }
       })}
-    </div>
+    </Form>
   );
 };
 
