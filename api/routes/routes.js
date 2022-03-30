@@ -58,7 +58,8 @@ router.get('/questions', async (req, res) => {
             question => ({
                 ...question,
                 order: question.question_set,
-                children: child_questions.filter(cq => cq.parent_question_id === question.question_id)
+                sub_category_label: subcategories.find(sc => sc.category_id === question.sub_category_id).label,
+                subquestions: child_questions.filter(cq => cq.parent_question_id === question.question_id)
             })
         ),
         answers: Object.fromEntries(
