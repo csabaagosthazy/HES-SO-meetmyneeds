@@ -4,6 +4,7 @@ import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
 import Question from "../question/Question";
 import CustomButton from "../button/CustomButton";
+import Result from "../pages/Result";
 
 //get questions by id and language
 //error handling
@@ -19,13 +20,13 @@ const Questionnaire = ({ id, lang }) => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [pageData, setPagedata] = useState("");
   const [givenAnswers, setGivenAnswers] = useState({}); // question: id, answer: string
+  const [showData, setShowData] = useState(false);  //temporary to navigate to the result page 
 
   useEffect(() => {
     //call fetch
     let isMounted = true;
     (async () => {
       getQuestions(id, lang)
-        //.then((response) => JSON.parse(response))
         .then((obj) => {
           if (isMounted) {
             paginate(obj.questions);
@@ -102,7 +103,7 @@ const Questionnaire = ({ id, lang }) => {
     //{questionId : answer(string) }
 
     Object.entries(givenAnswers).forEach(([key, value]) => {
-      let question = origin.questions.filter((q) => q.question_id === parseInt(key));
+      let question = origin.questions.filter((q) => parseInt(q.question_id) === parseInt(key));
       const answer = Object.entries(origin.answers).find(([k, v]) => v.technicalKey === value);
       console.log(question);
       console.log(answer);
@@ -125,6 +126,7 @@ const Questionnaire = ({ id, lang }) => {
     sessionStorage.setItem("answers", jObj);
 
     //go to result page
+    setShowData(true);
   };
 
   if (!pageData || !origin) return <Spinner animation="border" variant="primary" />;
@@ -155,11 +157,12 @@ const Questionnaire = ({ id, lang }) => {
             Finish
           </CustomButton>
         ) : null}
+        {
+          showData? <Result answers = {sessionStorage.getItem("answers")} />: ""
+        }
       </Card.Footer>
     </Card>
   );
 };
 
 export default Questionnaire;
-
-const uniqe = new Set();

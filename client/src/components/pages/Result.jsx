@@ -1,40 +1,6 @@
-const answers = [{
-    question_id: 1,
-    question: "Actually I need info about diagnostics",
-    answer_id: 3,
-    label: "A bit important",
-    technicalKey: "less_important"
-
-},
-
-    {
-        question_id: 2,
-        question: "Why?",
-        answer_id: 1,
-        label: "Essential",
-        technicalKey: "essential"
-    },
-
-    {
-        question_id: 3,
-        question: "Who?",
-        answer_id: 1,
-        label: "Essential",
-        technicalKey: "essential"
-    },
-    {
-        question_id: 4,
-        question: "This is a test?",
-        answer_id: 2,
-        label: "Important",
-        technicalKey: "important"
-    }
-]
-
 const Result = (props) => {
 
-    const json_toStr = JSON.stringify(answers);
-    const obj = JSON.parse(json_toStr);
+    const obj = JSON.parse(props.answers);
 
     //sets to store questions grouped by importance of need 
     let essential = new Set();

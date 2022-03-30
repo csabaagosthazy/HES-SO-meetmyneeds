@@ -96,7 +96,6 @@ const dummyQuestions = {
 };
 export const getQuestions = async (id, lang) => {
   const url = `${questions}/?category=${id}&language=${lang}`;
-  //const result = JSON.stringify(dummyQuestionGenerator(10));
   const result = await fetch(url)
     .then((res) => res.json())
     .catch((err) => console.log(err));
