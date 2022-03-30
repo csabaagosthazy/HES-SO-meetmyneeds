@@ -91,6 +91,6 @@ router.get('/resources', async (req, res) => {
     res.status(200)
         .setHeader('Content-Type', 'application/json')
         .send(JSON.stringify(results))
-});
+})
 
 module.exports = router;

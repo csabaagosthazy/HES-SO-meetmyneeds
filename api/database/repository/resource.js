@@ -15,7 +15,7 @@ module.exports = {
                     r.name,
                     r.url
              FROM resource_question rq
-                      INNER JOIN resources r l
+                      INNER JOIN resources r
              on rq.resource_id = r.resource_id
              WHERE rq.question_id = $1
              ORDER BY rq.question_id`,
