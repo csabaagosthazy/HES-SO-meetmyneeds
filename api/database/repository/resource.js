@@ -6,7 +6,7 @@ module.exports = {
      *
      * @returns {Promise<{question_id: int, resource_id: int, name: string, url:string}>}
      */
-    get_question_resource: async (question_id) => {
+    get_question_resources: async (question_id) => {
         const pool = getPool();
 
         let results = await pool.query(

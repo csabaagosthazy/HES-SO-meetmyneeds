@@ -8,7 +8,7 @@ const {
 } = require("../database/repository/question");
 const {get_answers} = require("../database/repository/answer");
 const {get_main_categories} = require("../database/repository/category");
-const {get_question_resource} = require("../database/repository/resource");
+const {get_question_resources} = require("../database/repository/resource");
 
 router.get("/", async (req, res) => {
   res.status(200)
@@ -86,7 +86,7 @@ router.get('/resources', async (req, res) => {
             .send('Missing question_id GET parameter')
     }
 
-    let results = await get_question_resource(question_id);
+    let results = await get_question_resources(question_id);
 
     res.status(200)
         .setHeader('Content-Type', 'application/json')
