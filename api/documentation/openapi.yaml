@@ -6,7 +6,7 @@ info:
 
 servers:
   - description: Local server running with `node index.js` in the directory `api`
-    url: http://localhost:3000
+    url: http://localhost:6969
 
 components:
   schemas:
