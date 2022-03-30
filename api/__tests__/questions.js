@@ -39,13 +39,30 @@ describe("questions API", () => {
         }
     })
 
+    test.each([
+        'question_id', 'question', 'sub_category_id',
+        'sub_category_label', 'subquestions'
+    ])('returns required attributes on questions (%s)', async (attr) => {
+        const response = await request(app).get('/api/questions?category=3&language=fr');
+        const question_obj = response.body.questions[0];
+        expect(question_obj.hasOwnProperty(attr)).toBeTruthy();
+    });
+
+    test.each([
+        'question_id', 'question'
+    ])('returns required attributes on sub-questions (%s)', async (attr) => {
+        const response = await request(app).get('/api/questions?category=3&language=fr');
+        const question_obj = response.body.questions[0].subquestions[0];
+        expect(question_obj.hasOwnProperty(attr)).toBeTruthy();
+    });
+
     it('groups child questions correctly', async () => {
         const response = await request(app).get('/api/questions?category=1&language=fr');
 
         for(const question of response.body.questions){
             const question_id = question.question_id;
 
-            for(const child of question.children){
+            for(const child of question.subquestions){
                 expect(child.parent_question_id).toEqual(question_id);
             }
         }
