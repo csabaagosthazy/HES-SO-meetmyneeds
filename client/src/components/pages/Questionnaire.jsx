@@ -138,7 +138,7 @@ const Questionnaire = ({ id, lang }) => {
         <Question
           key={q.question_id}
           name={q.question}
-          subs={q.subquestions}
+          subs={q.children}
           id={q.question_id}
           answers={origin.answers}
           alreadySelected={givenAnswers[q.question_id]}
