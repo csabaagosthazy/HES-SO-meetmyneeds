@@ -58,12 +58,4 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
   );
 };
 
-const questionStyle = {
-  color: "#0f0d06",
-};
-
-const questionName = {
-  fontWeight: "bold",
-};
-
 export default Question;
