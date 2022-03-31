@@ -26,7 +26,7 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
   const [open, setOpen] = useState(true);
 
   const handleClick = (selected) => {
-    if (selected === "essential" || selected === "important" || selected === "medium") {
+    if (selected === "essential" || selected === "important" || selected === "less_important") {
       setOpen(true);
     } else {
       setOpen(false);
@@ -47,12 +47,15 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
             onClick={handleClick}
           />
         </Card.Header>
-        {!subs? "" : 
-        <Collapse in={open}>
-          <Card.Body>
-            <Subquestion subquestions={subs} />
-          </Card.Body>
-        </Collapse>}
+        {!subs ? (
+          ""
+        ) : (
+          <Collapse in={open}>
+            <Card.Body>
+              <Subquestion subquestions={subs} />
+            </Card.Body>
+          </Collapse>
+        )}
       </Card>
     </Accordion>
   );
