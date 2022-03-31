@@ -44,6 +44,27 @@ components:
           description: Label of the sub-category
           example: "Besoin de soutien émotionnel et psychologique pour mes émotions difficiles"
 
+    Resource:
+      type: object
+      description: resource object
+      properties:
+        question_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "1"
+        resource_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "1"
+        name:
+          type: string
+          description: name of the resource
+          example: "Lien vers un site web"
+        url:
+          type: string
+          description: url of the resource
+          example: "https://www.google.ch"
+
     MainQuestion:
       allOf:
         - $ref: '#/components/schemas/BaseQuestionProperties'
@@ -134,6 +155,14 @@ components:
       in: query
       required: true
       example: fr
+    question_id:
+      schema:
+      type: string
+      name: question_id
+      description: question_id from question you want to query resources for
+      in: query
+      required: true
+      example: 1
 
 paths:
   /api/categories:
@@ -150,6 +179,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MainCategory'
+
+  /api/resources:
+    get:
+      summary: Fetches the list of all resources related to an input question_id
+      parameters:
+        - $ref: '#/components/parameters/question_id'
+      responses:
+        "200":
+          description: The list of resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
 
   /api/questions:
     get:
