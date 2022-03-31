@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Spinner, Card } from "react-bootstrap";
 import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
 import Question from "../question/Question";
 import CustomButton from "../button/CustomButton";
+import Result from "../pages/Result";
 
 //get questions by id and language
 //error handling
@@ -13,8 +14,9 @@ import CustomButton from "../button/CustomButton";
 //split data array by pathology
 //create pagination based on pathology
 
-const Questionnaire = ({ id, lang }) => {
+const Questionnaire = (props) => {
   let navigate = useNavigate();
+  let { id, lang, colorSet } = useParams();
 
   const [origin, setOrigin] = useState("");
   const [data, setData] = useState("");
@@ -23,13 +25,13 @@ const Questionnaire = ({ id, lang }) => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [pageData, setPagedata] = useState("");
   const [givenAnswers, setGivenAnswers] = useState({}); // question: id, answer: string
+  const [showData, setShowData] = useState(false); //temporary to navigate to the result page
 
   useEffect(() => {
     //call fetch
     let isMounted = true;
     (async () => {
       getQuestions(id, lang)
-        .then((response) => JSON.parse(response))
         .then((obj) => {
           if (isMounted) {
             paginate(obj.questions);
@@ -106,7 +108,7 @@ const Questionnaire = ({ id, lang }) => {
     //{questionId : answer(string) }
 
     Object.entries(givenAnswers).forEach(([key, value]) => {
-      let question = origin.questions.filter((q) => q.question_id === parseInt(key));
+      let question = origin.questions.filter((q) => parseInt(q.question_id) === parseInt(key));
       const answer = Object.entries(origin.answers).find(([k, v]) => v.technicalKey === value);
       console.log(question);
       console.log(answer);
@@ -122,7 +124,8 @@ const Questionnaire = ({ id, lang }) => {
     //create session store object
     //depends on the requirements
 
-    const jObj = JSON.stringify(results);
+    const obj = { color: colorSet, results };
+    const jObj = JSON.stringify(obj);
 
     console.log(jObj);
     //call session store
@@ -144,6 +147,7 @@ const Questionnaire = ({ id, lang }) => {
           subs={q.subquestions}
           id={q.question_id}
           answers={origin.answers}
+          colorSet={colorSet}
           alreadySelected={givenAnswers[q.question_id]}
           handleSelect={handleAnswer}
         />
@@ -160,11 +164,10 @@ const Questionnaire = ({ id, lang }) => {
             Finish
           </CustomButton>
         ) : null}
+        {showData ? <Result answers={sessionStorage.getItem("answers")} /> : ""}
       </Card.Footer>
     </Card>
   );
 };
 
 export default Questionnaire;
-
-const uniqe = new Set();

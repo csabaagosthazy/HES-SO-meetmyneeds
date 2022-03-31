@@ -17,7 +17,7 @@ import CustomButtonGroup from "../button/CustomButtonGroup";
  * @param {function} props.handleSelect - Handle button selection
  * @returns Question component
  */
-const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) => {
+const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSelect }) => {
   const reader = new commonmark.Parser();
   const writer = new commonmark.HtmlRenderer();
   const question_to_parse = reader.parse(name);
@@ -26,7 +26,7 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
   const [open, setOpen] = useState(true);
 
   const handleClick = (selected) => {
-    if (selected === "essential" || selected === "important" || selected === "medium") {
+    if (selected === "essential" || selected === "important" || selected === "less_important") {
       setOpen(true);
     } else {
       setOpen(false);
@@ -41,28 +41,24 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
         <Card.Header>
           <h1 dangerouslySetInnerHTML={{ __html: question_to_display }} />
           <CustomButtonGroup
-            variant={"blueSet"}
+            variant={colorSet}
             textObj={answers}
             alreadySelected={alreadySelected}
             onClick={handleClick}
           />
         </Card.Header>
-        <Collapse in={open}>
-          <Card.Body>
-            <Subquestion subquestions={subs} />
-          </Card.Body>
-        </Collapse>
+        {!subs ? (
+          ""
+        ) : (
+          <Collapse in={open}>
+            <Card.Body>
+              <Subquestion subquestions={subs} />
+            </Card.Body>
+          </Collapse>
+        )}
       </Card>
     </Accordion>
   );
-};
-
-const questionStyle = {
-  color: "#0f0d06",
-};
-
-const questionName = {
-  fontWeight: "bold",
 };
 
 export default Question;

@@ -11,7 +11,7 @@ import { COLORS } from "../../global/colors";
  * @returns Button group component
  */
 const CustomButtonGroup = ({ variant, textObj, alreadySelected, onClick }) => {
-  const colorSet = variant ? Object.values(COLORS[variant]) : COLORS.blueSet;
+  const colorSet = variant ? Object.values(COLORS[variant]) : COLORS.blue;
   const [selected, setSelected] = React.useState(-1);
 
   useState(() => {
