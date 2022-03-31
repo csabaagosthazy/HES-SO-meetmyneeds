@@ -97,7 +97,7 @@ test:server:
 build:client:
   stage: build
   variables:
-    REACT_APP_API_ENDPOINT: https://meetmyneeds.p645.hevs.ch/api
+    REACT_APP_API_ENDPOINT: https://meetmyneeds.p645.hevs.ch
   script:
     - cd client
     - npm install
