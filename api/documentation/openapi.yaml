@@ -65,6 +65,35 @@ components:
           description: url of the resource
           example: "https://www.google.ch"
 
+    Contact:
+      type: object
+      description: contact object
+      properties:
+        service_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "1"
+        question_id:
+          allOf:
+            - $ref: '#/components/schemas/ObjectIdentifier'
+          example: "1"
+        serviceName:
+          type: string
+          description: name of the service
+          example: "Aide monétaire xyz"
+        description:
+          type: string
+          description: description of the service
+          example: "Petite aide mensuelle cash"
+        organizationName:
+          type: string
+          description: name of the organization
+          example: "Coeur à coeur"
+        address:
+          type: string
+          description: address of the organization
+          example: "Chemin de Fribourg 2, 1700 Fribourg"
+
     MainQuestion:
       allOf:
         - $ref: '#/components/schemas/BaseQuestionProperties'
@@ -159,7 +188,7 @@ components:
       schema:
       type: string
       name: question_id
-      description: question_id from question you want to query resources for
+      description: question_id from question you want to query for
       in: query
       required: true
       example: 1
@@ -194,6 +223,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Resource'
+
+  /api/contacts:
+    get:
+      summary: Fetches the list of all services related to an input question_id
+      parameters:
+        - $ref: '#/components/parameters/question_id'
+      responses:
+        "200":
+          description: The list of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
 
   /api/questions:
     get:
