@@ -68,6 +68,19 @@ describe("questions API", () => {
         }
     })
 
+    it('returns the sub-questions in the right language', async () => {
+        const accepted_subquestion_ids = ["89", "90", "91"];
+
+        const response = await request(app).get('/api/questions?category=3&language=fr');
+        // We test on question with ID 16
+        const question = response.body.questions.find(q => q.question_id === '16');
+        const returned_subquestions = question.subquestions.map(sq =>sq.question_id);
+
+        for(const returned_question_id of returned_subquestions){
+            expect(accepted_subquestion_ids.indexOf(returned_question_id)).not.toBe(-1);
+        }
+    })
+
     it('returns the needed subcategories', async () => {
         const response = await request(app).get('/api/questions?category=3&language=fr');
         const returned_subcategories = new Set(response.body.subcategories.map(c => c.category_id));
