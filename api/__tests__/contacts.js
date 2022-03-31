@@ -29,9 +29,14 @@ describe('resources API', () => {
         expect(response.body[0].hasOwnProperty('service_id')).toBe(true);
     })
 
-    it('responds with a name key', async () => {
+    it('responds with a serviceName key', async () => {
         const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('name')).toBe(true);
+        expect(response.body[0].hasOwnProperty('serviceName')).toBe(true);
+    })
+
+    it('responds with a organizationName key', async () => {
+        const response = await request(app).get('/api/contacts?question_id=1');
+        expect(response.body[0].hasOwnProperty('organizationName')).toBe(true);
     })
 
     it('responds with a description key', async () => {

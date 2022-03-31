@@ -11,8 +11,8 @@ module.exports = {
 
         let results = await pool.query(
             `SELECT sq.service_id, sq.question_id,
-                    s.name as serviceName, s.description,
-                    o.name as organizationName, o.address
+                    s.name as "serviceName", s.description,
+                    o.name as "organizationName", o.address
             FROM service_question sq
                       INNER JOIN services s
             on sq.service_id = s.service_id
