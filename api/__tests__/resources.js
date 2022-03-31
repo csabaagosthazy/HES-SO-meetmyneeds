@@ -3,7 +3,7 @@ const app = require('../application');
 const {getPool} = require("../database/pool");
 
 describe('resources API', () => {
-    it('rejects missing language parameter', async () => {
+    it('rejects missing ID parameter', async () => {
         const response = await request(app).get('/api/resources');
         expect(response.status).toEqual(400);
     })
