@@ -8,6 +8,7 @@ const {
 } = require("../database/repository/question");
 const {get_answers} = require("../database/repository/answer");
 const {get_main_categories} = require("../database/repository/category");
+const {get_question_resources} = require("../database/repository/resource");
 
 router.get("/", async (req, res) => {
   res.status(200)
@@ -58,7 +59,8 @@ router.get('/questions', async (req, res) => {
             question => ({
                 ...question,
                 order: question.question_set,
-                children: child_questions.filter(cq => cq.parent_question_id === question.question_id)
+                sub_category_label: subcategories.find(sc => sc.category_id === question.sub_category_id).label,
+                subquestions: child_questions.filter(cq => cq.parent_question_id === question.question_id)
             })
         ),
         answers: Object.fromEntries(
@@ -75,6 +77,21 @@ router.get('/questions', async (req, res) => {
     res.status(200)
         .setHeader('Content-Type', 'application/json')
         .send(JSON.stringify(response_payload));
+})
+
+router.get('/resources', async (req, res) => {
+    let question_id = req.query.question_id;
+
+    if(question_id === undefined || question_id.length === 0){
+        return res.status(400)
+            .send('Missing question_id GET parameter')
+    }
+
+    let results = await get_question_resources(question_id);
+
+    res.status(200)
+        .setHeader('Content-Type', 'application/json')
+        .send(JSON.stringify(results))
 })
 
 module.exports = router;

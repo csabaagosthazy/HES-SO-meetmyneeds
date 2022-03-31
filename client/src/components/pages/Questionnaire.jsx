@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Spinner, Card } from "react-bootstrap";
 import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
@@ -13,6 +15,8 @@ import Result from "../pages/Result";
 //create pagination based on pathology
 
 const Questionnaire = ({ id, lang }) => {
+  let navigate = useNavigate();
+
   const [origin, setOrigin] = useState("");
   const [data, setData] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +24,7 @@ const Questionnaire = ({ id, lang }) => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [pageData, setPagedata] = useState("");
   const [givenAnswers, setGivenAnswers] = useState({}); // question: id, answer: string
-  const [showData, setShowData] = useState(false);  //temporary to navigate to the result page 
+  const [showData, setShowData] = useState(false); //temporary to navigate to the result page
 
   useEffect(() => {
     //call fetch
@@ -126,7 +130,7 @@ const Questionnaire = ({ id, lang }) => {
     sessionStorage.setItem("answers", jObj);
 
     //go to result page
-    setShowData(true);
+    navigate("/results");
   };
 
   if (!pageData || !origin) return <Spinner animation="border" variant="primary" />;
@@ -157,9 +161,7 @@ const Questionnaire = ({ id, lang }) => {
             Finish
           </CustomButton>
         ) : null}
-        {
-          showData? <Result answers = {sessionStorage.getItem("answers")} />: ""
-        }
+        {showData ? <Result answers={sessionStorage.getItem("answers")} /> : ""}
       </Card.Footer>
     </Card>
   );
