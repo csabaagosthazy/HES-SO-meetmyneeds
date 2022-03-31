@@ -29,14 +29,15 @@ module.exports = {
         return result.rows;
     },
 
-    get_child_questions_by_parents: async (parent_question_ids) => {
+    get_child_questions_by_parents: async (parent_question_ids, language) => {
         const pool = getPool();
         const result = await pool.query(
-            `SELECT question_id, question, parent_question_id
-             FROM questions
-             WHERE parent_question_id = ANY ($1::bigint[])
+            `SELECT q.question_id, q.question, q.parent_question_id
+             FROM questions q
+             INNER JOIN languages l on q.lang_id = l.lang_id
+             WHERE q.parent_question_id = ANY ($1::bigint[]) AND l.name = $2
              ORDER BY question`,
-            [parent_question_ids]
+            [parent_question_ids, language]
         );
 
         return result.rows;

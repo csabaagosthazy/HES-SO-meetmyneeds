@@ -49,7 +49,7 @@ router.get('/questions', async (req, res) => {
     }
 
     const main_questions = await get_main_questions_by_category(category_id, language);
-    const child_questions = await get_child_questions_by_parents(main_questions.map(q => q.question_id))
+    const child_questions = await get_child_questions_by_parents(main_questions.map(q => q.question_id), language)
     const subcategories = await get_subcategories_by_main_category(category_id);
     const answers = await get_answers(language);
 
