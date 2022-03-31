@@ -1,5 +1,14 @@
+import React from "react";
+import * as commonmark from "commonmark";
+import { COLORS } from "../../global/colors";
+
 const Result = (props) => {
-  const obj = JSON.parse(props.answers);
+  const reader = new commonmark.Parser();
+  const writer = new commonmark.HtmlRenderer();
+
+  const obj = JSON.parse(sessionStorage.getItem("answers"));
+  const arr = obj.results;
+  console.log(obj);
 
   //sets to store questions grouped by importance of need
   let essential = new Set();
@@ -8,28 +17,40 @@ const Result = (props) => {
   let already_filled = new Set();
 
   //grouping by importance of need
-  obj.forEach((element) => {
-    if (element.technicalKey === "essential") {
-      essential.add([element.question_id, element.question]);
-    } else if (element.technicalKey === "important") {
-      important.add([element.question_id, element.question]);
-    } else if (element.technicalKey === "less_important") {
-      less_important.add([element.question_id, element.question]);
-    } else if (element.technicalKey === "already_filled") {
-      already_filled.add([element.question_id, element.question]);
+  arr.forEach((element) => {
+    switch (element.technicalKey) {
+      case "essential":
+        essential.add([element.question_id, element.question]);
+        break;
+      case "important":
+        important.add([element.question_id, element.question]);
+        break;
+      case "less_important":
+        less_important.add([element.question_id, element.question]);
+        break;
+      case "already_filled":
+        already_filled.add([element.question_id, element.question]);
+        break;
     }
   });
 
   //create a set of labels
   var labels = new Map();
-  obj.map((item) => labels.set(item.technicalKey, item.label));
+  arr.map((item) => labels.set(item.technicalKey, item.label));
 
   //function that displays questions in set under the certain label
   const displayQuestions = (questionSet, labelSet, label_tag) => {
     let questions_render = [...questionSet].map((item) => {
-      return <p key={item[0]}>{item[1]}</p>;
+      const question_to_parse = reader.parse(item[1]);
+      const question_to_display = writer.render(question_to_parse);
+      <h1 dangerouslySetInnerHTML={{ __html: question_to_display }} />;
+      return <p key={item[0]} dangerouslySetInnerHTML={{ __html: question_to_display }} />;
     });
-    questions_render.unshift(<h3 key={label_tag}>{labelSet.get(label_tag)}</h3>); //prepending label
+    questions_render.unshift(
+      <h3 style={{ backgroundColor: COLORS[obj.color][label_tag] }} key={label_tag}>
+        {labelSet.get(label_tag)}
+      </h3>
+    ); //prepending label
     return questions_render;
   };
 

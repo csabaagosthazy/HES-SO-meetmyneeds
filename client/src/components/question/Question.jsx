@@ -17,7 +17,7 @@ import CustomButtonGroup from "../button/CustomButtonGroup";
  * @param {function} props.handleSelect - Handle button selection
  * @returns Question component
  */
-const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) => {
+const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSelect }) => {
   const reader = new commonmark.Parser();
   const writer = new commonmark.HtmlRenderer();
   const question_to_parse = reader.parse(name);
@@ -41,7 +41,7 @@ const Question = ({ name, subs, id, answers, alreadySelected, handleSelect }) =>
         <Card.Header>
           <h1 dangerouslySetInnerHTML={{ __html: question_to_display }} />
           <CustomButtonGroup
-            variant={"blueSet"}
+            variant={colorSet}
             textObj={answers}
             alreadySelected={alreadySelected}
             onClick={handleClick}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Spinner, Card } from "react-bootstrap";
 import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
@@ -14,8 +14,9 @@ import Result from "../pages/Result";
 //split data array by pathology
 //create pagination based on pathology
 
-const Questionnaire = ({ id, lang }) => {
+const Questionnaire = (props) => {
   let navigate = useNavigate();
+  let { id, lang, colorSet } = useParams();
 
   const [origin, setOrigin] = useState("");
   const [data, setData] = useState("");
@@ -123,7 +124,8 @@ const Questionnaire = ({ id, lang }) => {
     //create session store object
     //depends on the requirements
 
-    const jObj = JSON.stringify(results);
+    const obj = { color: colorSet, results };
+    const jObj = JSON.stringify(obj);
 
     console.log(jObj);
     //call session store
@@ -142,9 +144,10 @@ const Questionnaire = ({ id, lang }) => {
         <Question
           key={q.question_id}
           name={q.question}
-          subs={q.children}
+          subs={q.subquestions}
           id={q.question_id}
           answers={origin.answers}
+          colorSet={colorSet}
           alreadySelected={givenAnswers[q.question_id]}
           handleSelect={handleAnswer}
         />
