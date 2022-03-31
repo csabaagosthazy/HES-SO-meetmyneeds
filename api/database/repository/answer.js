@@ -5,7 +5,7 @@ module.exports = {
         const results = await pool.query(
             `SELECT answer_id, technical_key, label 
             FROM answers a INNER JOIN languages l on a.lang_id = l.lang_id 
-            WHERE l.name = $1`,
+            WHERE l.name = $1 AND a.technical_key NOT IN ('yes', 'no')`,
             [language]
         );
 

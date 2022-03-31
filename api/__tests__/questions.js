@@ -99,8 +99,6 @@ describe("questions API", () => {
             'überhaupt nicht wichtig',
             'Bedürfnis bereits erfüllt',
             'nicht betroffen',
-            'ja',
-            'nein',
         ];
 
         const response = await request(app).get('/api/questions?category=13&language=de');
@@ -111,4 +109,12 @@ describe("questions API", () => {
             expect(german_labels.indexOf(returned_label)).not.toBe(-1);
         }
     })
+
+    test.each([
+        'yes', 'no'
+    ])('does not return the %s answer technical key', async (rejected_technical_key) => {
+        const response = await request(app).get('/api/questions?category=13&language=de');
+        const returned_technical_keys = Object.values(response.body.answers).map(a => a.technicalKey);
+        expect(returned_technical_keys.indexOf(rejected_technical_key)).toBe(-1);
+    });
 })
