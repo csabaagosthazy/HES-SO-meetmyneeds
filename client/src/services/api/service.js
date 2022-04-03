@@ -1,4 +1,4 @@
-import { categories, questions } from "./urls";
+import { categories, contacts, questions, resources } from "./urls";
 
 const dummyQuestions = {
   questions: [
@@ -57,3 +57,19 @@ export const getCategories = async (lang) => {
     .catch((err) => console.log(err));
   return result;
 };
+
+export const getContacts = async(id) => {
+  const url =  `${contacts}/?question_id=${id}`;
+  const result = await fetch(url)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+  return result;
+}
+
+export const getResources = async(id) => {
+  const url =  `${resources}/?question_id=${id}`;
+  const result = await fetch(url)
+    .then((res) => res.json)
+    .catch((err) => console.log(err));
+  return result;
+}
