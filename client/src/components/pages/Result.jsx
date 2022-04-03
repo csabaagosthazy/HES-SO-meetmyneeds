@@ -1,6 +1,8 @@
 import React from "react";
 import * as commonmark from "commonmark";
 import { COLORS } from "../../global/colors";
+import { getContacts, getResources } from "../../services/api/service";
+import CustomButton from "../button/CustomButton";
 
 const Result = (props) => {
   const reader = new commonmark.Parser();
@@ -44,7 +46,12 @@ const Result = (props) => {
       const question_to_parse = reader.parse(item[1]);
       const question_to_display = writer.render(question_to_parse);
       <h1 dangerouslySetInnerHTML={{ __html: question_to_display }} />;
-      return <p key={item[0]} dangerouslySetInnerHTML={{ __html: question_to_display }} />;
+      return(
+        <div>
+          <p key={item[0]} dangerouslySetInnerHTML={{ __html: question_to_display }} />
+          <CustomButton variant={"s"} bgColor={"lightgrey"}>Qui contacter?</CustomButton>
+          <CustomButton variant={"s"} bgColor={"yellow"}>Ressources</CustomButton>
+        </div>);
     });
     questions_render.unshift(
       <h3 style={{ backgroundColor: COLORS[obj.color][label_tag] }} key={label_tag}>
