@@ -1,0 +1,30 @@
+.custom-button {
+    border: 2px solid grey;
+    border-right-color: black;
+    border-left-color: black;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.custom-button:active {
+    border-color: black;
+    border-right-color: gray;
+    border-left-color: gray;
+}
+
+.small {
+    min-height: 50px;
+}
+
+.medium {
+    min-height: 100px;
+}
+
+.large {
+    min-height: 150px;
+}
+
+.selected {
+    border-color: black;
+    border-width: 5px;
+}
