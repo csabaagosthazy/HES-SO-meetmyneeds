@@ -27,7 +27,7 @@ export const getContacts = async (id) => {
 export const getResources = async (id) => {
     const url = `${resources}/?question_id=${id}`;
     const result = await fetch(url)
-        .then((res) => res.json)
+        .then((res) => res.json())
         .catch((err) => console.log(err));
     return result;
 }
