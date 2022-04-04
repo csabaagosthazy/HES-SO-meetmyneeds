@@ -23,7 +23,7 @@ const CustomButtonGroup = ({ variant, textObj, alreadySelected, onClick }) => {
   };
   return (
     <Container data-testid="buttonGroup">
-      <Row className="justify-content-center" xs={5}>
+      <Row className="justify-content-center gap-2" xs={3} sm={6} >
         {Object.entries(textObj).map(([key, value], i) => {
           return (
             <Col md="auto" key={key}>
