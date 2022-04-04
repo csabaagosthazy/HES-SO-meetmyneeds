@@ -25,6 +25,6 @@
 }
 
 .selected {
-    border-color: red;
+    border-color: black;
     border-width: 3px;
 }
