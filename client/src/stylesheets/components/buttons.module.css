@@ -3,7 +3,7 @@
     border-right-color: black;
     border-left-color: black;
     border-radius: 10px;
-    padding: 1rem;
+    padding: .75rem;
 }
 
 .custom-button:active {
@@ -25,6 +25,6 @@
 }
 
 .selected {
-    border-color: black;
-    border-width: 5px;
+    border-color: red;
+    border-width: 3px;
 }
