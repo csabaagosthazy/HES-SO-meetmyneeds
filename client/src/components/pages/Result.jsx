@@ -3,9 +3,11 @@ import * as commonmark from "commonmark";
 import {COLORS} from "../../global/colors";
 import CustomButton from "../button/CustomButton";
 import Contacts from "./Contacts";
+import Resources from "./Resources";
 
 const Result = (props) => {
     const [contacts, showContacts] = useState(false);
+    const [resources, showResources] = useState(false);
     const reader = new commonmark.Parser();
     const writer = new commonmark.HtmlRenderer();
 
@@ -48,12 +50,19 @@ const Result = (props) => {
             const question_to_display = writer.render(question_to_parse);
             <h1 dangerouslySetInnerHTML={{__html: question_to_display}}/>;
             return (
-                <div key={item[0]}>
-                    <p dangerouslySetInnerHTML={{__html: question_to_display}}/>
-                    <CustomButton variant={"s"} bgColor={"lightgrey"} onClick={() => showContacts(true)}>Qui
-                        contacter?</CustomButton>
-                    <Contacts showContacts={contacts} onHide={() => showContacts(false)} question_id={item[0]}/>
-                    <CustomButton variant={"s"} bgColor={"yellow"}>Ressources</CustomButton>
+                <div key={item[0]} style={{display:"flex", alignItems:"center"}}>
+                    <div dangerouslySetInnerHTML={{__html: question_to_display}}/>
+                    <div style={{display:"flex", padding: 15}}>
+                        <CustomButton variant={"s"} bgColor={"lightgrey"} onClick={() => showContacts(true)}>Qui
+                            contacter?</CustomButton>
+                        <Contacts   showContacts={contacts} 
+                                    onHide={() => showContacts(false)} 
+                                    question_id={item[0]}/>
+                        <CustomButton variant={"s"} bgColor={"yellow"} onClick={() => showResources(true)}>Ressources</CustomButton>
+                        <Resources  showResources={resources} 
+                                    onHide={() => showResources(false)} 
+                                    question_id={item[0]}/>
+                    </div>
                 </div>);
         });
         questions_render.unshift(
