@@ -373,9 +373,9 @@ INSERT INTO questions (question, question_set, generation, parent_question_id, c
 
 
 INSERT INTO resources (name, url) VALUES
-('test1', 'https://www.postgresql.org/docs/14/dml-insert.html'),
-('test2', 'https://www.postgresql.org/docs/current/sql-altertable.html'),
-('test3', 'https://www.w3schools.com/sql/sql_ref_foreign_key.asp');
+('MeetMyNeeds Website', 'https://www.heds-fr.ch/fr/recherche/themes/vieillissement/meetmyneeds/'),
+('Annonce projet', 'https://www.youtube.com/watch?v=ERXLAyIHABk&t=2s'),
+('Prototype presentation', 'https://www.youtube.com/watch?v=nGgtwY87c0o&list=PLJhJd78zc1c0WhbbHWeOycCIbl-qCC8VY&index=2');
 
 
 INSERT INTO pathology (name) VALUES
