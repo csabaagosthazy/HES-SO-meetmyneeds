@@ -12,17 +12,17 @@ import "@testing-library/jest-dom/extend-expect";
 describe('custom button', () => {
   it("renders", () => {
     render(<CustomButton />);
-    const button = screen.queryByTestId('button');
+    const renderedButton = screen.queryByTestId("button");
 
-    expect(button).toBeTruthy();
-    expect(button).toHaveClass(buttonStyles['custom-button'])
+    expect(renderedButton).toBeTruthy();
+    expect(renderedButton).toHaveClass(buttonStyles['custom-button'])
   });
 
   it("renders with correct background color", () => {
-    const { getByTestId } = render(<CustomButton bgColor={"#FFF"} />);
-    const CustomButtonComp = getByTestId("button");
+    render(<CustomButton bgColor={"#FFF"} />);
+    const renderedButton = screen.getByTestId("button")
 
-    expect(CustomButtonComp).toHaveStyle(`background-color: #FFF`);
+    expect(renderedButton).toHaveStyle(`background-color: #FFF`);
   });
 
   test.each([
@@ -30,19 +30,19 @@ describe('custom button', () => {
       ['m', buttonStyles.medium],
       ['x', buttonStyles.large]
   ])('renders variant %s with class %s', (variant, expectedClass) => {
-    const { getByTestId } = render(<CustomButton bgColor={"pink"} variant={variant}/>);
-    const CustomButtonComp = getByTestId("button");
+    render(<CustomButton bgColor={"pink"} variant={variant}/>);
+    const renderedButton = screen.getByTestId("button");
 
-    expect(CustomButtonComp).toHaveClass(expectedClass);
+    expect(renderedButton).toHaveClass(expectedClass);
   })
 
   it("has a selected class when selected", () => {
-    const { getByTestId, rerender } = render(<CustomButton bgColor={"pink"} variant={"x"}/>);
-    const CustomButtonComp = getByTestId("button");
-    expect(CustomButtonComp).not.toHaveClass(buttonStyles.selected);
+    const utils = render(<CustomButton bgColor={"pink"} variant={"x"}/>);
+    const renderedButton = screen.getByTestId("button");
+    expect(renderedButton).not.toHaveClass(buttonStyles.selected);
 
-    rerender(<CustomButton bgColor={"pink"} variant={"x"} focusColor={"white"} selected />);
-    expect(CustomButtonComp).toHaveClass(buttonStyles.selected);
+    utils.rerender(<CustomButton bgColor={"pink"} variant={"x"} focusColor={"white"} selected />);
+    expect(renderedButton).toHaveClass(buttonStyles.selected);
   });
 })
 
