@@ -139,7 +139,7 @@ const Questionnaire = (props) => {
   //renders the questions
   return (
     <Card>
-      <Card.Header>{pageData.label}</Card.Header>
+      <Card.Header><h1>{pageData.label}</h1></Card.Header>
       {pageData.data.map((q) => (
         <Question
           key={q.question_id}

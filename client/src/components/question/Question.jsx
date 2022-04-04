@@ -39,7 +39,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
     <Accordion alwaysOpen>
       <Card>
         <Card.Header>
-          <h1 dangerouslySetInnerHTML={{ __html: question_to_display }} />
+          <h2 dangerouslySetInnerHTML={{ __html: question_to_display }} />
           <CustomButtonGroup
             variant={colorSet}
             textObj={answers}
