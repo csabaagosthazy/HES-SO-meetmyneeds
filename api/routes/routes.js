@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const {getPool} = require('../database/pool');
 const category_handlers = require('./categories');
 const question_handlers = require('./questions');
 const resource_handlers = require('./resources');
@@ -11,15 +10,6 @@ router.get("/", async (req, res) => {
       .setHeader("Content-Type", "application/json")
       .send(JSON.stringify({}));
 });
-
-router.get("/db-test", async (req, res) => {
-    let pool = getPool();
-    let result = await pool.query("SELECT 1 AS one");
-
-    res.status(200)
-        .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify({ result: result.rows[0].one }))
-})
 
 router.get('/categories', category_handlers.fetch_categories);
 router.get('/questions', question_handlers.fetch_questions);
