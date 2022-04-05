@@ -28,6 +28,8 @@ module.exports = {
 
         let response_payload = {
             subcategories: subcategories,
+            // There are certainly lots of attributes that are not necessary in this object, although it
+            // facilitates testing for correctness of the returned object in the relevant tests
             questions: main_questions.map(
                 question => ({
                     ...question,
@@ -36,6 +38,8 @@ module.exports = {
                     subquestions: child_questions.filter(cq => cq.parent_question_id === question.question_id)
                 })
             ),
+            // Object.fromEntries is used to make an object from [id, {answer}]
+            // such as the final structure of this item will be {id: {answer}}.
             answers: Object.fromEntries(
                 answers.map(ans => [
                     ans.answer_id,

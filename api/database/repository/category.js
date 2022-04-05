@@ -5,6 +5,7 @@ module.exports = {
      * Queries for main question categories, that is categories not associated to
      * the sub_category_id column in the question table.
      *
+     * @param {string} language In which language to return the main categories, such as fr, de
      * @returns {Promise<{category_id: string, label: string, color_set: string}>}
      */
     get_main_categories: async (language) => {
