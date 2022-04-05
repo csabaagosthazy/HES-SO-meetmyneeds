@@ -6,6 +6,13 @@ const {
 const {get_answers} = require("../database/repository/answer");
 
 module.exports = {
+    /**
+     * Fetch the main questions, child questions of main questions, answers
+     * and child categories of one main category.
+     *
+     * The parameters and the returned JSON document structure can be found
+     * at `~/api/documentation/openapi.yaml`.
+     */
     fetch_questions: async (req, res) => {
         const category_id = req.query.category;
         const language = req.query.language;
