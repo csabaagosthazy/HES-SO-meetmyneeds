@@ -1,9 +1,10 @@
 const {Pool} = require("pg");
-// Turn the database pool into a singleton
 let DATABASE_POOL = undefined;
 
 module.exports = {
     getPool: () => {
+        // To allow lazy initialization of the PostgreSQL database hostname, ease of testing and
+        // avoidance of opening multiple pools, the pool creation is abstracted in a singleton.
         if(DATABASE_POOL === undefined) {
             const host = process.env.POSTGRES_HOST ?? 'database';
             DATABASE_POOL = new Pool({

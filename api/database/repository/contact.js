@@ -4,6 +4,7 @@ module.exports = {
     /**
      * Queries for contacts related to one question
      *
+     * @param {string} question_id Technical ID of the question
      * @returns {Promise<{service_id: int, question_id: int, serviceName: string, description: string, organizationName: string, address: string}>}
      */
     get_question_contacts: async (question_id) => {

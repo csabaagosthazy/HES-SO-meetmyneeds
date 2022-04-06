@@ -2,8 +2,9 @@ const {getPool} = require('../pool');
 
 module.exports = {
     /**
-     * Queries for ressources related to one question
+     * Queries for resources related to one question
      *
+     * @param {string} question_id Technical ID of the question
      * @returns {Promise<{question_id: int, resource_id: int, name: string, url:string}>}
      */
     get_question_resources: async (question_id) => {

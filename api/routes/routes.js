@@ -1,15 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {getPool} = require('../database/pool');
-const {
-    get_main_questions_by_category,
-    get_subcategories_by_main_category,
-    get_child_questions_by_parents
-} = require("../database/repository/question");
-const {get_answers} = require("../database/repository/answer");
-const {get_main_categories} = require("../database/repository/category");
-const {get_question_resources} = require("../database/repository/resource");
-const {get_question_contacts} = require("../database/repository/contact");
+const category_handlers = require('./categories');
+const question_handlers = require('./questions');
+const resource_handlers = require('./resources');
+const contact_handlers = require('./contacts');
 
 router.get("/", async (req, res) => {
   res.status(200)
@@ -17,97 +11,9 @@ router.get("/", async (req, res) => {
       .send(JSON.stringify({}));
 });
 
-router.get("/db-test", async (req, res) => {
-    let pool = getPool();
-    let result = await pool.query("SELECT 1 AS one");
-
-    res.status(200)
-        .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify({ result: result.rows[0].one }))
-})
-
-router.get('/categories', async (req, res) => {
-    let language = req.query.language;
-
-    if(language === undefined || language.length === 0){
-        return res.status(400)
-            .send('Missing language GET parameter')
-    }
-
-    let results = await get_main_categories(language);
-
-    res.status(200)
-        .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(results))
-});
-
-router.get('/questions', async (req, res) => {
-    const category_id = req.query.category;
-    const language = req.query.language;
-    if(category_id === undefined || category_id.length < 1 || language === undefined){
-        // 400 Bad Request since we need that parameter
-        return res.status(400).end('GET parameter category and language is missing');
-    }
-
-    const main_questions = await get_main_questions_by_category(category_id, language);
-    const child_questions = await get_child_questions_by_parents(main_questions.map(q => q.question_id), language)
-    const subcategories = await get_subcategories_by_main_category(category_id);
-    const answers = await get_answers(language);
-
-    let response_payload = {
-        subcategories: subcategories,
-        questions: main_questions.map(
-            question => ({
-                ...question,
-                order: question.question_set,
-                sub_category_label: subcategories.find(sc => sc.category_id === question.sub_category_id).label,
-                subquestions: child_questions.filter(cq => cq.parent_question_id === question.question_id)
-            })
-        ),
-        answers: Object.fromEntries(
-            answers.map(ans => [
-                ans.answer_id,
-                {
-                    technicalKey: ans.technical_key,
-                    label: ans.label
-                }
-            ])
-        )
-    };
-
-    res.status(200)
-        .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(response_payload));
-})
-
-router.get('/resources', async (req, res) => {
-    let question_id = req.query.question_id;
-
-    if(question_id === undefined || question_id.length === 0){
-        return res.status(400)
-            .send('Missing question_id GET parameter')
-    }
-
-    let results = await get_question_resources(question_id);
-
-    res.status(200)
-        .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(results))
-})
-
-router.get('/contacts', async (req, res) => {
-    let question_id = req.query.question_id;
-
-    if(question_id === undefined || question_id.length === 0){
-        return res.status(400)
-            .send('Missing question_id GET parameter')
-    }
-
-    let results = await get_question_contacts(question_id);
-
-    res.status(200)
-        .setHeader('Content-Type', 'application/json')
-        .send(JSON.stringify(results))
-})
+router.get('/categories', category_handlers.fetch_categories);
+router.get('/questions', question_handlers.fetch_questions);
+router.get('/resources', resource_handlers.fetch_resources);
+router.get('/contacts', contact_handlers.fetch_contacts);
 
 module.exports = router;
