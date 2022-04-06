@@ -12,11 +12,11 @@ describe("questions API", () => {
         expect(response.status).toEqual(400);
     })
 
-    it('sends the question, answers and subcategories objects', async () => {
+    test.each([
+        'questions', 'answers', 'subcategories'
+    ])('sends the property [%s] in the response', async (prop) => {
         const response = await request(app).get('/api/questions?category=1&language=fr');
-        expect(response.body).toHaveProperty('questions');
-        expect(response.body).toHaveProperty('answers');
-        expect(response.body).toHaveProperty('subcategories');
+        expect(response.body).toHaveProperty(prop);
     })
 
     it('orders the questions correctly', async () => {
