@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../application');
-const {getPool} = require("../database/pool");
 
 describe('resources API', () => {
     it('rejects missing ID parameter', async () => {
@@ -24,35 +23,13 @@ describe('resources API', () => {
         }
     })
 
-    it('responds with a service_id key', async () => {
+    test.each([
+        'service_id', 'serviceName', 'organizationName', 'description',
+        'address', 'question_id'
+    ])('responds with a %s key', async (attr) => {
         const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('service_id')).toBe(true);
-    })
-
-    it('responds with a serviceName key', async () => {
-        const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('serviceName')).toBe(true);
-    })
-
-    it('responds with a organizationName key', async () => {
-        const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('organizationName')).toBe(true);
-    })
-
-    it('responds with a description key', async () => {
-        const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('description')).toBe(true);
-    })
-
-    it('responds with a address key', async () => {
-        const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('address')).toBe(true);
-    })
-
-    it('responds with a question_id key', async () => {
-        const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty('question_id')).toBe(true);
-    })
+        expect(response.body[0]).toHaveProperty(attr);
+    });
 
     it('returns right contacts according to the question', async () => {
         const contacts_for_question_id_1 = ["1", "2"];

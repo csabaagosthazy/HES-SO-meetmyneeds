@@ -24,19 +24,11 @@ describe('categories API', () => {
         }
     })
 
-    it('responds with a category_id key', async () => {
+    test.each([
+        'category_id', 'label', 'color_set'
+    ])('responds with a %s key', async (attr) => {
         const response = await request(app).get('/api/categories?language=fr');
-        expect(response.body[0].hasOwnProperty('category_id')).toBe(true);
-    })
-
-    it('responds with a label key', async () => {
-        const response = await request(app).get('/api/categories?language=fr');
-        expect(response.body[0].hasOwnProperty('label')).toBe(true);
-    })
-
-    it('responds with a color set property', async () => {
-        const response = await request(app).get('/api/categories?language=fr');
-        expect(response.body[0].hasOwnProperty('color_set')).toBe(true);
+        expect(response.body[0]).toHaveProperty(attr);
     })
 
     it('doesn\'t return sub-categories', async () => {
