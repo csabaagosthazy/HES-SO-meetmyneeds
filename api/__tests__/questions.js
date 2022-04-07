@@ -45,7 +45,7 @@ describe("questions API", () => {
     ])('returns required attributes on questions (%s)', async (attr) => {
         const response = await request(app).get('/api/questions?category=3&language=fr');
         const question_obj = response.body.questions[0];
-        expect(question_obj.hasOwnProperty(attr)).toBeTruthy();
+        expect(question_obj).toHaveProperty(attr);
     });
 
     test.each([
@@ -53,7 +53,7 @@ describe("questions API", () => {
     ])('returns required attributes on sub-questions (%s)', async (attr) => {
         const response = await request(app).get('/api/questions?category=3&language=fr');
         const question_obj = response.body.questions[0].subquestions[0];
-        expect(question_obj.hasOwnProperty(attr)).toBeTruthy();
+        expect(question_obj).toHaveProperty(attr);
     });
 
     it('groups child questions correctly', async () => {

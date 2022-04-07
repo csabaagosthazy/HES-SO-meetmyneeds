@@ -28,7 +28,7 @@ describe('resources API', () => {
         'address', 'question_id'
     ])('responds with a %s key', async (attr) => {
         const response = await request(app).get('/api/contacts?question_id=1');
-        expect(response.body[0].hasOwnProperty(attr)).toBe(true);
+        expect(response.body[0]).toHaveProperty(attr);
     });
 
     it('returns right contacts according to the question', async () => {
