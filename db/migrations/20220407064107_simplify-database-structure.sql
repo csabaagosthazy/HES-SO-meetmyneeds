@@ -41,8 +41,8 @@ ALTER TABLE questions
     DROP CONSTRAINT questions_sub_category_id_fkey,
     ADD FOREIGN KEY (sub_category_id) REFERENCES question_category(category_id);
 
-drop table IF EXISTS subquestions cascade;
-drop table IF EXISTS question_subcategory cascade;
+drop table subquestions;
+drop table question_subcategory;
 
 
 
