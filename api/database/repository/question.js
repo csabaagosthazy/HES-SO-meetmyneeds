@@ -32,7 +32,7 @@ module.exports = {
         // by language
         const pool = getPool();
         const result = await pool.query(
-            `SELECT DISTINCT qsc.subcategory_id, qsc.label
+            `SELECT DISTINCT qsc.subcategory_id as category_id, qsc.label
              FROM question_subcategory qsc
                       INNER JOIN questions q on qsc.subcategory_id = q.sub_category_id
              WHERE q.category_id = $1`,
@@ -55,7 +55,7 @@ module.exports = {
         // The first construct makes querying for n questions easier because we don't
         // have to dynamically generate the SQL query sent to the server.
         const result = await pool.query(
-            `SELECT sq.subquestion_id, sq.subquestion, sq.parent_question_id
+            `SELECT sq.subquestion_id as question_id, sq.subquestion as question, sq.parent_question_id
              FROM subquestions sq
              INNER JOIN languages l on sq.lang_id = l.lang_id
              WHERE sq.parent_question_id = ANY ($1::bigint[]) AND l.name = $2
