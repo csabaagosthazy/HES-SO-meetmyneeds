@@ -39,9 +39,8 @@ const Result = (props) => {
         }
     });
 
-    //create a set of labels
-    const labels = new Map();
-    answers.map((item) => labels.set(item.technicalKey, item.label));
+    // Create a map of technical key => label
+    const labels = new Map(answers.map(answer => [answer.technicalKey, answer.label]));
 
     //function that displays questions in set under the certain label
     const displayQuestions = (questionSet, labelSet, label_tag) => {
@@ -49,37 +48,36 @@ const Result = (props) => {
             const question_to_parse = reader.parse(question_label);
             const question_to_display = writer.render(question_to_parse);
             return (
-                        <Card.Body style={{display: 'flex', flexDirection: 'row', borderBottom:"1px solid", alignItems:"center"}} key={question_id}>
-                            <Card.Title style={{flex: 1}}><p dangerouslySetInnerHTML={{__html: question_to_display}} /></Card.Title>
-                            <CustomButton variant={"s"} bgColor={"lightgrey"} onClick={() => showContacts(true)}>Qui
-                                contacter?</CustomButton>
-                            <CustomButton variant={"s"} bgColor={"yellow"} onClick={() => showResources(true)}>Ressources</CustomButton>
-                            <Resources  showResources={resources}
-                                        onHide={() => showResources(false)}
-                                        question_id={question_id}/>
-                            <Contacts   showContacts={contacts}
-                                        onHide={() => showContacts(false)}
-                                        question_id={question_id}/>
-                        </Card.Body>
+                <Card.Body style={{display: 'flex', flexDirection: 'row', borderBottom:"1px solid", alignItems:"center"}} key={question_id}>
+                    <Card.Title style={{flex: 1}}><p dangerouslySetInnerHTML={{__html: question_to_display}} /></Card.Title>
+                    <CustomButton variant={"s"} bgColor={"lightgrey"} onClick={() => showContacts(true)}>Qui contacter?</CustomButton>
+                    <CustomButton variant={"s"} bgColor={"yellow"} onClick={() => showResources(true)}>Ressources</CustomButton>
+                    <Resources  showResources={resources}
+                                onHide={() => showResources(false)}
+                                question_id={question_id}/>
+                    <Contacts   showContacts={contacts}
+                                onHide={() => showContacts(false)}
+                                question_id={question_id}/>
+                </Card.Body>
             );
         });
         questions_render.unshift(
             <Card.Header style={{backgroundColor: COLORS[questionnaireAnswers.color][label_tag]}} key={label_tag}>
                 {labelSet.get(label_tag)}
             </Card.Header>
-        ); //prepending label
+        );
         return questions_render;
     };
 
     return (
         <Card>
-            {essential.size !== 0 ? displayQuestions(essential, labels, "essential") : ""}
+            {essential.size !== 0 && displayQuestions(essential, labels, "essential")}
 
-            {important.size !== 0 ? displayQuestions(important, labels, "important") : ""}
+            {important.size !== 0 && displayQuestions(important, labels, "important")}
 
-            {less_important.size !== 0 ? displayQuestions(less_important, labels, "less_important") : ""}
+            {less_important.size !== 0 && displayQuestions(less_important, labels, "less_important")}
 
-            {already_filled.size !== 0 ? displayQuestions(already_filled, labels, "already_filled") : ""}
+            {already_filled.size !== 0 && displayQuestions(already_filled, labels, "already_filled")}
         </Card>
     );
 };
