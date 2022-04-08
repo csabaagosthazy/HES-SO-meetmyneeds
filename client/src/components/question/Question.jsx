@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as commonmark from "commonmark";
 
 import { Accordion, Card, Collapse } from "react-bootstrap";
@@ -9,12 +9,13 @@ import CustomButtonGroup from "../button/CustomButtonGroup";
 /**
  * Question component
  *
- * @param {string} props.name - Title of the question
- * @param {array} props.subs - Sub questions array
- * @param {number} props.id - Id of the question
- * @param {object} props.answers - Answer object, shows on the buttons
- * @param {string} props.alreadySelected - Existing answer if selected before
- * @param {function} props.handleSelect - Handle button selection
+ * @param {string} name - Title of the question
+ * @param {array} subs - Sub questions array
+ * @param {number} id - Id of the question
+ * @param {object} answers - Answer object, shows on the buttons
+ * @param {object} colorSet
+ * @param {string} alreadySelected - Existing answer if selected before
+ * @param {function} handleSelect - Handle button selection
  * @returns Question component
  */
 const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSelect }) => {
@@ -47,9 +48,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
             onClick={handleClick}
           />
         </Card.Header>
-        {!subs ? (
-          ""
-        ) : (
+        {subs && (
           <Collapse in={open}>
             <Card.Body>
               <Subquestion subquestions={subs} />
