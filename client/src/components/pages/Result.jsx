@@ -6,7 +6,7 @@ import Contacts from "./Contacts";
 import Resources from "./Resources";
 import {Card} from "react-bootstrap";
 
-const Result = (props) => {
+const Result = () => {
     const [contacts, showContacts] = useState(false);
     const [resources, showResources] = useState(false);
     const reader = new commonmark.Parser();

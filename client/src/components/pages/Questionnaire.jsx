@@ -13,7 +13,7 @@ import CustomButton from "../button/CustomButton";
 //split data array by pathology
 //create pagination based on pathology
 
-const Questionnaire = (props) => {
+const Questionnaire = () => {
   let navigate = useNavigate();
   let { id, lang, colorSet } = useParams();
 
@@ -38,7 +38,7 @@ const Questionnaire = (props) => {
         setError(err);
       }
     })();
-  }, []);
+  }, [id, lang]);
 
   /**
    * Creates question-answers relation
