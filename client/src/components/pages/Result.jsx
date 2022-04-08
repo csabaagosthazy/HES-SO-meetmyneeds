@@ -12,8 +12,8 @@ const Result = (props) => {
     const reader = new commonmark.Parser();
     const writer = new commonmark.HtmlRenderer();
 
-    const obj = JSON.parse(sessionStorage.getItem("answers"));
-    const arr = obj.results;
+    const questionnaireAnswers = JSON.parse(sessionStorage.getItem("answers"));
+    const answers = questionnaireAnswers.results;
 
     //sets to store questions grouped by importance of need
     let essential = new Set();
@@ -22,7 +22,7 @@ const Result = (props) => {
     let already_filled = new Set();
 
     //grouping by importance of need
-    arr.forEach((element) => {
+    answers.forEach((element) => {
         switch (element.technicalKey) {
             case "essential":
                 essential.add([element.question_id, element.question]);
@@ -40,31 +40,31 @@ const Result = (props) => {
     });
 
     //create a set of labels
-    var labels = new Map();
-    arr.map((item) => labels.set(item.technicalKey, item.label));
+    const labels = new Map();
+    answers.map((item) => labels.set(item.technicalKey, item.label));
 
     //function that displays questions in set under the certain label
     const displayQuestions = (questionSet, labelSet, label_tag) => {
-        let questions_render = [...questionSet].map((item) => {
-            const question_to_parse = reader.parse(item[1]);
+        let questions_render = [...questionSet].map(([question_id, question_label]) => {
+            const question_to_parse = reader.parse(question_label);
             const question_to_display = writer.render(question_to_parse);
             return (
-                        <Card.Body style={{display: 'flex', flexDirection: 'row', borderBottom:"1px solid", alignItems:"center"}} key={item[0]}>
+                        <Card.Body style={{display: 'flex', flexDirection: 'row', borderBottom:"1px solid", alignItems:"center"}} key={question_id}>
                             <Card.Title style={{flex: 1}}><p dangerouslySetInnerHTML={{__html: question_to_display}} /></Card.Title>
                             <CustomButton variant={"s"} bgColor={"lightgrey"} onClick={() => showContacts(true)}>Qui
                                 contacter?</CustomButton>
                             <CustomButton variant={"s"} bgColor={"yellow"} onClick={() => showResources(true)}>Ressources</CustomButton>
                             <Resources  showResources={resources}
                                         onHide={() => showResources(false)}
-                                        question_id={item[0]}/>
+                                        question_id={question_id}/>
                             <Contacts   showContacts={contacts}
                                         onHide={() => showContacts(false)}
-                                        question_id={item[0]}/>
+                                        question_id={question_id}/>
                         </Card.Body>
             );
         });
         questions_render.unshift(
-            <Card.Header style={{backgroundColor: COLORS[obj.color][label_tag]}} key={label_tag}>
+            <Card.Header style={{backgroundColor: COLORS[questionnaireAnswers.color][label_tag]}} key={label_tag}>
                 {labelSet.get(label_tag)}
             </Card.Header>
         ); //prepending label
