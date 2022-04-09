@@ -1,5 +1,5 @@
 import App from "./App";
-import AuthProvider from "./services/auth/service";
+import AuthProvider from "./services/pryv/service";
 
 const AppWrapper = () => {
   return (

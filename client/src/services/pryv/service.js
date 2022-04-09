@@ -1,23 +1,50 @@
 import React, { useContext, useState, useEffect } from "react";
+import Pryv from "pryv";
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
 }
+//Dev notes
+//user auth
+//https://api.pryv.com/reference/#service-info
+/* let authSettings = {
+  spanButtonID: 'pryv-button', // span id the DOM that will be replaced by the Service specific button
+  onStateChange: pryvAuthStateChange, // event Listener for Authentication steps
+  authRequest: { // See: https://api.pryv.com/reference/#auth-request
+    requestingAppId: 'lib-js-test',
+    languageCode: 'fr', // optional (default english)
+    requestedPermissions: [
+      {
+        streamId: 'test',
+        defaultName: 'test',
+        level: 'manage'
+      }
+    ],
+    clientData: {
+      'app-web-auth:description': {
+        'type': 'note/txt', 'content': 'This is a consent message.'
+      }
+    },
+    // referer: 'my test with lib-js', // optional string to track registration source
+  }
+}; */
 
+//context used to handle auth
 const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  //test
+  //const service = new Pryv.Service('https://reg.pryv.me/service/info');
+  //const apiEndpoint = await service.apiEndpointFor(username, token);
+  //const connection = new Pryv.Connection(apiEndpoint);
+  //const authSettings;
+  //const service;
+  //const serviceInfo = service.infoSync();
+  //const [authState, setAuthState] = useState(null);
+  //const [connection, setConnection] = useState(null);
 
-  const checkAdmin = async (user) => {
-    if (user) {
-      if (user.role == "admin") return true;
-      else return false;
-    }
-    return false;
-  };
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const signup = (email, password) => {
     //do signup
@@ -68,7 +95,6 @@ const AuthProvider = ({ children }) => {
     setLoading(false);
     //setup an event listener to check the user is still signed in
     const unsubscribe = async (user) => {
-      await checkAdmin(user);
       setCurrentUser(user);
       setLoading(false);
     };
@@ -78,9 +104,7 @@ const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
-    isAdmin,
     login,
-    checkAdmin,
     signup,
     logout,
     resetPassword,

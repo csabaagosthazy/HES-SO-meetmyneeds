@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
-import { useAuth } from "../../services/auth/service";
+import { useAuth } from "../../services/pryv/service";
 
 const Navigation = (props) => {
   const { logout } = useAuth();

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../services/auth/service";
+import { useAuth } from "../../services/pryv/service";
 import { Container, Form, Button, Card, Alert } from "react-bootstrap";
 
 import { Link, useNavigate } from "react-router-dom";

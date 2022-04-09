@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../../services/auth/service";
+import { useAuth } from "../../services/pryv/service";
 import { Container, Form, Button, Card, Alert } from "react-bootstrap";
 
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, checkAdmin } = useAuth();
+  const { login } = useAuth();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const isMounted = useRef(null);
@@ -27,18 +27,15 @@ const Login = () => {
     setError("");
     setLoading(true);
     let user;
-    let isAdmin;
     try {
       user = await login(email, password);
-      isAdmin = await checkAdmin(user, true);
     } catch {
       setError("Failed to log in");
     } finally {
       if (isMounted.current) {
         setLoading(false);
         if (!!user) {
-          if (isAdmin) navigate("/");
-          else navigate("/");
+          navigate("/");
         } else {
           setError("Authentication failed");
           navigate("/");
