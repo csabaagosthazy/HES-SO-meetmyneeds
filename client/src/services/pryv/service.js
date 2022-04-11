@@ -4,115 +4,109 @@ import Pryv from "pryv";
 const AuthContext = React.createContext();
 
 export function useAuth() {
-  return useContext(AuthContext);
+    return useContext(AuthContext);
 }
-//Dev notes
-//user auth
-//https://api.pryv.com/reference/#service-info
-/* let authSettings = {
-  spanButtonID: 'pryv-button', // span id the DOM that will be replaced by the Service specific button
-  onStateChange: pryvAuthStateChange, // event Listener for Authentication steps
-  authRequest: { // See: https://api.pryv.com/reference/#auth-request
-    requestingAppId: 'lib-js-test',
-    languageCode: 'fr', // optional (default english)
+//set up auth request for the application
+// See: https://api.pryv.com/reference/#auth-request
+const authRequest = {
+    requestingAppId: "MeetMyNeedsApp",
+    languageCode: "fr", // optional (default english)
     requestedPermissions: [
-      {
-        streamId: 'test',
-        defaultName: 'test',
-        level: 'manage'
-      }
+        {
+            streamId: "meet_my_needs_store",
+            defaultName: "meet_my_needs_store",
+            level: "manage",
+        },
     ],
     clientData: {
-      'app-web-auth:description': {
-        'type': 'note/txt', 'content': 'This is a consent message.'
-      }
+        "app-web-auth:description": {
+            type: "note/txt",
+            content: "This is a consent message.",
+        },
     },
-    // referer: 'my test with lib-js', // optional string to track registration source
-  }
-}; */
+};
+//cors in local
+const serviceInfoJson = {
+    register: "https://reg.pryv.me",
+    access: "https://access.pryv.me/access",
+    api: "https://{username}.pryv.me/",
+    name: "Pryv Lab",
+    home: "https://www.pryv.com",
+    support: "https://pryv.com/helpdesk",
+    terms: "https://pryv.com/pryv-lab-terms-of-use/",
+    eventTypes: "https://api.pryv.com/event-types/flat.json",
+    assets: {
+        definitions: "https://pryv.github.io/assets-pryv.me/index.json",
+    },
+};
 
 //context used to handle auth
 const AuthProvider = ({ children }) => {
-  //test
-  //const service = new Pryv.Service('https://reg.pryv.me/service/info');
-  //const apiEndpoint = await service.apiEndpointFor(username, token);
-  //const connection = new Pryv.Connection(apiEndpoint);
-  //const authSettings;
-  //const service;
-  //const serviceInfo = service.infoSync();
-  //const [authState, setAuthState] = useState(null);
-  //const [connection, setConnection] = useState(null);
+    const [connection, setConnection] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const signup = (email, password) => {
-    //do signup
-    const user = {
-      id: "userId",
-      role: "user",
-    };
-    //do login
-    setCurrentUser(user);
-    return user;
-  };
-
-  const login = (email, password) => {
-    //do login
-    const user = {
-      id: "userId",
-      role: "user",
-    };
-    setCurrentUser(user);
-
-    return user;
-  };
-
-  const logout = () => {
-    //do logout
-    setCurrentUser(null);
-    console.log("signed out");
-
-    return "signed out";
-  };
-
-  const resetPassword = (email) => {
-    //do reset password
-    return "password reset";
-  };
-
-  const updateEmail = (email) => {
-    //do update email
-    return "user email updated";
-  };
-
-  const updatePassword = (password) => {
-    //do update password
-    return "user password updated";
-  };
-
-  useEffect(() => {
-    setLoading(false);
-    //setup an event listener to check the user is still signed in
-    const unsubscribe = async (user) => {
-      setCurrentUser(user);
-      setLoading(false);
+    //possible states=> 'LOADING','INITIALIZED','NEED_SIGNIN','ACCEPTED','SIGNOUT'
+    const pryvAuthStateChange = (state) => {
+        // called each time the authentication state changed
+        console.log("##pryvAuthStateChange", state.id);
+        switch (state.id) {
+            case "LOADING":
+                console.log("LOADING");
+                break;
+            case "INITIALIZED":
+                console.log("INITIALIZED");
+                console.log(state);
+                setLoading(false);
+                break;
+            case "NEED_SIGNIN":
+                console.log("NEED_SIGNIN");
+                break;
+            case "ACCEPTED":
+                console.log("ACCEPTED");
+                setConnection(new Pryv.Connection(state.apiEndpoint));
+                break;
+            case "SIGNOUT":
+                console.log("SIGNOUT");
+                setConnection(null);
+                break;
+            default:
+                console.log(`DEFAULT`);
+        }
     };
 
-    return unsubscribe;
-  }, []);
+    //auth settings
+    //https://api.pryv.com/reference/#service-info
+    const authSettings = {
+        spanButtonID: "pryv-button", // span id the DOM that will be replaced by the Service specific button
+        onStateChange: pryvAuthStateChange, // event Listener for Authentication steps
+        authRequest,
+    };
 
-  const value = {
-    currentUser,
-    login,
-    signup,
-    logout,
-    resetPassword,
-    updateEmail,
-    updatePassword,
-  };
+    const login = (email, password) => {
+        //do login
+    };
 
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+    const logout = () => {
+        //do logout
+
+        console.log("signed out");
+    };
+
+    useEffect(async () => {
+        //initalize pryv auth
+        const auth = await Pryv.Auth.setupAuth(authSettings, null, serviceInfoJson);
+        //initalize pryv service
+        //const service = new Pryv.Service(null, serviceInfoJson);
+        console.log(auth);
+    }, []);
+
+    const value = {
+        connection,
+        login,
+        logout,
+    };
+
+    return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
