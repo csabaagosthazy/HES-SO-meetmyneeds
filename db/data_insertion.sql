@@ -67,12 +67,10 @@ INSERT INTO question_subcategory(label, lang_id, parent_category_id) VALUES
 ('Meine körperliche Gesundheit', 3, 8),
 ('Meine psychische Gesundheit', 3, 8);
 
-
 INSERT INTO resources (name, url) VALUES
-('test1', 'https://www.postgresql.org/docs/14/dml-insert.html'),
-('test2', 'https://www.postgresql.org/docs/current/sql-altertable.html'),
-('test3', 'https://www.w3schools.com/sql/sql_ref_foreign_key.asp');
-
+('MeetMyNeeds Website', 'https://www.heds-fr.ch/fr/recherche/themes/vieillissement/meetmyneeds/'),
+('Annonce projet', 'https://www.youtube.com/watch?v=ERXLAyIHABk&t=2s'),
+('Prototype presentation', 'https://www.youtube.com/watch?v=nGgtwY87c0o&list=PLJhJd78zc1c0WhbbHWeOycCIbl-qCC8VY&index=2');
 
 INSERT INTO pathology (name) VALUES
 ('demence'),
@@ -374,12 +372,6 @@ INSERT INTO subquestions(subquestion, parent_question_id, lang_id) VALUES
 ('eine medizinische Behandlung und die notwendige Nachsorge erhalten', 65, 3),
 ('Durchführung von notwendigen Evaluationen in Bezug auf meine psychischen Probleme, wie Depressionen, selbstverletzendes Verhalten, Erschöpfung, überwältigende Angstzustände oder extreme Reizbarkeit', 66, 3),
 ('eine medizinische Behandlung und die notwendige Nachsorge erhalten', 66, 3);
-
-INSERT INTO resources (name, url) VALUES
-('MeetMyNeeds Website', 'https://www.heds-fr.ch/fr/recherche/themes/vieillissement/meetmyneeds/'),
-('Annonce projet', 'https://www.youtube.com/watch?v=ERXLAyIHABk&t=2s'),
-('Prototype presentation', 'https://www.youtube.com/watch?v=nGgtwY87c0o&list=PLJhJd78zc1c0WhbbHWeOycCIbl-qCC8VY&index=2');
-
 
 INSERT INTO pathology (name) VALUES
 ('demence'),
