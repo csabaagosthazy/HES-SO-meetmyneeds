@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../application');
-const {getPool} = require("../database/pool");
 
 describe('resources API', () => {
     it('rejects missing ID parameter', async () => {
@@ -24,19 +23,11 @@ describe('resources API', () => {
         }
     })
 
-    it('responds with a resource_id key', async () => {
+    test.each([
+        'resource_id', 'name', 'url'
+    ])('responds with a %s key', async (resource_key) => {
         const response = await request(app).get('/api/resources?question_id=1');
-        expect(response.body[0].hasOwnProperty('resource_id')).toBe(true);
-    })
-
-    it('responds with a name key', async () => {
-        const response = await request(app).get('/api/resources?question_id=1');
-        expect(response.body[0].hasOwnProperty('name')).toBe(true);
-    })
-
-    it('responds with a url key', async () => {
-        const response = await request(app).get('/api/resources?question_id=1');
-        expect(response.body[0].hasOwnProperty('url')).toBe(true);
+        expect(response.body[0]).toHaveProperty(resource_key);
     })
 
     it('returns right resources according to the question', async () => {

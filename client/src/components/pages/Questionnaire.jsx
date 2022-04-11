@@ -6,7 +6,6 @@ import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
 import Question from "../question/Question";
 import CustomButton from "../button/CustomButton";
-import Result from "../pages/Result";
 
 //get questions by id and language
 //error handling
@@ -14,71 +13,64 @@ import Result from "../pages/Result";
 //split data array by pathology
 //create pagination based on pathology
 
-const Questionnaire = (props) => {
+const Questionnaire = () => {
   let navigate = useNavigate();
   let { id, lang, colorSet } = useParams();
 
   const [origin, setOrigin] = useState("");
+  // Array of subcategories with their respective questions
   const [data, setData] = useState("");
   const [error, setError] = useState("");
   const [numberOfPages, setNumberOfPages] = useState(1);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
+  // Present subcategory shown to the user
   const [pageData, setPagedata] = useState("");
   const [givenAnswers, setGivenAnswers] = useState({}); // question: id, answer: string
-  const [showData, setShowData] = useState(false); //temporary to navigate to the result page
 
   useEffect(() => {
-    //call fetch
-    let isMounted = true;
     (async () => {
-      getQuestions(id, lang)
-        .then((obj) => {
-          if (isMounted) {
-            paginate(obj.questions);
-            createAnswers(obj.questions);
-            setOrigin(obj);
-          }
-        })
-        .catch((err) => setError(err));
+      try {
+        const response = await getQuestions(id, lang);
+        paginate(response.questions);
+        createAnswers(response.questions);
+        setOrigin(response);
+      } catch (err){
+        setError(err);
+      }
     })();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  }, [id, lang]);
 
   /**
    * Creates question-answers relation
    * @param {array} arr
    */
   const createAnswers = (arr) => {
-    let answerObj = {};
-    arr.forEach((question) => {
-      answerObj = { ...answerObj, [question.question_id]: "" };
-    });
-    console.log(answerObj);
-    setGivenAnswers({ ...answerObj });
+    let answerObj = Object.fromEntries(arr.map(question => [question.question_id, ""]));
+    setGivenAnswers(answerObj);
   };
+
   /**
    * Creates pagination attributes
-   * @param {array} dataArr
+   * @param {array} main_questions The array of main questions returned by the API
    */
-  const paginate = (dataArr) => {
-    //number of pages are dependent on how many subcategories we have
-    //sub category label is needed for the headers
+  const paginate = (main_questions) => {
     const pages = [];
-    dataArr.forEach((obj) => {
-      if (!pages.some((page) => page.id === obj.sub_category_id))
-        pages.push({ id: obj.sub_category_id, label: obj.sub_category_label });
+
+    // For each main question in the array of main questions, check if its subcategory is present in the array of pages.
+    // The pages array determines how many pages are present -- one page contains one subcategory with its questions --
+    // and the titles of the subcategory
+    main_questions.forEach((main_question) => {
+      if (!pages.some((page) => page.id === main_question.sub_category_id))
+        pages.push({ id: main_question.sub_category_id, label: main_question.sub_category_label });
     });
+
     setNumberOfPages(pages.length);
-    const pagesData = [];
-    pages.forEach((unique) =>
-      pagesData.push({ ...unique, data: dataArr.filter((q) => q.sub_category_id === unique.id) })
-    );
-    //split data to arrays by subcategories
+
+    // Put the questions into the object representing the subcategory
+    const pagesData = pages.map(page => ({...page, data: main_questions.filter(q => q.sub_category_id === page.id)}));
+
     setData(pagesData);
-    setPagedata(pagesData[0]);
-    console.log(pagesData);
+    setPagedata(pagesData[0]); // Show the first subcategory to the user
   };
   /**
    * Sets current page for the pagination
@@ -95,43 +87,30 @@ const Questionnaire = (props) => {
   };
 
   const handleFinish = () => {
-    /*     const answers = [{
-      question_id:1, 
-      question:"Actually I need info about diagnostics",
-      answer_id: 3,
-      label:"a bit important",
-      technicalKey: "medium"
-  
-  }]
-   */
     const results = [];
     //{questionId : answer(string) }
 
-    Object.entries(givenAnswers).forEach(([key, value]) => {
-      let question = origin.questions.filter((q) => parseInt(q.question_id) === parseInt(key));
-      const answer = Object.entries(origin.answers).find(([k, v]) => v.technicalKey === value);
-      console.log(question);
-      console.log(answer);
+    Object.entries(givenAnswers).forEach(([question_id, answer_technical_key]) => {
+      console.log(question_id, answer_technical_key);
+      let question = origin.questions.find(q => parseInt(q.question_id) === parseInt(question_id));
+      const answer = Object.values(origin.answers).find((answer) => answer.technicalKey === answer_technical_key);
+
       let obj = {
-        question_id: question[0].question_id,
-        question: question[0].question,
+        question_id: question.question_id,
+        question: question.question,
         answer_id: answer ? answer[0] : -1,
-        label: answer ? answer[1].label : "notAnwered",
-        technicalKey: answer ? answer[1].technicalKey : "notanwered",
+        label: answer ? answer.label : "notAnwered",
+        technicalKey: answer ? answer.technicalKey : "notanwered",
       };
+
       results.push(obj);
     });
-    //create session store object
-    //depends on the requirements
 
-    const obj = { color: colorSet, results };
-    const jObj = JSON.stringify(obj);
+    // Create session store object and store it in the sessionStorage
+    const serializedAnswers = JSON.stringify({ color: colorSet, results });
+    sessionStorage.setItem("answers", serializedAnswers);
 
-    console.log(jObj);
-    //call session store
-    sessionStorage.setItem("answers", jObj);
-
-    //go to result page
+    // Send the user to the results page where they will be displayed
     navigate("/results");
   };
 
@@ -164,7 +143,6 @@ const Questionnaire = (props) => {
             Finish
           </CustomButton>
         ) : null}
-        {showData ? <Result answers={sessionStorage.getItem("answers")} /> : ""}
       </Card.Footer>
     </Card>
   );

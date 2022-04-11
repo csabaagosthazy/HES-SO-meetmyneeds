@@ -3,34 +3,18 @@ import {Modal} from "react-bootstrap";
 import {getResources} from "../../services/api/service";
 
 const Resources = (props) => {
-    const [resources, setResources] = useState("");
-    const [error, setError] = useState("");
+    const [resources, setResources] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        //call fetch
-        let isMounted = true;
         (async () => {
-            getResources(props.question_id)
-                .then((obj) => {
-                    if (isMounted) {
-                        setResources(obj);
-                    }
-                })
-                .catch((err) => setError(err));
+            try {
+                setResources(await getResources(props.question_id))
+            } catch (e) {
+                setError(e);
+            }
         })();
-        return () => {
-            isMounted = false;
-        };
-    }, []);
-
-    let resources_render = "";
-    if (resources) {
-        resources_render = resources.map((item) => {
-            return (<div key={item.resource_id}>
-                <p>{item.name}, <a href={item.url} target="_blank">{item.url}</a></p>
-            </div>)
-        })
-    }
+    }, [props.question_id]);
 
     return (
         <Modal
@@ -47,7 +31,7 @@ const Resources = (props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {resources_render}
+                {resources && resources.map(item => <p key={item.resource_id}>{item.name}, <a href={item.url} target="_blank">{item.url}</a></p>)}
             </Modal.Body>
         </Modal>
     );

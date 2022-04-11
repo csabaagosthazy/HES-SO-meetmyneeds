@@ -12,11 +12,11 @@ describe("questions API", () => {
         expect(response.status).toEqual(400);
     })
 
-    it('sends the question, answers and subcategories objects', async () => {
+    test.each([
+        'questions', 'answers', 'subcategories'
+    ])('sends the property [%s] in the response', async (prop) => {
         const response = await request(app).get('/api/questions?category=1&language=fr');
-        expect(response.body).toHaveProperty('questions');
-        expect(response.body).toHaveProperty('answers');
-        expect(response.body).toHaveProperty('subcategories');
+        expect(response.body).toHaveProperty(prop);
     })
 
     it('orders the questions correctly', async () => {
@@ -45,7 +45,7 @@ describe("questions API", () => {
     ])('returns required attributes on questions (%s)', async (attr) => {
         const response = await request(app).get('/api/questions?category=3&language=fr');
         const question_obj = response.body.questions[0];
-        expect(question_obj.hasOwnProperty(attr)).toBeTruthy();
+        expect(question_obj).toHaveProperty(attr);
     });
 
     test.each([
@@ -53,7 +53,7 @@ describe("questions API", () => {
     ])('returns required attributes on sub-questions (%s)', async (attr) => {
         const response = await request(app).get('/api/questions?category=3&language=fr');
         const question_obj = response.body.questions[0].subquestions[0];
-        expect(question_obj.hasOwnProperty(attr)).toBeTruthy();
+        expect(question_obj).toHaveProperty(attr);
     });
 
     it('groups child questions correctly', async () => {
@@ -69,7 +69,7 @@ describe("questions API", () => {
     })
 
     it('returns the sub-questions in the right language', async () => {
-        const accepted_subquestion_ids = ["89", "90", "91"];
+        const accepted_subquestion_ids = ["56", "57", "58"];
 
         const response = await request(app).get('/api/questions?category=3&language=fr');
         // We test on question with ID 16
@@ -101,7 +101,7 @@ describe("questions API", () => {
             'nicht betroffen',
         ];
 
-        const response = await request(app).get('/api/questions?category=13&language=de');
+        const response = await request(app).get('/api/questions?category=6&language=de');
         const returned_answer_labels = Object.values(response.body.answers).map(a => a.label);
 
         expect(returned_answer_labels.length).toBe(german_labels.length);
@@ -113,7 +113,7 @@ describe("questions API", () => {
     test.each([
         'yes', 'no'
     ])('does not return the %s answer technical key', async (rejected_technical_key) => {
-        const response = await request(app).get('/api/questions?category=13&language=de');
+        const response = await request(app).get('/api/questions?category=6&language=de');
         const returned_technical_keys = Object.values(response.body.answers).map(a => a.technicalKey);
         expect(returned_technical_keys.indexOf(rejected_technical_key)).toBe(-1);
     });
