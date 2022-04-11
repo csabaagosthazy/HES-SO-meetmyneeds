@@ -36,6 +36,8 @@ const Result = () => {
             case "already_filled":
                 already_filled.add([element.question_id, element.question]);
                 break;
+            default:
+                // no-op
         }
     });
 
