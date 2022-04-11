@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Pagination from "react-bootstrap/Pagination";
 import PropTypes from "prop-types";
 
@@ -31,7 +31,7 @@ const CustomPagination = ({ pageNo, currentPage, setCurrentPage, alwaysShown = t
   const isCurrentPageFirst = currentPage === 1;
   const isCurrentPageLast = currentPage === pagesCount;
 
-  useEffect(setLastPageAsCurrent, [pagesCount]);
+  useEffect(setLastPageAsCurrent, [setCurrentPage, pagesCount, currentPage]);
 
   let isPageNumberOutOfRange;
 
