@@ -201,7 +201,7 @@ paths:
         - $ref: '#/components/parameters/language'
       responses:
         "200":
-          description: The list of categories
+          description: The list of categories and the number of question related
           content:
             application/json:
               schema:
