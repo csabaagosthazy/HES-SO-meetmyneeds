@@ -24,37 +24,15 @@ describe('categories API', () => {
         }
     })
 
-    it('responds with a category_id key', async () => {
+    test.each([
+        'category_id', 'label', 'color_set'
+    ])('responds with a %s key', async (attr) => {
         const response = await request(app).get('/api/categories?language=fr');
-        expect(response.body[0].hasOwnProperty('category_id')).toBe(true);
-    })
-
-    it('responds with a label key', async () => {
-        const response = await request(app).get('/api/categories?language=fr');
-        expect(response.body[0].hasOwnProperty('label')).toBe(true);
-    })
-
-    it('responds with a color set property', async () => {
-        const response = await request(app).get('/api/categories?language=fr');
-        expect(response.body[0].hasOwnProperty('color_set')).toBe(true);
-    })
-
-    it('doesn\'t return sub-categories', async () => {
-        // Categories considered as sub-categories are in the questions table where the sub_category_id is not null
-        let pool = getPool();
-        let subcategory_ids_result = await pool.query("SELECT DISTINCT sub_category_id FROM questions WHERE sub_category_id IS NOT NULL");
-        let subcategory_ids = subcategory_ids_result.rows.map(r => r.sub_category_id);
-
-        const response = await request(app).get('/api/categories?language=fr');
-        let returned_category_ids = response.body.map(c => c.category_id);
-
-        for(category_id of returned_category_ids) {
-            expect(subcategory_ids.indexOf(category_id)).toBe(-1)
-        }
+        expect(response.body[0]).toHaveProperty(attr);
     })
 
     it('returns categories in the requested language', async () => {
-        const german_category_ids = ["18", "19", "20", "21"];
+        const german_category_ids = ["5", "6", "7", "8"];
         const response = await request(app).get('/api/categories?language=de');
         const returned_category_ids = response.body.map(c => c.category_id);
 

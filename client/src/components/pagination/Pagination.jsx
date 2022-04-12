@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Pagination from "react-bootstrap/Pagination";
 import PropTypes from "prop-types";
 
 const CustomPagination = ({ pageNo, currentPage, setCurrentPage, alwaysShown = true }) => {
-  const pagesCount = pageNo;
-  const isPaginationShown = alwaysShown ? true : pagesCount > 1;
-  const isCurrentPageFirst = currentPage === 1;
-  const isCurrentPageLast = currentPage === pagesCount;
-
   const changePage = (number) => {
     if (currentPage === number) return;
     setCurrentPage(number);
@@ -18,12 +13,10 @@ const CustomPagination = ({ pageNo, currentPage, setCurrentPage, alwaysShown = t
   };
 
   const onPreviousPageClick = () => {
-    console.log("current page", currentPage);
     changePage(currentPage - 1);
   };
 
   const onNextPageClick = () => {
-    console.log("current page", currentPage);
     changePage(currentPage + 1);
   };
 
@@ -32,6 +25,13 @@ const CustomPagination = ({ pageNo, currentPage, setCurrentPage, alwaysShown = t
       setCurrentPage(pagesCount);
     }
   };
+
+  const pagesCount = pageNo;
+  const isPaginationShown = alwaysShown ? true : pagesCount > 1;
+  const isCurrentPageFirst = currentPage === 1;
+  const isCurrentPageLast = currentPage === pagesCount;
+
+  useEffect(setLastPageAsCurrent, [setCurrentPage, pagesCount, currentPage]);
 
   let isPageNumberOutOfRange;
 
@@ -61,8 +61,6 @@ const CustomPagination = ({ pageNo, currentPage, setCurrentPage, alwaysShown = t
 
     return null;
   });
-
-  useEffect(setLastPageAsCurrent, [pagesCount]);
 
   return (
     <>

@@ -6,18 +6,14 @@ const Subquestion = ({ subquestions }) => {
     <Form>
       {/*it is hardcoded for now: if this sentence is taken from DB/passed via props, need to be changed*/}
       <Form.Label>More precisely</Form.Label>
-      {subquestions.map(({ question_id, question }) => {
-        {
-          return (
-            <Form.Check
-              key={question_id}
-              type={"checkbox"}
-              id={`checkbox${question_id}`}
-              label={question}
-            />
-          );
-        }
-      })}
+      {subquestions.map(({ question_id, question }) => (
+        <Form.Check
+          key={question_id}
+          type={"checkbox"}
+          id={`checkbox${question_id}`}
+          label={question}
+        />
+      ))}
     </Form>
   );
 };
