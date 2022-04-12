@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardGroup, Spinner } from "react-bootstrap";
 import { getCategories } from "../../services/api/service";
+import { CustomButton } from "../button/CustomButton";
 
-import info from "../../assets/info_empty.png";
-import arrow from "../../assets/arrow_empty.png";
-import routes from "../../assets/routes_empty.png";
-import firstAid from "../../assets/first_aid_box_empty.png";
+import info from "../../assets/need_for_information.png";
+import develop from "../../assets/need_to_develop_my_skills.png";
+import support from "../../assets/need_for_support.png";
+import health from "../../assets/need_to_take_care_of_my_health.png";
 import ErrorElement from "../errors/ErrorElement";
 
-const images = [info, arrow, routes, firstAid];
+const images = [info, develop, support, health];
 
 const QuestionnaireSelector = () => {
     //language will be selected by the user
+    const navigate = useNavigate();
     const userSelectedLanguage = "fr";
 
     const [categories, setCategories] = useState(null);
@@ -23,6 +25,10 @@ const QuestionnaireSelector = () => {
             getCategories(userSelectedLanguage).then(setCategories).catch(setError);
         })();
     }, []);
+
+    const navigateToQuestionnaire = (questionId, language, color) => {
+        navigate("/questionnaire", { state: { id: questionId, lang: language, colorSet: color } });
+    };
 
     if (!categories && !error) return <Spinner animation="border" variant="primary" />;
     if (error)
@@ -44,17 +50,39 @@ const QuestionnaireSelector = () => {
             <Card.Body>
                 <CardGroup>
                     {categories.map((category, idx) => (
-                        <Card style={{ width: "18rem" }} key={category.category_id}>
-                            <Card.Img variant="top" src={images[idx % images.length]} />
+                        <Card
+                            className={"card text-center"}
+                            style={{ width: "18rem" }}
+                            key={category.category_id}
+                        >
+                            <Card.Img
+                                variant="top"
+                                src={images[idx % images.length]}
+                                width={200}
+                                height={180}
+                            />
+
                             <Card.Body>
                                 <Card.Title>{category.label}</Card.Title>
+                            </Card.Body>
+                            <Card.Footer>
                                 <Card.Text>{`${category.questions_number} questions`}</Card.Text>
-                                <Link
-                                    to={`/questionnaire/${category.category_id}/${userSelectedLanguage}/${category.color_set}`}
+                            </Card.Footer>
+                            <Card.Footer>
+                                <CustomButton
+                                    variant={"s"}
+                                    bgColor={"lightBlue"}
+                                    onClick={() =>
+                                        navigateToQuestionnaire(
+                                            category.category_id,
+                                            userSelectedLanguage,
+                                            category.color_set
+                                        )
+                                    }
                                 >
                                     Evaluer mes besoins dans ce domaine
-                                </Link>
-                            </Card.Body>
+                                </CustomButton>
+                            </Card.Footer>
                         </Card>
                     ))}
                 </CardGroup>
