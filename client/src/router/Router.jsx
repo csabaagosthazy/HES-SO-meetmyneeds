@@ -17,7 +17,7 @@ const MainRouter = ({ children }) => {
                     <Route path="selector" element={<QuestionnaireSelector />} />
                     <Route path="login" element={<LoginPryv />} />
                     <Route path="signup" element={<SignUp />} />
-                    <Route path="questionnaire/:id/:lang/:colorSet" element={<Questionnaire />} />
+                    <Route path="questionnaire" element={<Questionnaire />} />
                     <Route path="results" element={<Result />} />
                 </Route>
             </Routes>

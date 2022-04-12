@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardGroup, Spinner } from "react-bootstrap";
 import { getCategories } from "../../services/api/service";
+import { CustomButton } from "../button/CustomButton";
 
 import info from "../../assets/info_empty.png";
 import arrow from "../../assets/arrow_empty.png";
@@ -13,6 +14,7 @@ const images = [info, arrow, routes, firstAid];
 
 const QuestionnaireSelector = () => {
     //language will be selected by the user
+    const navigate = useNavigate();
     const userSelectedLanguage = "fr";
 
     const [categories, setCategories] = useState(null);
@@ -23,6 +25,10 @@ const QuestionnaireSelector = () => {
             getCategories(userSelectedLanguage).then(setCategories).catch(setError);
         })();
     }, []);
+
+    const navigateToQuestionnaire = (questionId, language, color) => {
+        navigate("/questionnaire", { state: { id: questionId, lang: language, colorSet: color } });
+    };
 
     if (!categories && !error) return <Spinner animation="border" variant="primary" />;
     if (error)
@@ -49,12 +55,22 @@ const QuestionnaireSelector = () => {
                             <Card.Body>
                                 <Card.Title>{category.label}</Card.Title>
                                 <Card.Text>{`${category.questions_number} questions`}</Card.Text>
-                                <Link
-                                    to={`/questionnaire/${category.category_id}/${userSelectedLanguage}/${category.color_set}`}
+                            </Card.Body>
+                            <Card.Footer>
+                                <CustomButton
+                                    variant={"s"}
+                                    bgColor={"lightBlue"}
+                                    onClick={() =>
+                                        navigateToQuestionnaire(
+                                            category.category_id,
+                                            userSelectedLanguage,
+                                            category.color_set
+                                        )
+                                    }
                                 >
                                     Evaluer mes besoins dans ce domaine
-                                </Link>
-                            </Card.Body>
+                                </CustomButton>
+                            </Card.Footer>
                         </Card>
                     ))}
                 </CardGroup>
