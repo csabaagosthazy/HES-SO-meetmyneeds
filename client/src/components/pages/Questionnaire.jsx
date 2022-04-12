@@ -6,6 +6,7 @@ import { getQuestions } from "../../services/api/service";
 import CustomPagination from "../pagination/Pagination";
 import Question from "../question/Question";
 import CustomButton from "../button/CustomButton";
+import ErrorElement from "../errors/ErrorElement";
 
 //get questions by id and language
 //error handling
@@ -114,7 +115,9 @@ const Questionnaire = () => {
     navigate("/results");
   };
 
-  if (!pageData || !origin) return <Spinner animation="border" variant="primary" />;
+  if ((!pageData || !origin) && !error) return <Spinner animation="border" variant="primary" />;
+  if(error) return <ErrorElement err={error}>Erreur lors du chargement du questionnaire</ErrorElement>;
+
   //renders the questions
   return (
     <Card>

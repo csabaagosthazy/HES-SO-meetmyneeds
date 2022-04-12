@@ -1,20 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import {getResources} from "../../services/api/service";
+import ErrorElement from "../errors/ErrorElement";
 
 const Resources = (props) => {
     const [resources, setResources] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        (async () => {
-            try {
-                setResources(await getResources(props.question_id))
-            } catch (e) {
-                setError(e);
-            }
-        })();
+        getResources(props.question_id)
+            .then(setResources)
+            .catch(setError);
     }, [props.question_id]);
+
+    let modal_body;
+
+    if(!resources && !error){
+        modal_body = <p>Chargement des ressources</p>;
+    } else if (error){
+        modal_body = <ErrorElement err={error}>Une erreur de chargement de la liste des ressources est survenue.</ErrorElement>
+    } else {
+        modal_body = resources.map(item => <p key={item.resource_id}>{item.name}, <a href={item.url} rel="noreferrer" target="_blank">{item.url}</a></p>);
+    }
 
     return (
         <Modal
@@ -31,7 +38,7 @@ const Resources = (props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {resources && resources.map(item => <p key={item.resource_id}>{item.name}, <a href={item.url} target="_blank">{item.url}</a></p>)}
+                {modal_body}
             </Modal.Body>
         </Modal>
     );
