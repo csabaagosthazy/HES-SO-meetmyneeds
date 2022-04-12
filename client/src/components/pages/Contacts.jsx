@@ -1,20 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import {getContacts} from "../../services/api/service";
+import ErrorElement from "../errors/ErrorElement";
 
 const Contacts = (props) => {
     const [contacts, setContacts] = useState([]);
-    const [error, setError] = useState("");
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        (async () => {
-            try{
-                setContacts(await getContacts(props.question_id));
-            }catch (e) {
-                setError(e);
-            }
-        })();
+        getContacts(props.question_id)
+            .then(setContacts)
+            .catch(setError);
     }, [props.question_id]);
+
+    let modal_body;
+
+    if(!contacts && !error){
+        modal_body = <p>Chargement des informations de contact</p>;
+    } else if (error){
+        modal_body = <ErrorElement err={error}>Une erreur de chargement de la liste des contacts est survenue.</ErrorElement>
+    } else {
+        modal_body = contacts.map(contact => <p key={contact.service_id}>{contact.organizationName}, {contact.address}</p>);
+    }
 
     return (
         <Modal
@@ -31,7 +38,7 @@ const Contacts = (props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {contacts && contacts.map(contact => <p key={contact.service_id}>{contact.organizationName}, {contact.address}</p>)}
+                {modal_body}
             </Modal.Body>
         </Modal>
     );

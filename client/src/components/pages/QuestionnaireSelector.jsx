@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {Alert, Card, CardGroup, Spinner} from "react-bootstrap";
+import {Card, CardGroup, Spinner} from "react-bootstrap";
 import { getCategories } from "../../services/api/service";
 
 import info from "../../assets/info_empty.png";
 import arrow from "../../assets/arrow_empty.png";
 import routes from "../../assets/routes_empty.png";
 import firstAid from "../../assets/first_aid_box_empty.png";
+import ErrorElement from "../errors/ErrorElement";
 
 const images = [
   info, arrow, routes, firstAid
@@ -21,16 +22,14 @@ const QuestionnaireSelector = () => {
 
   useEffect(() => {
     (async () => {
-      try{
-        setCategories(await getCategories(userSelectedLanguage));
-      } catch (e){
-        setError(e)
-      }
+        getCategories(userSelectedLanguage)
+            .then(setCategories)
+            .catch(setError)
     })();
   }, []);
 
   if (!categories && !error) return <Spinner animation="border" variant="primary" />;
-  if(error) return <Alert color="danger">Erreur de chargement de la page: {error}</Alert>;
+  if(error) return <ErrorElement err={error}>Erreur de chargement des catégories des questions</ErrorElement>;
 
   return (
     <Card>
