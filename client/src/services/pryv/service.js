@@ -43,7 +43,7 @@ const serviceInfoJson = {
 //context used to handle auth
 const AuthProvider = ({ children }) => {
     const [connection, setConnection] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     //possible states=> 'LOADING','INITIALIZED','NEED_SIGNIN','ACCEPTED','SIGNOUT'
     const pryvAuthStateChange = (state) => {
@@ -86,22 +86,29 @@ const AuthProvider = ({ children }) => {
         //do login
     };
 
+    const initalize = async () => {
+        //initalize pryv auth
+        const auth = await Pryv.Auth.setupAuth(authSettings, null, serviceInfoJson);
+        console.log(auth);
+    };
+
     const logout = () => {
         //do logout
-
+        setConnection(null);
         console.log("signed out");
     };
 
     useEffect(async () => {
         //initalize pryv auth
-        const auth = await Pryv.Auth.setupAuth(authSettings, null, serviceInfoJson);
+        //const auth = await Pryv.Auth.setupAuth(authSettings, null, serviceInfoJson);
         //initalize pryv service
         //const service = new Pryv.Service(null, serviceInfoJson);
-        console.log(auth);
+        //console.log(auth);
     }, []);
 
     const value = {
         connection,
+        initalize,
         login,
         logout,
     };
