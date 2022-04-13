@@ -1,5 +1,13 @@
 import * as commonmark from "commonmark";
 
+/**
+ * This function takes a Markdown string and returns the HTML version of the string, while taking care
+ * of neutralising raw HTML tags present in the input string and removing the `<p>` wrapper in the
+ * resulting string.
+ *
+ * @param {string} markdown_string
+ * @returns {string}
+ */
 const markdown_render = (markdown_string) => {
     const parser = new commonmark.Parser();
     /*
