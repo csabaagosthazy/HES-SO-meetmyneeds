@@ -1,16 +1,14 @@
 import React, {useState} from "react";
-import * as commonmark from "commonmark";
 import {COLORS} from "../../global/colors";
 import CustomButton from "../button/CustomButton";
 import Contacts from "./Contacts";
 import Resources from "./Resources";
 import {Card} from "react-bootstrap";
+import markdown_render from "../../helpers/markdown_render";
 
 const Result = () => {
     const [contacts, showContacts] = useState(false);
     const [resources, showResources] = useState(false);
-    const reader = new commonmark.Parser();
-    const writer = new commonmark.HtmlRenderer();
 
     const questionnaireAnswers = JSON.parse(sessionStorage.getItem("answers"));
     const answers = questionnaireAnswers.results;
@@ -47,11 +45,9 @@ const Result = () => {
     //function that displays questions in set under the certain label
     const displayQuestions = (questionSet, labelSet, label_tag) => {
         let questions_render = [...questionSet].map(([question_id, question_label]) => {
-            const question_to_parse = reader.parse(question_label);
-            const question_to_display = writer.render(question_to_parse);
             return (
                 <Card.Body style={{display: 'flex', flexDirection: 'row', borderBottom:"1px solid", alignItems:"center"}} key={question_id}>
-                    <Card.Title style={{flex: 1}}><p dangerouslySetInnerHTML={{__html: question_to_display}} /></Card.Title>
+                    <Card.Title style={{flex: 1}}><p dangerouslySetInnerHTML={{__html: markdown_render(question_label)}} /></Card.Title>
                     <CustomButton variant={"s"} bgColor={"lightgrey"} onClick={() => showContacts(true)}>Qui contacter?</CustomButton>
                     <CustomButton variant={"s"} bgColor={"yellow"} onClick={() => showResources(true)}>Ressources</CustomButton>
                     <Resources  showResources={resources}
