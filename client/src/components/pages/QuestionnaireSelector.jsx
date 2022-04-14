@@ -58,8 +58,8 @@ const QuestionnaireSelector = () => {
                             <Card.Img
                                 variant="top"
                                 src={images[idx % images.length]}
-                                width={200}
-                                height={180}
+                                width={"70%"}
+                                height={"85%"}
                             />
 
                             <Card.Body>

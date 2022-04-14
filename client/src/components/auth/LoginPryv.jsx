@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../services/pryv/service";
+import { Container, Card } from "react-bootstrap";
 
 const LoginPryv = () => {
     const navigate = useNavigate();
@@ -23,14 +24,20 @@ const LoginPryv = () => {
         }
     }, [connection]);
     return (
-        <div>
-            <h1>Meet My Needs website uses Pryv to keep private data safe</h1>
-            <p>To use expanded functionalities please sign in</p>
-            <p>
-                <span id="pryv-button"></span> <strong>⇠ sign in here</strong>
-                <br />
-            </p>
-        </div>
+        <Container className="row justify-content-md-center">
+            <Card className="col-md-6 text-center mb-4">
+                <Card.Header>Login with Pryv</Card.Header>
+                <Card.Title>Meet My Needs website uses Pryv to keep private data safe</Card.Title>
+
+                <Card.Body>
+                    <Card.Subtitle>To use expanded functionalities please sign in</Card.Subtitle>
+                </Card.Body>
+                <Card.Footer>
+                    <span id="pryv-button"></span>
+                    <br />
+                </Card.Footer>
+            </Card>
+        </Container>
     );
 };
 export default LoginPryv;

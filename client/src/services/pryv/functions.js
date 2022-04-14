@@ -9,10 +9,12 @@ export const getLastEvents = async (connection) => {
             },
         },
     ];
-    connection.api(data).then(function (res, err) {
+    const res = await connection.api(data).then(function (res, err) {
         // convert pryv.Event objects to plain data for display
-        console.log(res[0].events);
+        return res[0].events;
     });
+
+    return res;
 };
 
 export const createEvent = async (connection, content) => {
