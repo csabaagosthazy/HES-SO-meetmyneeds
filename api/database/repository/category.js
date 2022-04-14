@@ -14,12 +14,16 @@ module.exports = {
         let results = await pool.query(
             `SELECT qc.category_id,
                     qc.label,
-                    qc.question_category_color_set AS color_set
+                    qc.question_category_color_set AS color_set,
+                    count(DISTINCT q.question_set) as questions_number
              FROM question_category qc
                 INNER JOIN languages l on qc.lang_id = l.lang_id
+                INNER JOIN questions q on qc.category_id = q.category_id
              WHERE qc.question_category_color_set IS NOT NULL
                 AND l.name = $1
-             ORDER BY qc.label`,
+                AND q.category_id = qc.category_id
+            GROUP BY qc.category_id
+            ORDER BY qc.category_id`,
             [language]
         )
 

@@ -25,7 +25,7 @@ describe('categories API', () => {
     })
 
     test.each([
-        'category_id', 'label', 'color_set'
+        'category_id', 'label', 'color_set', 'questions_number'
     ])('responds with a %s key', async (attr) => {
         const response = await request(app).get('/api/categories?language=fr');
         expect(response.body[0]).toHaveProperty(attr);
