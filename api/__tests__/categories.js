@@ -41,15 +41,4 @@ describe('categories API', () => {
             expect(german_category_ids.indexOf(returned_category_id)).not.toBe(-1);
         }
     })
-
-    it('returns question_number for the right categories', async () => {
-        const expected_number_of_questions_per_category = ["9", "6", "16", "2"];
-        const response = await request(app).get('/api/categories?language=fr');
-        const returned_number_of_questions_per_category = Object.values(response.body).map(q => q.questions_number);
-
-        expect(returned_number_of_questions_per_category.length).toEqual(expected_number_of_questions_per_category.length)
-        for(const returned_response_number of returned_number_of_questions_per_category){
-            expect(expected_number_of_questions_per_category.indexOf(returned_response_number)).not.toBe(-1);
-        }
-    })
 })
