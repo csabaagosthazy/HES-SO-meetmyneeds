@@ -17,11 +17,52 @@ INSERT INTO organization_types (name) VALUES
 INSERT INTO organizations (name, latitude, longitude, address, organization_type_id, canton_id) VALUES
 ('Coeur à coeur', 46.2, 48.4, 'Chemin de Fribourg 2, 1700 Fribourg', 1, 1),
 ('La chaine du bonheur', 49.2, 44.4, 'Chemin de la fôret 4, 1700 Fribourg', 3, 1),
-('Idea', 46.2, 48.4, 'Chemin de Fribourg 50, 1700 Fribourg', 1, 2);
+('Idea', 46.2, 48.4, 'Chemin de Fribourg 50, 1700 Fribourg', 1, 2),
+('Médecin traitant', 46.2, 48.4, 'Chemin de Fribourg 45, 1700 Fribourg', 1, 2);
 
 INSERT INTO services (name, description, organization_id, service_type_id) VALUES
-('Aide monétaire xyz', 'Petite aide mensuelle cash', 3, 3),
-('Aide personne xyz', 'Petite aide pour faire le ménage', 2, 4);
+('Aide monétaire xyz', '# Idea
+
+ - Description of the offer
+  > Brief description of the service offered
+	 What do I receive as a caregiver?
+	 How does this offer meet this specific need?
+
+ - Contact
+>Phone number
+Website
+
+ - Location
+>Description of the location of the service (specific location? at home?), scope of the activity area
+
+ - Conditions
+ >Specify here if special conditions, e.g. related to age, place of residence,...
+
+ - Rates
+> Specify here the rates and the possibility of receiving financial aid, if reimbursed, etc.', 3, 3),
+('Aide personne xyz', '# La chaine du bonheur
+
+ - Description of the offer
+  > Brief description of the service offered
+	 What do I receive as a caregiver?
+	 How does this offer meet this specific need?
+
+ - Contact
+>Phone number
+Website
+
+ - Location
+>Description of the location of the service (specific location? at home?), scope of the activity area
+
+ - Conditions
+ >Specify here if special conditions, e.g. related to age, place of residence,...
+
+ - Rates
+> Specify here the rates and the possibility of receiving financial aid, if reimbursed, etc.', 2, 4),
+('Aide personne xyz', '# Médecin traitant
+
+ - Description of the offer
+  > Sample text that indicates that the caregiver''s attending physician is trained to meet this need.', 4, 4);
 
 INSERT INTO languages (name) VALUES
 ('fr'),
@@ -500,68 +541,101 @@ INSERT INTO resource_question (question_id, resource_id)
 INSERT INTO service_question (question_id, service_id)
 VALUES (1, 1),
        (1, 2),
+       (1, 3),
        (2, 1),
        (2, 2),
+       (2, 3),
        (3, 1),
        (3, 2),
+       (3, 3),
        (4, 1),
        (4, 2),
+       (4, 3),
        (5, 1),
        (5, 2),
+       (5, 3),
        (6, 1),
        (6, 2),
+       (6, 3),
        (7, 1),
        (7, 2),
+       (7, 3),
        (8, 1),
        (8, 2),
+       (8, 3),
        (9, 1),
        (9, 2),
+       (9, 3),
        (10, 1),
        (10, 2),
+       (10, 3),
        (11, 1),
        (11, 2),
+       (11, 3),
        (12, 1),
        (12, 2),
+       (12, 3),
        (13, 1),
        (13, 2),
+       (13, 3),
        (14, 1),
        (14, 2),
+       (14, 3),
        (15, 1),
        (15, 2),
+       (15, 3),
        (16, 1),
        (16, 2),
+       (16, 3),
        (17, 1),
        (17, 2),
+       (17, 3),
        (18, 1),
        (18, 2),
+       (18, 3),
        (19, 1),
        (19, 2),
+       (19, 3),
        (20, 1),
        (20, 2),
+       (20, 3),
        (21, 1),
        (21, 2),
+       (21, 3),
        (22, 1),
        (22, 2),
+       (22, 3),
        (23, 1),
        (23, 2),
+       (23, 3),
        (24, 1),
        (24, 2),
+       (24, 3),
        (25, 1),
        (25, 2),
+       (25, 3),
        (26, 1),
        (26, 2),
+       (26, 3),
        (27, 1),
        (27, 2),
+       (27, 3),
        (28, 1),
        (28, 2),
+       (28, 3),
        (29, 1),
        (29, 2),
+       (29, 3),
        (30, 1),
        (30, 2),
+       (30, 3),
        (31, 1),
        (31, 2),
+       (31, 3),
        (32, 1),
        (32, 2),
+       (32, 3),
        (33, 1),
-       (33, 2);
+       (33, 2),
+       (33, 3);
 
