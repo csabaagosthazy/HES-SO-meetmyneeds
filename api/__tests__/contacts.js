@@ -32,7 +32,7 @@ describe('resources API', () => {
     });
 
     it('returns right contacts according to the question', async () => {
-        const contacts_for_question_id_1 = ["1", "2"];
+        const contacts_for_question_id_1 = ["1", "2", "3"];
         const response = await request(app).get('/api/contacts?question_id=1');
         const returned_contacts_ids = response.body.map(r => r.service_id);
 
