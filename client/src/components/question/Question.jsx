@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import * as commonmark from "commonmark";
 
 import { Accordion, Card, Collapse } from "react-bootstrap";
 
 import Subquestion from "./SubQuestion";
 import CustomButtonGroup from "../button/CustomButtonGroup";
+import markdown_render from "../../helpers/markdown_render";
 
 /**
  * Question component
@@ -19,11 +19,6 @@ import CustomButtonGroup from "../button/CustomButtonGroup";
  * @returns Question component
  */
 const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSelect }) => {
-  const reader = new commonmark.Parser();
-  const writer = new commonmark.HtmlRenderer();
-  const question_to_parse = reader.parse(name);
-  const question_to_display = writer.render(question_to_parse);
-
   const [open, setOpen] = useState(true);
 
   const handleClick = (selected) => {
@@ -40,7 +35,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
     <Accordion alwaysOpen>
       <Card>
         <Card.Header>
-          <h2 dangerouslySetInnerHTML={{ __html: question_to_display }} />
+          <h2 dangerouslySetInnerHTML={{ __html: markdown_render(name) }} />
           <CustomButtonGroup
             variant={colorSet}
             textObj={answers}
