@@ -1,0 +1,13 @@
+.category-centered {
+    text-align: center;
+}
+
+.question {
+    font-size: 1rem;
+    color: red;
+}
+
+.subquestion {
+    font-size: 0.8rem;
+    color: green;
+}
