@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "../../stylesheets/components/styles.css";
 import { Accordion, Card, Collapse } from "react-bootstrap";
 
 import Subquestion from "./SubQuestion";

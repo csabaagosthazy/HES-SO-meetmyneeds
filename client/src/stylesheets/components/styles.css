@@ -3,11 +3,24 @@
 }
 
 .question {
-    font-size: 1rem;
-    color: red;
+    font-size: 1em;
 }
 
 .subquestion {
-    font-size: 0.8rem;
-    color: green;
+    font-size: 0.8em;
+}
+
+.control-button {
+        min-height: 100px;
+        width: 150px;
+        border-radius: 10px;
+}
+
+@media(max-width: 290px){
+    .sm-container{
+        width: 90%;
+        box-sizing: content-box;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 }

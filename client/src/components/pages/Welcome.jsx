@@ -1,4 +1,5 @@
 import React from "react";
+import "../../stylesheets/components/styles.css";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import CustomButton from "../button/CustomButton";
@@ -18,6 +19,7 @@ const WelcomePage = () => {
             </Card.Title>
             <Card.Body>
                 <CustomButton
+                    className="control-button"
                     name={"login"}
                     variant={"m"}
                     bgColor={"lightBlue"}
@@ -26,6 +28,7 @@ const WelcomePage = () => {
                     Login
                 </CustomButton>
                 <CustomButton
+                    className="control-button"
                     name={"ctn"}
                     variant={"m"}
                     bgColor={"lightBlue"}

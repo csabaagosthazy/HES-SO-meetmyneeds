@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { COLORS } from "../../global/colors";
+import "../../stylesheets/components/styles.css";
 import CustomButton from "../button/CustomButton";
 import Contacts from "./Contacts";
 import Resources from "./Resources";
@@ -126,7 +127,7 @@ const Result = () => {
             {already_filled.size !== 0 &&
             displayQuestions(already_filled, labels, "already_filled")}
             <Card.Footer>
-                <CustomButton variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
+                <CustomButton className="control-button" variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
                     Save my results
                 </CustomButton>
             </Card.Footer>
