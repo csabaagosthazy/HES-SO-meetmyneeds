@@ -34,7 +34,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
   return (
     <Accordion alwaysOpen>
       <Card>
-        <Card.Header className="question">
+        <Card.Header className="primary-font">
           <h2 dangerouslySetInnerHTML={{ __html: markdown_render(name) }} />
           <CustomButtonGroup
             variant={colorSet}
@@ -45,7 +45,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
         </Card.Header>
         {subs && (
           <Collapse in={open}>
-            <Card.Body className="subquestion">
+            <Card.Body className="secondary-font">
               <Subquestion subquestions={subs} />
             </Card.Body>
           </Collapse>

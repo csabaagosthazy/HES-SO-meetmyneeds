@@ -2,11 +2,11 @@
     text-align: center;
 }
 
-.question {
+.primary-font {
     font-size: 1em;
 }
 
-.subquestion {
+.secondary-font {
     font-size: 0.8em;
 }
 
@@ -14,13 +14,13 @@
         min-height: 100px;
         width: 150px;
         border-radius: 10px;
+        margin: 5px;
 }
 
 @media(max-width: 290px){
     .sm-container{
-        width: 90%;
-        box-sizing: content-box;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        display: flex;
+        flex-direction:column;
+        align-content: center;
     }
 }
