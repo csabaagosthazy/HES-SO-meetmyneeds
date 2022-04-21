@@ -99,7 +99,6 @@ const Questionnaire = () => {
         //{questionId : answer(string) }
 
         Object.entries(givenAnswers).forEach(([question_id, answer_technical_key]) => {
-            console.log(question_id, answer_technical_key);
             let question = origin.questions.find(
                 (q) => parseInt(q.question_id) === parseInt(question_id)
             );

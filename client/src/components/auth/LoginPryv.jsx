@@ -10,11 +10,9 @@ const LoginPryv = () => {
 
     React.useEffect(async () => {
         await initalize();
-        console.log(location);
     }, []);
 
     React.useEffect(() => {
-        console.log("connection changed");
         if (connection && connection.token) {
             if (location && location.state) {
                 navigate(location.state.goto);

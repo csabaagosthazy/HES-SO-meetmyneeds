@@ -18,10 +18,14 @@ const History = () => {
         <Card className="text-center mb-4">
             <Card.Header>My history</Card.Header>
             <Card.Body>
-                {history.map((item) => {
-                    let date = new Date(item.created * 1000);
-                    return <p key={item.id}>{date.toLocaleString()}</p>;
-                })}
+                {history.length === 0 ? (
+                    <p>No items saved yet</p>
+                ) : (
+                    history.map((item) => {
+                        let date = new Date(item.created * 1000);
+                        return <p key={item.id}>{date.toLocaleString()}</p>;
+                    })
+                )}
             </Card.Body>
         </Card>
     );
