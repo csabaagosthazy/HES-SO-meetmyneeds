@@ -48,29 +48,16 @@ const AuthProvider = ({ children }) => {
     //possible states=> 'LOADING','INITIALIZED','NEED_SIGNIN','ACCEPTED','SIGNOUT'
     const pryvAuthStateChange = (state) => {
         // called each time the authentication state changed
-        console.log("##pryvAuthStateChange", state.id);
         switch (state.id) {
-            case "LOADING":
-                console.log("LOADING");
-                break;
             case "INITIALIZED":
-                console.log("INITIALIZED");
-                console.log(state);
                 setLoading(false);
                 break;
-            case "NEED_SIGNIN":
-                console.log("NEED_SIGNIN");
-                break;
             case "ACCEPTED":
-                console.log("ACCEPTED");
                 setConnection(new Pryv.Connection(state.apiEndpoint));
                 break;
             case "SIGNOUT":
-                console.log("SIGNOUT");
                 setConnection(null);
                 break;
-            default:
-                console.log(`DEFAULT`);
         }
     };
 
@@ -89,22 +76,12 @@ const AuthProvider = ({ children }) => {
     const initalize = async () => {
         //initalize pryv auth
         const auth = await Pryv.Auth.setupAuth(authSettings, null, serviceInfoJson);
-        console.log(auth);
     };
 
     const logout = () => {
         //do logout
         setConnection(null);
-        console.log("signed out");
     };
-
-    useEffect(async () => {
-        //initalize pryv auth
-        //const auth = await Pryv.Auth.setupAuth(authSettings, null, serviceInfoJson);
-        //initalize pryv service
-        //const service = new Pryv.Service(null, serviceInfoJson);
-        //console.log(auth);
-    }, []);
 
     const value = {
         connection,

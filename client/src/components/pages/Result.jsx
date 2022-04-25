@@ -103,9 +103,7 @@ const Result = () => {
 
     const saveResultsToPryv = () => {
         if (connection && connection.token) {
-            console.log(questionnaireAnswers);
             createEvent(connection, "test obj from web");
-            console.log("saved");
         } else {
             if (window.confirm("You need to sign in")) {
                 navigate("/login", { state: { goto: "/results" } });

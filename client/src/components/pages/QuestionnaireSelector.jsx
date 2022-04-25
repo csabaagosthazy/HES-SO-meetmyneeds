@@ -57,17 +57,17 @@ const QuestionnaireSelector = () => {
                             <Card.Img
                                 variant="top"
                                 src={images[idx % images.length]}
-                                width={200}
-                                height={180}
+                                width={"70%"}
+                                height={"85%"}
                             />
 
                             <Card.Body>
                                 <Card.Title>{category.label}</Card.Title>
                             </Card.Body>
-                            <Card.Footer>
+                            <Card.Footer style={{ backgroundColor: "white" }}>
                                 <Card.Text>{`${category.questions_number} questions`}</Card.Text>
                             </Card.Footer>
-                            <Card.Footer>
+                            <Card.Footer style={{ backgroundColor: "white" }}>
                                 <CustomButton
                                     variant={"s"}
                                     bgColor={"lightBlue"}
