@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Collapse, Card } from "react-bootstrap";
 import { getContacts } from "../../services/api/service";
 import ErrorElement from "../errors/ErrorElement";
+import ReactMarkdown from 'react-markdown';
 
 const Contacts = (props) => {
     const [contacts, setContacts] = useState([]);
@@ -30,7 +31,7 @@ const Contacts = (props) => {
                 </Card.Body>
                 <Card.Footer>
                     <Collapse in={open}>
-                        <Card.Text id={controlId}>{contact.description}</Card.Text>
+                        <Card.Text id={controlId}><ReactMarkdown>{contact.description}</ReactMarkdown></Card.Text>
                     </Collapse>
                 </Card.Footer>
             </Card>
