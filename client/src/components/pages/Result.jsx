@@ -53,7 +53,7 @@ const Result = () => {
     const displayQuestions = (questionSet, labelSet, label_tag) => {
         let questions_render = [...questionSet].map(([question_id, question_label]) => {
             return (
-                <Card.Body
+                <Card.Body className="d-flex flex-column flex-md-row flex-lg-row justify-content-around"
                     style={{
                         display: "flex",
                         flexDirection: "row",
@@ -63,14 +63,14 @@ const Result = () => {
                     key={question_id}
                 >
                     <Card.Title style={{flex: 1}}><p dangerouslySetInnerHTML={{__html: markdown_render(question_label)}} /></Card.Title>
-                    <CustomButton
+                    <CustomButton class={"customed-small-btn"}
                         variant={"s"}
                         bgColor={"lightgrey"}
                         onClick={() => showContacts(true)}
                     >
                         Qui contacter?
                     </CustomButton>
-                    <CustomButton
+                    <CustomButton class={"customed-small-btn"}
                         variant={"s"}
                         bgColor={"yellow"}
                         onClick={() => showResources(true)}
