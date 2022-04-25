@@ -31,12 +31,12 @@ code {
 
 .control-button {
   min-height: 100px;
-  width: 150px;
+  min-width: 170px;
   border-radius: 10px;
   margin: 5px;
 }
 
-@media(max-width: 290px){
+@media(max-width: 400px){
   .sm-container{
     display: flex;
     flex-direction:column;
