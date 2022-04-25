@@ -3,7 +3,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CustomButton from "./CustomButton";
-
 import { COLORS } from "../../global/colors";
 
 /**
@@ -23,19 +22,20 @@ const CustomButtonGroup = ({ variant, textObj, alreadySelected, onClick }) => {
   };
   return (
     <Container data-testid="buttonGroup">
-      <Row className="justify-content-center gap-2" xs={3} sm={6} >
-        {Object.entries(textObj).map(([key, value], i) => {
+      <Row className="justify-content-center gap-2 sm-container" xs={3} sm={6} >
+        {Object.values(textObj).map((possible_answer, i) => {
           return (
-            <Col md="auto" key={key}>
+            <Col md="auto" key={possible_answer.technicalKey}>
               <CustomButton
-                name={value.technicalKey}
-                bgColor={colorSet[i]}
-                variant={"m"}
+                name={possible_answer.technicalKey}
+                bgColor={colorSet[i].background}
+                textColor={colorSet[i].foreground}
                 focusColor={"black"}
-                selected={selected === value.technicalKey}
+                variant={"m"}
+                selected={selected === possible_answer.technicalKey}
                 onClick={(e) => handleSelect(e)}
               >
-                {value.label}
+                {possible_answer.label}
               </CustomButton>
             </Col>
           );

@@ -92,7 +92,12 @@ const Result = () => {
         });
         questions_render.unshift(
             <Card.Header
-                style={{ backgroundColor: COLORS[questionnaireAnswers.color][label_tag] }}
+                style={
+                    {
+                        backgroundColor: COLORS[questionnaireAnswers.color][label_tag].background,
+                        color: COLORS[questionnaireAnswers.color][label_tag].foreground
+                    }
+                }
                 key={label_tag}
             >
                 {labelSet.get(label_tag)}
@@ -124,7 +129,7 @@ const Result = () => {
             {already_filled.size !== 0 &&
             displayQuestions(already_filled, labels, "already_filled")}
             <Card.Footer>
-                <CustomButton variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
+                <CustomButton className="control-button" variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
                     Save my results
                 </CustomButton>
             </Card.Footer>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { Accordion, Card, Collapse } from "react-bootstrap";
 
 import Subquestion from "./SubQuestion";
@@ -34,7 +33,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
   return (
     <Accordion alwaysOpen>
       <Card>
-        <Card.Header>
+        <Card.Header className="primary-font">
           <h2 dangerouslySetInnerHTML={{ __html: markdown_render(name) }} />
           <CustomButtonGroup
             variant={colorSet}
@@ -45,7 +44,7 @@ const Question = ({ name, subs, id, answers, colorSet, alreadySelected, handleSe
         </Card.Header>
         {subs && (
           <Collapse in={open}>
-            <Card.Body>
+            <Card.Body className="secondary-font">
               <Subquestion subquestions={subs} />
             </Card.Body>
           </Collapse>

@@ -3,23 +3,23 @@ import { render, screen } from "@testing-library/react";
 import CustomButtonGroup from "../CustomButtonGroup";
 import "@testing-library/jest-dom/extend-expect";
 
-const text = {
-  essential: "Essential",
-  important: "Important",
-  medium: "Less important",
-  done: "Need already met",
-  none: "Not concerned",
-};
+const text = [
+  {technicalKey: "essential", label: "Essential"},
+  {technicalKey: "important", label: "Important"},
+  {technicalKey: "less_important", label: "Less important"},
+  {technicalKey: "not_important", label: "Need already met"},
+  {technicalKey: "already_filled", label: "Not concerned"},
+];
 
 test("CustomButtonGroup renders", () => {
-  const { queryByTestId } = render(<CustomButtonGroup textObj={text} />);
-  const component = queryByTestId("buttonGroup");
+  render(<CustomButtonGroup textObj={text} variant={"red"} />);
+  const component = screen.queryByTestId("buttonGroup");
 
   expect(component).toBeTruthy();
 });
 
 test("CustomButtonGroup renders 5 buttons", () => {
-  const { queryByTestId } = render(<CustomButtonGroup textObj={text} />);
+  render(<CustomButtonGroup textObj={text} variant={"red"} />);
   const button = screen.getAllByRole("button");
 
   expect(button).toHaveLength(5);
