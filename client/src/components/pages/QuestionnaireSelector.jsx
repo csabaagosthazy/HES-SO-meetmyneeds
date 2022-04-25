@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Card, CardGroup, Spinner } from "react-bootstrap";
-import { getCategories } from "../../services/api/service";
-import { CustomButton } from "../button/CustomButton";
-
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {Card, CardGroup, Spinner} from "react-bootstrap";
+import {getCategories} from "../../services/api/service";
+import {CustomButton} from "../button/CustomButton";
 import info from "../../assets/need_for_information.png";
 import develop from "../../assets/need_to_develop_my_skills.png";
 import support from "../../assets/need_for_support.png";
@@ -27,10 +26,10 @@ const QuestionnaireSelector = () => {
     }, []);
 
     const navigateToQuestionnaire = (questionId, language, color) => {
-        navigate("/questionnaire", { state: { id: questionId, lang: language, colorSet: color } });
+        navigate("/questionnaire", {state: {id: questionId, lang: language, colorSet: color}});
     };
 
-    if (!categories && !error) return <Spinner animation="border" variant="primary" />;
+    if (!categories && !error) return <Spinner animation="border" variant="primary"/>;
     if (error)
         return (
             <ErrorElement err={error}>
@@ -40,8 +39,8 @@ const QuestionnaireSelector = () => {
 
     return (
         <Card>
-            <Card.Title>{`ÉVALUER MES BESOINS`}</Card.Title>
-            <Card.Subtitle>
+            <Card.Title className="category-centered">{`ÉVALUER MES BESOINS`}</Card.Title>
+            <Card.Subtitle className="category-centered">
                 {`Dans cet outil d’évaluation, un besoin est 
          défini comme une condition qui est importante pour 
          moi et qui n’est pas remplie dans mon environnement actuel. 
@@ -52,7 +51,7 @@ const QuestionnaireSelector = () => {
                     {categories.map((category, idx) => (
                         <Card
                             className={"card text-center"}
-                            style={{ width: "18rem" }}
+                            style={{width: "18rem"}}
                             key={category.category_id}
                         >
                             <Card.Img

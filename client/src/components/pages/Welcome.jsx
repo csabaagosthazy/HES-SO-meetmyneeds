@@ -18,6 +18,7 @@ const WelcomePage = () => {
             </Card.Title>
             <Card.Body>
                 <CustomButton
+                    className="control-button"
                     name={"login"}
                     variant={"m"}
                     bgColor={"lightBlue"}
@@ -26,6 +27,7 @@ const WelcomePage = () => {
                     Login
                 </CustomButton>
                 <CustomButton
+                    className="control-button"
                     name={"ctn"}
                     variant={"m"}
                     bgColor={"lightBlue"}
