@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { COLORS } from "../../global/colors";
-import "../../stylesheets/components/styles.css";
 import CustomButton from "../button/CustomButton";
 import Contacts from "./Contacts";
 import Resources from "./Resources";

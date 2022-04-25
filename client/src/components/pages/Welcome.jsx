@@ -1,5 +1,4 @@
 import React from "react";
-import "../../stylesheets/components/styles.css";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import CustomButton from "../button/CustomButton";

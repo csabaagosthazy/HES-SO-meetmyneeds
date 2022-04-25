@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Card, CardGroup, Spinner} from "react-bootstrap";
 import {getCategories} from "../../services/api/service";
 import {CustomButton} from "../button/CustomButton";
@@ -8,8 +8,6 @@ import develop from "../../assets/need_to_develop_my_skills.png";
 import support from "../../assets/need_for_support.png";
 import health from "../../assets/need_to_take_care_of_my_health.png";
 import ErrorElement from "../errors/ErrorElement";
-
-import "../../stylesheets/components/styles.css";
 
 const images = [info, develop, support, health];
 

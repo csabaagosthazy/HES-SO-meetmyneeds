@@ -1,3 +1,5 @@
+/* Global styles */
+
 #root {
   height: 100vh;
 }
@@ -12,4 +14,32 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Styles related to the questionnaire */
+.category-centered {
+  text-align: center;
+}
+
+.primary-font {
+  font-size: 1rem;
+}
+
+.secondary-font {
+  font-size: 0.8rem;
+}
+
+.control-button {
+  min-height: 100px;
+  width: 150px;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+@media(max-width: 290px){
+  .sm-container{
+    display: flex;
+    flex-direction:column;
+    align-content: center;
+  }
 }

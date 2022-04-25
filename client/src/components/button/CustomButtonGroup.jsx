@@ -4,7 +4,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CustomButton from "./CustomButton";
 import { COLORS } from "../../global/colors";
-import "../../stylesheets/components/styles.css";
 
 /**
  * Button group renders 5 buttons with the given text and color
