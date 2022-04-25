@@ -92,7 +92,12 @@ const Result = () => {
         });
         questions_render.unshift(
             <Card.Header
-                style={{ backgroundColor: COLORS[questionnaireAnswers.color][label_tag] }}
+                style={
+                    {
+                        backgroundColor: COLORS[questionnaireAnswers.color][label_tag].background,
+                        color: COLORS[questionnaireAnswers.color][label_tag].foreground
+                    }
+                }
                 key={label_tag}
             >
                 {labelSet.get(label_tag)}
