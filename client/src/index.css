@@ -1,8 +1,12 @@
 /* Global styles */
+:root {
+  font-size: 18px;
+}
 
 #root {
   height: 100vh;
 }
+
 body {
   margin: 0;
   height: 100vh;
