@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { useNavigate, useLocation } from "react-router-dom";
 import { Spinner, Card } from "react-bootstrap";
 import { getQuestions } from "../../services/api/service";
@@ -156,7 +155,7 @@ const Questionnaire = () => {
                     alwaysShown={true}
                 />
                 {currentPageNumber === numberOfPages ? (
-                    <CustomButton variant={"m"} bgColor={"lightBlue"} onClick={handleFinish}>
+                    <CustomButton className="control-button" variant={"m"} bgColor={"lightBlue"} onClick={handleFinish}>
                         Finish
                     </CustomButton>
                 ) : null}

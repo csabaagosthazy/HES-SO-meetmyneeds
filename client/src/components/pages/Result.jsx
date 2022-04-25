@@ -126,7 +126,7 @@ const Result = () => {
             {already_filled.size !== 0 &&
             displayQuestions(already_filled, labels, "already_filled")}
             <Card.Footer>
-                <CustomButton variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
+                <CustomButton className="control-button" variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
                     Save my results
                 </CustomButton>
             </Card.Footer>
