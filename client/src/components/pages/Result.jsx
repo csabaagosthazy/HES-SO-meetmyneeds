@@ -91,7 +91,7 @@ const Result = () => {
             );
         });
         questions_render.unshift(
-            <Card.Header
+            <Card.Header className={"cardheader-font"}
                 style={
                     {
                         backgroundColor: COLORS[questionnaireAnswers.color][label_tag].background,

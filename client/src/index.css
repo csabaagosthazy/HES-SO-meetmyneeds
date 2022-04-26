@@ -30,7 +30,11 @@ code {
 }
 
 .secondary-font {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.cardheader-font {
+    font-size: 1.5rem;
 }
 
 .control-button {
