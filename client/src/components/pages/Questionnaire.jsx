@@ -155,7 +155,7 @@ const Questionnaire = () => {
                 />
                 {currentPageNumber === numberOfPages ? (
                     <CustomButton className="control-button" variant={"m"} bgColor={"lightBlue"} onClick={handleFinish}>
-                        Finish
+                        Fin
                     </CustomButton>
                 ) : null}
             </Card.Footer>

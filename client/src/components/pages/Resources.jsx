@@ -20,7 +20,7 @@ const Resources = (props) => {
     } else if (error){
         modal_body = <ErrorElement err={error}>Une erreur de chargement de la liste des ressources est survenue.</ErrorElement>
     } else {
-        modal_body = resources.map(item => <p key={item.resource_id}>{item.name}, <a href={item.url} rel="noreferrer" target="_blank">{item.url}</a></p>);
+        modal_body = resources.map(item => <p key={item.resource_id}>{item.name}, <p><a href={item.url} rel="noreferrer" target="_blank">{item.url}</a></p></p>);
     }
 
     return (

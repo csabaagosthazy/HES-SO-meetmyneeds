@@ -130,7 +130,7 @@ const Result = () => {
             displayQuestions(already_filled, labels, "already_filled")}
             <Card.Footer>
                 <CustomButton className="control-button" variant={"m"} bgColor={"lightBlue"} onClick={saveResultsToPryv}>
-                    Save my results
+                    Sauvegarder mes résultats
                 </CustomButton>
             </Card.Footer>
         </Card>
